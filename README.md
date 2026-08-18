@@ -44,3 +44,14 @@ font-fetch errors, that's a sandbox/network issue reaching
 - `components/player/desktop-player.tsx` / `mobile-player.tsx` — two
   separate layouts (`hidden sm:flex` / `sm:hidden`), not one reflowing grid.
 - `lib/tracks.ts` — playlists. Adding a track is duplicating one object.
+
+
+
+pandit ji playlist
+mandir mood
+mandir morning
+music mala
+
+
+
+arti simulator

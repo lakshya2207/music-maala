@@ -43,6 +43,22 @@ export function usePlayerEngine() {
   return ctx;
 }
 
+const DEFAULT_FALLBACK_TRACK: Track = {
+  id: "default-track-1",
+  title: "Gayatri Mantra",
+  artist: "Anuradha Paudwal",
+  film: "Bhakti Bhaav",
+  year: 2020,
+  duration: 300,
+  videoId: "NW9vT3Y_-c4",
+};
+
+const DEFAULT_FALLBACK_PLAYLIST: Playlist = {
+  id: "default-playlist-1",
+  name: "Devotional Bhakti",
+  tracks: [DEFAULT_FALLBACK_TRACK],
+};
+
 export function PlayerEngineProvider({
   children,
   initialPlaylists,
@@ -50,7 +66,6 @@ export function PlayerEngineProvider({
   children: React.ReactNode;
   initialPlaylists: Playlist[];
 }) {
-  const playlists = initialPlaylists;
   const [playlistIndex, setPlaylistIndexState] = useState(0);
   const [trackIndex, setTrackIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
@@ -65,8 +80,36 @@ export function PlayerEngineProvider({
   const mobileSlotRef = useRef<HTMLDivElement | null>(null);
   const [portalTarget, setPortalTarget] = useState<HTMLDivElement | null>(null);
 
-  const playlist = playlists[playlistIndex];
-  const track = playlist.tracks[trackIndex];
+  const safePlaylists = useMemo(() => {
+    if (Array.isArray(initialPlaylists) && initialPlaylists.length > 0) {
+      const valid = initialPlaylists.filter(
+        (p) => p && Array.isArray(p.tracks) && p.tracks.length > 0
+      );
+      if (valid.length > 0) return valid;
+    }
+    return [DEFAULT_FALLBACK_PLAYLIST];
+  }, [initialPlaylists]);
+
+  const playlistIndexClamped = Math.min(
+    Math.max(0, playlistIndex),
+    safePlaylists.length - 1
+  );
+  const playlist =
+    safePlaylists[playlistIndexClamped] ??
+    safePlaylists[0] ??
+    DEFAULT_FALLBACK_PLAYLIST;
+
+  const safeTracks =
+    Array.isArray(playlist?.tracks) && playlist.tracks.length > 0
+      ? playlist.tracks
+      : [DEFAULT_FALLBACK_TRACK];
+
+  const trackIndexClamped = Math.min(
+    Math.max(0, trackIndex),
+    safeTracks.length - 1
+  );
+  const track =
+    safeTracks[trackIndexClamped] ?? safeTracks[0] ?? DEFAULT_FALLBACK_TRACK;
 
   const registerVinylSlot = useCallback(
     (which: "desktop" | "mobile", node: HTMLDivElement | null) => {
@@ -98,6 +141,8 @@ export function PlayerEngineProvider({
   // Create the YT player exactly once.
   useEffect(() => {
     let cancelled = false;
+    if (!track?.videoId) return;
+
     loadYouTubeAPI().then((YTApi) => {
       if (cancelled) return;
       playerRef.current = new YTApi.Player(EMBED_ELEMENT_ID, {
@@ -118,10 +163,12 @@ export function PlayerEngineProvider({
             }
           },
           onError: (event) => {
-            trackAnalyticsEvent("youtube_playback_error", {
-              code: event.data,
-              videoId: track.videoId,
-            });
+            if (track?.videoId) {
+              trackAnalyticsEvent("youtube_playback_error", {
+                code: event.data,
+                videoId: track.videoId,
+              });
+            }
             goToOffset(1);
           },
         },
@@ -140,16 +187,16 @@ export function PlayerEngineProvider({
   // player instance so the visible iframe never gets torn down/rebuilt).
   const isFirstLoad = useRef(true);
   useEffect(() => {
-    if (!ready) return;
+    if (!ready || !track?.videoId) return;
     if (isFirstLoad.current) {
       isFirstLoad.current = false;
       return;
     }
     playerRef.current?.loadVideoById(track.videoId);
     setCurrentTime(0);
-    setDuration(track.duration);
+    setDuration(track.duration || 0);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [track.videoId, ready]);
+  }, [track?.videoId, ready]);
 
   // Progress loop, driven by rAF only while actually playing.
   useEffect(() => {
@@ -161,7 +208,7 @@ export function PlayerEngineProvider({
       const player = playerRef.current;
       if (player) {
         setCurrentTime(player.getCurrentTime() || 0);
-        setDuration(player.getDuration() || track.duration);
+        setDuration(player.getDuration() || track?.duration || 0);
       }
       rafRef.current = requestAnimationFrame(tick);
     };
@@ -169,11 +216,12 @@ export function PlayerEngineProvider({
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [playing, track.duration]);
+  }, [playing, track?.duration]);
 
   function goToOffset(offset: 1 | -1) {
+    if (safeTracks.length === 0) return;
     setTrackIndex((current) => {
-      const total = playlists[playlistIndex].tracks.length;
+      const total = safeTracks.length;
       return (current + offset + total) % total;
     });
     setPlaying(true);
@@ -193,8 +241,8 @@ export function PlayerEngineProvider({
     else player.playVideo();
   }, [playing]);
 
-  const next = useCallback(() => goToOffset(1), [playlistIndex]);
-  const prev = useCallback(() => goToOffset(-1), [playlistIndex]);
+  const next = useCallback(() => goToOffset(1), [safeTracks.length]);
+  const prev = useCallback(() => goToOffset(-1), [safeTracks.length]);
 
   const seek = useCallback((seconds: number) => {
     playerRef.current?.seekTo(seconds, true);
@@ -204,15 +252,15 @@ export function PlayerEngineProvider({
   // Whenever the track changes because of a next/prev/ended advance (not the
   // very first load), push the new video into the existing player.
   useEffect(() => {
-    if (!ready || isFirstLoad.current) return;
+    if (!ready || isFirstLoad.current || !track?.videoId) return;
     playerRef.current?.loadVideoById(track.videoId);
-  }, [trackIndex, playlistIndex, ready, track.videoId]);
+  }, [trackIndexClamped, playlistIndexClamped, ready, track?.videoId]);
 
   const value = useMemo<PlayerEngineValue>(
     () => ({
-      playlists,
-      playlistIndex,
-      trackIndex,
+      playlists: safePlaylists,
+      playlistIndex: playlistIndexClamped,
+      trackIndex: trackIndexClamped,
       track,
       playing,
       ready,
@@ -226,8 +274,9 @@ export function PlayerEngineProvider({
       registerVinylSlot,
     }),
     [
-      playlistIndex,
-      trackIndex,
+      safePlaylists,
+      playlistIndexClamped,
+      trackIndexClamped,
       track,
       playing,
       ready,

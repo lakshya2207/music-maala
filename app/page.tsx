@@ -40,9 +40,10 @@ export default function Home() {
             >
               <span
                 style={{
-                  background: "linear-gradient(135deg, #f3ecda 0%, #d9a441 45%, #f3ecda 100%)",
+                  background: "linear-gradient(135deg, #ffb700 0%, #ff0000ff 45%, #ffb700 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
+                  fontSize: "160px",
                   backgroundClip: "text",
                   filter: "drop-shadow(0 0 18px rgba(217,164,65,0.45))",
                   display: "inline-block",
