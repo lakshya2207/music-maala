@@ -1,12 +1,9 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import type { Playlist, Track } from "@/lib/types";
 import { connectToDatabase } from "@/lib/mongodb";
 import { PlaylistModel } from "@/models/Playlist";
 
 const PLAYLIST_ID = "PLTxRrsk4y7tk";
-const CACHE_PATH = path.join(process.cwd(), "data", "playlist-cache.json");
 
 /** Convert ISO 8601 duration (e.g. "PT4M33S") to seconds. */
 function parseDuration(iso: string): number {
@@ -45,7 +42,7 @@ export async function POST() {
   const apiKey = process.env.YOUTUBE_API_KEY;
   if (!apiKey) {
     return NextResponse.json(
-      { error: "YOUTUBE_API_KEY is not set. Add it to .env.local and restart the dev server." },
+      { error: "YOUTUBE_API_KEY is not set. Add it to environment variables." },
       { status: 500 }
     );
   }
@@ -109,31 +106,26 @@ export async function POST() {
       tracks,
     };
 
-    // 1. Save to MongoDB if available
-    let dbSynced = false;
-    try {
-      const db = await connectToDatabase();
-      if (db) {
-        await PlaylistModel.findOneAndUpdate(
-          { id: playlistObj.id },
-          { name: playlistObj.name, tracks: playlistObj.tracks, updatedAt: new Date() },
-          { upsert: true, new: true }
-        );
-        dbSynced = true;
-      }
-    } catch (dbErr) {
-      console.error("Failed saving playlist sync to MongoDB:", dbErr);
+    // Save directly to MongoDB
+    const db = await connectToDatabase();
+    if (!db) {
+      return NextResponse.json(
+        { error: "MONGODB_URI environment variable is missing or connection failed." },
+        { status: 500 }
+      );
     }
 
-    // 2. Write file cache as fallback
-    fs.mkdirSync(path.dirname(CACHE_PATH), { recursive: true });
-    fs.writeFileSync(CACHE_PATH, JSON.stringify([playlistObj], null, 2), "utf-8");
+    await PlaylistModel.findOneAndUpdate(
+      { id: playlistObj.id },
+      { name: playlistObj.name, tracks: playlistObj.tracks, updatedAt: new Date() },
+      { upsert: true, new: true }
+    );
 
     return NextResponse.json({
       ok: true,
       count: tracks.length,
       syncedAt: new Date().toISOString(),
-      dbSynced,
+      dbSynced: true,
     });
   } catch (err) {
     return NextResponse.json({ error: String(err) }, { status: 500 });

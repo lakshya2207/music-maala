@@ -1,10 +1,6 @@
-import fs from "fs";
-import path from "path";
 import type { Playlist } from "./types";
 import { connectToDatabase } from "./mongodb";
 import { PlaylistModel } from "@/models/Playlist";
-
-const CACHE_PATH = path.join(process.cwd(), "data", "playlist-cache.json");
 
 export const DEFAULT_TRACKS = [
   {
@@ -45,7 +41,6 @@ export const FALLBACK_PLAYLISTS: Playlist[] = [
 ];
 
 export async function getPlaylists(): Promise<Playlist[]> {
-  // 1. Try MongoDB first if configured
   try {
     const db = await connectToDatabase();
     if (db) {
@@ -66,7 +61,7 @@ export async function getPlaylists(): Promise<Playlist[]> {
         }));
       }
 
-      // If database connected but empty, seed initial playlist
+      // Seed MongoDB on initial run if empty
       const seeded = await PlaylistModel.create(FALLBACK_PLAYLISTS[0]);
       return [
         {
@@ -85,26 +80,9 @@ export async function getPlaylists(): Promise<Playlist[]> {
       ];
     }
   } catch (err) {
-    console.warn("MongoDB fetch/connect error, falling back to cache/defaults:", err);
+    console.warn("MongoDB fetch error, falling back to default playlists:", err);
   }
 
-  // 2. Fallback to local JSON cache file if present
-  try {
-    if (fs.existsSync(CACHE_PATH)) {
-      const raw = fs.readFileSync(CACHE_PATH, "utf-8");
-      const parsed = JSON.parse(raw) as Playlist[];
-      if (
-        Array.isArray(parsed) &&
-        parsed.length > 0 &&
-        parsed.some((p) => Array.isArray(p.tracks) && p.tracks.length > 0)
-      ) {
-        return parsed;
-      }
-    }
-  } catch {
-    // Cache file read error
-  }
-
-  // 3. Absolute fallback
+  // Fallback to in-memory defaults if MongoDB is not configured or fails
   return FALLBACK_PLAYLISTS;
 }
