@@ -31,8 +31,8 @@ const kalam = Kalam({
 });
 
 export const metadata: Metadata = {
-  title: "Nostalgia FM",
-  description: "A late-night radio dial for old film songs.",
+  title: "Music Mala | म्यूज़िक माला",
+  description: "A late-night radio dial for classic Hindi music and vintage melodies.",
 };
 
 export const viewport: Viewport = {

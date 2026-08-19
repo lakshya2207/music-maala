@@ -1,14 +1,12 @@
-/**
- * Server-only helper — uses Node `fs` and must never be imported from a
- * client component.  Call it from Server Components or API routes only.
- */
 import fs from "fs";
 import path from "path";
 import type { Playlist } from "./types";
+import { connectToDatabase } from "./mongodb";
+import { PlaylistModel } from "@/models/Playlist";
 
 const CACHE_PATH = path.join(process.cwd(), "data", "playlist-cache.json");
 
-const DEFAULT_TRACKS = [
+export const DEFAULT_TRACKS = [
   {
     id: "default-1",
     title: "Gayatri Mantra",
@@ -38,23 +36,75 @@ const DEFAULT_TRACKS = [
   },
 ];
 
-const FALLBACK: Playlist[] = [
+export const FALLBACK_PLAYLISTS: Playlist[] = [
   {
     id: "youtube-playlist",
-    name: "Devotional Bhakti",
+    name: "म्यूज़िक माला",
     tracks: DEFAULT_TRACKS,
   },
 ];
 
-export function getPlaylists(): Playlist[] {
+export async function getPlaylists(): Promise<Playlist[]> {
+  // 1. Try MongoDB first if configured
   try {
-    const raw = fs.readFileSync(CACHE_PATH, "utf-8");
-    const parsed = JSON.parse(raw) as Playlist[];
-    if (Array.isArray(parsed) && parsed.length > 0 && parsed.some(p => Array.isArray(p.tracks) && p.tracks.length > 0)) {
-      return parsed;
+    const db = await connectToDatabase();
+    if (db) {
+      const docs = await PlaylistModel.find({}).lean();
+      if (docs && docs.length > 0) {
+        return docs.map((doc) => ({
+          id: doc.id,
+          name: doc.name,
+          tracks: doc.tracks.map((t) => ({
+            id: t.id,
+            title: t.title,
+            artist: t.artist,
+            film: t.film,
+            year: t.year,
+            duration: t.duration,
+            videoId: t.videoId,
+          })),
+        }));
+      }
+
+      // If database connected but empty, seed initial playlist
+      const seeded = await PlaylistModel.create(FALLBACK_PLAYLISTS[0]);
+      return [
+        {
+          id: seeded.id,
+          name: seeded.name,
+          tracks: seeded.tracks.map((t) => ({
+            id: t.id,
+            title: t.title,
+            artist: t.artist,
+            film: t.film,
+            year: t.year,
+            duration: t.duration,
+            videoId: t.videoId,
+          })),
+        },
+      ];
+    }
+  } catch (err) {
+    console.warn("MongoDB fetch/connect error, falling back to cache/defaults:", err);
+  }
+
+  // 2. Fallback to local JSON cache file if present
+  try {
+    if (fs.existsSync(CACHE_PATH)) {
+      const raw = fs.readFileSync(CACHE_PATH, "utf-8");
+      const parsed = JSON.parse(raw) as Playlist[];
+      if (
+        Array.isArray(parsed) &&
+        parsed.length > 0 &&
+        parsed.some((p) => Array.isArray(p.tracks) && p.tracks.length > 0)
+      ) {
+        return parsed;
+      }
     }
   } catch {
-    // Cache not yet created — first sync hasn't run yet.
+    // Cache file read error
   }
-  return FALLBACK;
+
+  // 3. Absolute fallback
+  return FALLBACK_PLAYLISTS;
 }

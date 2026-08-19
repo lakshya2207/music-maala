@@ -85,7 +85,7 @@ export default function AdminPage() {
         </Link>
 
         <p className="font-display text-sm font-semibold tracking-wide text-amber">
-          Nostalgia FM — Admin
+          Music Mala — Admin
         </p>
 
         <div className="w-24" />
