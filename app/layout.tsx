@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter, IBM_Plex_Mono, Kalam } from "next/font/google";
+import { Fraunces, Inter, IBM_Plex_Mono, Yatra_One } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
@@ -23,10 +23,10 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
-const kalam = Kalam({
+const yatraOne = Yatra_One({
   subsets: ["devanagari"],
-  weight: ["400", "700"],
-  variable: "--font-kalam-raw",
+  weight: ["400"],
+  variable: "--font-yatra-raw",
   display: "swap",
 });
 
@@ -44,7 +44,23 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="hi" className={`${fraunces.variable} ${inter.variable} ${plexMono.variable} ${kalam.variable}`}>
+    <html lang="hi" className={`${fraunces.variable} ${inter.variable} ${plexMono.variable} ${yatraOne.variable}`}>
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/bg/scene-wide.webp"
+          type="image/webp"
+          media="(min-width: 641px)"
+        />
+        <link
+          rel="preload"
+          as="image"
+          href="/bg/scene-tall.webp"
+          type="image/webp"
+          media="(max-width: 640px)"
+        />
+      </head>
       <body>
         {children}
         <Analytics />
@@ -53,3 +69,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+

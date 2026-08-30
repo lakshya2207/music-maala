@@ -1,15 +1,9 @@
 "use client";
 
-import { useState } from "react";
 import { usePlayerEngine } from "./player-engine";
 
-export function Vinyl({ which, size }: { which: "desktop" | "mobile"; size: number }) {
-  const { playing, track, registerVinylSlot } = usePlayerEngine();
-  const [imgSrc, setImgSrc] = useState<string>(
-    track?.videoId
-      ? `https://img.youtube.com/vi/${track.videoId}/maxresdefault.jpg`
-      : "/bg/scene-wide.png"
-  );
+export function Vinyl({ size }: { which?: "desktop" | "mobile"; size: number }) {
+  const { playing, track } = usePlayerEngine();
 
   const maxResUrl = track?.videoId
     ? `https://img.youtube.com/vi/${track.videoId}/maxresdefault.jpg`
@@ -42,7 +36,6 @@ export function Vinyl({ which, size }: { which: "desktop" | "mobile"; size: numb
               alt={track.title || "Track thumbnail"}
               className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110"
               onError={(e) => {
-                // Fallback to hqdefault if maxresdefault fails to load
                 const target = e.currentTarget;
                 if (target.src !== hqResUrl) {
                   target.src = hqResUrl;
@@ -54,13 +47,6 @@ export function Vinyl({ which, size }: { which: "desktop" | "mobile"; size: numb
           </div>
         )}
       </div>
-
-      {/* Hidden container for YouTube iframe portal target */}
-      <div
-        ref={(node) => registerVinylSlot(which, node)}
-        className="pointer-events-none absolute inset-0 opacity-0 overflow-hidden"
-        aria-hidden
-      />
     </div>
   );
 }

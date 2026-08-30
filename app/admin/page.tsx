@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { Playlist } from "@/lib/types";
+import { HamburgerMenu } from "@/components/top-bar/hamburger-menu";
 import Link from "next/link";
 
 type SyncResult = {
@@ -69,26 +70,35 @@ export default function AdminPage() {
       <div className="grain-overlay" aria-hidden />
 
       {/* Nav */}
-      <header className="relative z-10 flex items-center justify-between border-b border-white/10 px-6 py-4">
-        <Link
-          href="/"
-          className="flex items-center gap-2 text-cream/60 hover:text-cream transition-colors text-sm"
-        >
-          <svg viewBox="0 0 20 20" fill="currentColor" className="size-4">
-            <path
-              fillRule="evenodd"
-              d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z"
-              clipRule="evenodd"
-            />
-          </svg>
-          Back to player
-        </Link>
+      <header className="relative z-10 flex items-center justify-between border-b border-white/10 px-4 sm:px-8 py-3.5 backdrop-blur-md bg-dusk/70 sticky top-0">
+        <div className="flex items-center gap-2.5 sm:gap-3">
+          <HamburgerMenu />
+          <Link
+            href="/"
+            className="flex items-center gap-1.5 text-cream/60 hover:text-cream transition-colors text-xs sm:text-sm font-medium"
+          >
+            <svg viewBox="0 0 20 20" fill="currentColor" className="size-4">
+              <path
+                fillRule="evenodd"
+                d="M17 10a.75.75 0 0 1-.75.75H5.612l4.158 3.96a.75.75 0 1 1-1.04 1.08l-5.5-5.25a.75.75 0 0 1 0-1.08l5.5-5.25a.75.75 0 1 1 1.04 1.08L5.612 9.25H16.25A.75.75 0 0 1 17 10Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            <span className="hidden xs:inline">Back to player</span>
+            <span className="xs:hidden">Player</span>
+          </Link>
+        </div>
 
         <p className="font-display text-sm font-semibold tracking-wide text-amber">
           Music Mala — Admin
         </p>
 
-        <div className="w-24" />
+        <Link
+          href="/raags"
+          className="text-xs text-cream/50 hover:text-cream font-utility transition-colors hidden sm:block"
+        >
+          Raags & Prahars →
+        </Link>
       </header>
 
       {/* Main content */}

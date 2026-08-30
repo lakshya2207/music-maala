@@ -19,6 +19,14 @@ const TrackSchema = new Schema<ITrack>(
     year: { type: Number, default: 0 },
     duration: { type: Number, default: 0 },
     videoId: { type: String, required: true },
+    raag: { type: String, default: "" },
+    raagHindi: { type: String, default: "" },
+    thaat: { type: String, default: "" },
+    prahar: { type: String, default: "anytime" },
+    timeSlot: { type: String, default: "" },
+    mood: { type: String, default: "" },
+    deity: { type: String, default: "" },
+    description: { type: String, default: "" },
   },
   { _id: false }
 );

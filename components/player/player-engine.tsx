@@ -9,10 +9,10 @@ import {
   useRef,
   useState,
 } from "react";
-import { createPortal } from "react-dom";
 import { track as trackAnalyticsEvent } from "@vercel/analytics";
 import { loadYouTubeAPI } from "@/lib/load-youtube-api";
-import type { Playlist, Track } from "@/lib/types";
+import type { Playlist, Track, PraharId, PraharInfo } from "@/lib/types";
+import { getCurrentPrahar, getFilteredTracks, PRAHARS } from "@/lib/raags";
 
 const EMBED_ELEMENT_ID = "yt-embed-target";
 
@@ -21,18 +21,22 @@ type PlayerEngineValue = {
   playlistIndex: number;
   trackIndex: number;
   track: Track;
+  activeTracks: Track[];
   playing: boolean;
   ready: boolean;
   currentTime: number;
   duration: number;
+  selectedPrahar: "auto" | "all" | PraharId;
+  currentPrahar: PraharInfo;
+  setSelectedPrahar: (prahar: "auto" | "all" | PraharId) => void;
   setPlaylistIndex: (index: number) => void;
+  selectTrack: (trackId: string) => void;
   toggle: () => void;
   next: () => void;
   prev: () => void;
   seek: (seconds: number) => void;
-  /** Attach the currently-visible artwork slot so the real video element
-   *  can be portaled into it. Only one slot should be visible at a time. */
-  registerVinylSlot: (which: "desktop" | "mobile", node: HTMLDivElement | null) => void;
+  raagModalTrack: Track | null;
+  setRaagModalTrack: (track: Track | null) => void;
 };
 
 const PlayerEngineContext = createContext<PlayerEngineValue | null>(null);
@@ -51,6 +55,14 @@ const DEFAULT_FALLBACK_TRACK: Track = {
   year: 2020,
   duration: 300,
   videoId: "NW9vT3Y_-c4",
+  raag: "Bhairav",
+  raagHindi: "भैरव",
+  thaat: "Bhairav",
+  prahar: "morning",
+  timeSlot: "06:00 - 09:00 (प्रातःकाल)",
+  mood: "शांति एवं नव-जागरण (Devotion & Serenity)",
+  deity: "Devi",
+  description: "प्रातःकालीन पावन गायत्री महामंत्र, जो बुद्धि और चेतना को जागृत करता है।",
 };
 
 const DEFAULT_FALLBACK_PLAYLIST: Playlist = {
@@ -72,13 +84,28 @@ export function PlayerEngineProvider({
   const [ready, setReady] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [activeSlot, setActiveSlot] = useState<"desktop" | "mobile">("mobile");
+
+  // Prahar & Raag state
+  const [selectedPrahar, setSelectedPraharState] = useState<"auto" | "all" | PraharId>("auto");
+  const [currentPrahar, setCurrentPrahar] = useState<PraharInfo>(PRAHARS.evening);
+  const [raagModalTrack, setRaagModalTrack] = useState<Track | null>(null);
 
   const playerRef = useRef<YT.Player | null>(null);
   const rafRef = useRef<number | null>(null);
-  const desktopSlotRef = useRef<HTMLDivElement | null>(null);
-  const mobileSlotRef = useRef<HTMLDivElement | null>(null);
-  const [portalTarget, setPortalTarget] = useState<HTMLDivElement | null>(null);
+
+  // Guard against infinite auto-skipping on mobile errors
+  const consecutiveErrorsRef = useRef<number>(0);
+  const isPlayingRef = useRef<boolean>(false);
+  isPlayingRef.current = playing;
+
+  // Live IST Prahar updater
+  useEffect(() => {
+    setCurrentPrahar(getCurrentPrahar());
+    const timer = setInterval(() => {
+      setCurrentPrahar(getCurrentPrahar());
+    }, 60000);
+    return () => clearInterval(timer);
+  }, []);
 
   const safePlaylists = useMemo(() => {
     if (Array.isArray(initialPlaylists) && initialPlaylists.length > 0) {
@@ -99,46 +126,36 @@ export function PlayerEngineProvider({
     safePlaylists[0] ??
     DEFAULT_FALLBACK_PLAYLIST;
 
-  const safeTracks =
+  const rawTracks =
     Array.isArray(playlist?.tracks) && playlist.tracks.length > 0
       ? playlist.tracks
       : [DEFAULT_FALLBACK_TRACK];
 
+  // Filtered queue based on selected Prahar
+  const activeTracks = useMemo(() => {
+    return getFilteredTracks(rawTracks, selectedPrahar, currentPrahar);
+  }, [rawTracks, selectedPrahar, currentPrahar]);
+
   const trackIndexClamped = Math.min(
     Math.max(0, trackIndex),
-    safeTracks.length - 1
+    activeTracks.length - 1
   );
   const track =
-    safeTracks[trackIndexClamped] ?? safeTracks[0] ?? DEFAULT_FALLBACK_TRACK;
+    activeTracks[trackIndexClamped] ?? activeTracks[0] ?? DEFAULT_FALLBACK_TRACK;
 
-  const registerVinylSlot = useCallback(
-    (which: "desktop" | "mobile", node: HTMLDivElement | null) => {
-      if (which === "desktop") desktopSlotRef.current = node;
-      else mobileSlotRef.current = node;
+  const goToOffset = useCallback(
+    (offset: 1 | -1) => {
+      if (activeTracks.length === 0) return;
+      setTrackIndex((current) => {
+        const total = activeTracks.length;
+        return (current + offset + total) % total;
+      });
+      setCurrentTime(0);
     },
-    [],
+    [activeTracks.length]
   );
 
-  // Track which breakpoint is visually active so we always portal the real
-  // <iframe> into the slot the person can actually see (never a hidden one).
-  useEffect(() => {
-    const mql = window.matchMedia("(min-width: 640px)");
-    const update = () => setActiveSlot(mql.matches ? "desktop" : "mobile");
-    update();
-    mql.addEventListener("change", update);
-    window.addEventListener("resize", update);
-    return () => {
-      mql.removeEventListener("change", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
-  useEffect(() => {
-    const node = activeSlot === "desktop" ? desktopSlotRef.current : mobileSlotRef.current;
-    setPortalTarget(node);
-  });
-
-  // Create the YT player exactly once.
+  // Create the YT player exactly once on a stable static DOM element.
   useEffect(() => {
     let cancelled = false;
     if (!track?.videoId) return;
@@ -151,13 +168,21 @@ export function PlayerEngineProvider({
           playsinline: 1,
           rel: 0,
           modestbranding: 1,
+          controls: 0,
+          disablekb: 1,
         },
         events: {
-          onReady: () => setReady(true),
+          onReady: () => {
+            setReady(true);
+            consecutiveErrorsRef.current = 0;
+          },
           onStateChange: (event) => {
-            if (event.data === YTApi.PlayerState.PLAYING) setPlaying(true);
-            else if (event.data === YTApi.PlayerState.PAUSED) setPlaying(false);
-            else if (event.data === YTApi.PlayerState.ENDED) {
+            if (event.data === YTApi.PlayerState.PLAYING) {
+              setPlaying(true);
+              consecutiveErrorsRef.current = 0;
+            } else if (event.data === YTApi.PlayerState.PAUSED) {
+              setPlaying(false);
+            } else if (event.data === YTApi.PlayerState.ENDED) {
               setPlaying(false);
               goToOffset(1);
             }
@@ -169,7 +194,16 @@ export function PlayerEngineProvider({
                 videoId: track.videoId,
               });
             }
-            goToOffset(1);
+            // Protect against infinite auto-skipping loops
+            consecutiveErrorsRef.current += 1;
+            if (consecutiveErrorsRef.current < 3) {
+              setTimeout(() => {
+                goToOffset(1);
+              }, 600);
+            } else {
+              setPlaying(false);
+              consecutiveErrorsRef.current = 0;
+            }
           },
         },
       });
@@ -177,25 +211,36 @@ export function PlayerEngineProvider({
 
     return () => {
       cancelled = true;
-      playerRef.current?.destroy();
+      try {
+        playerRef.current?.destroy();
+      } catch (e) {
+        console.warn("Error destroying YT player:", e);
+      }
       playerRef.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Load a new video whenever the selected track changes (but keep the same
-  // player instance so the visible iframe never gets torn down/rebuilt).
-  const isFirstLoad = useRef(true);
+  // SINGLE, UNIFIED effect to load or cue video when track changes
+  const prevVideoIdRef = useRef<string>(track?.videoId);
   useEffect(() => {
-    if (!ready || !track?.videoId) return;
-    if (isFirstLoad.current) {
-      isFirstLoad.current = false;
-      return;
+    if (!ready || !playerRef.current || !track?.videoId) return;
+
+    if (prevVideoIdRef.current !== track.videoId) {
+      prevVideoIdRef.current = track.videoId;
+      setCurrentTime(0);
+      setDuration(track.duration || 0);
+
+      try {
+        if (isPlayingRef.current) {
+          playerRef.current.loadVideoById(track.videoId);
+        } else {
+          playerRef.current.cueVideoById(track.videoId);
+        }
+      } catch (err) {
+        console.warn("Failed to load/cue video:", err);
+      }
     }
-    playerRef.current?.loadVideoById(track.videoId);
-    setCurrentTime(0);
-    setDuration(track.duration || 0);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [track?.videoId, ready]);
 
   // Progress loop, driven by rAF only while actually playing.
@@ -206,7 +251,7 @@ export function PlayerEngineProvider({
     }
     const tick = () => {
       const player = playerRef.current;
-      if (player) {
+      if (player && typeof player.getCurrentTime === "function") {
         setCurrentTime(player.getCurrentTime() || 0);
         setDuration(player.getDuration() || track?.duration || 0);
       }
@@ -218,43 +263,61 @@ export function PlayerEngineProvider({
     };
   }, [playing, track?.duration]);
 
-  function goToOffset(offset: 1 | -1) {
-    if (safeTracks.length === 0) return;
-    setTrackIndex((current) => {
-      const total = safeTracks.length;
-      return (current + offset + total) % total;
-    });
-    setPlaying(true);
-  }
+  const setSelectedPrahar = useCallback(
+    (prahar: "auto" | "all" | PraharId) => {
+      setSelectedPraharState(prahar);
+      setTrackIndex(0);
+      setCurrentTime(0);
+    },
+    []
+  );
+
+  const selectTrack = useCallback(
+    (trackId: string) => {
+      const idx = activeTracks.findIndex((t) => t.id === trackId);
+      if (idx !== -1) {
+        setTrackIndex(idx);
+        setPlaying(true);
+        setCurrentTime(0);
+        if (playerRef.current && activeTracks[idx]?.videoId) {
+          playerRef.current.loadVideoById(activeTracks[idx].videoId);
+        }
+      }
+    },
+    [activeTracks]
+  );
 
   const setPlaylistIndex = useCallback((index: number) => {
     setPlaylistIndexState(index);
     setTrackIndex(0);
     setPlaying(true);
-    isFirstLoad.current = false;
+    setCurrentTime(0);
   }, []);
 
   const toggle = useCallback(() => {
     const player = playerRef.current;
     if (!player) return;
-    if (playing) player.pauseVideo();
-    else player.playVideo();
+    if (playing) {
+      player.pauseVideo();
+    } else {
+      player.playVideo();
+    }
   }, [playing]);
 
-  const next = useCallback(() => goToOffset(1), [safeTracks.length]);
-  const prev = useCallback(() => goToOffset(-1), [safeTracks.length]);
+  const next = useCallback(() => {
+    setPlaying(true);
+    goToOffset(1);
+  }, [goToOffset]);
+
+  const prev = useCallback(() => {
+    setPlaying(true);
+    goToOffset(-1);
+  }, [goToOffset]);
 
   const seek = useCallback((seconds: number) => {
     playerRef.current?.seekTo(seconds, true);
     setCurrentTime(seconds);
   }, []);
-
-  // Whenever the track changes because of a next/prev/ended advance (not the
-  // very first load), push the new video into the existing player.
-  useEffect(() => {
-    if (!ready || isFirstLoad.current || !track?.videoId) return;
-    playerRef.current?.loadVideoById(track.videoId);
-  }, [trackIndexClamped, playlistIndexClamped, ready, track?.videoId]);
 
   const value = useMemo<PlayerEngineValue>(
     () => ({
@@ -262,43 +325,55 @@ export function PlayerEngineProvider({
       playlistIndex: playlistIndexClamped,
       trackIndex: trackIndexClamped,
       track,
+      activeTracks,
       playing,
       ready,
       currentTime,
       duration,
+      selectedPrahar,
+      currentPrahar,
+      setSelectedPrahar,
+      selectTrack,
       setPlaylistIndex,
       toggle,
       next,
       prev,
       seek,
-      registerVinylSlot,
+      raagModalTrack,
+      setRaagModalTrack,
     }),
     [
       safePlaylists,
       playlistIndexClamped,
       trackIndexClamped,
       track,
+      activeTracks,
       playing,
       ready,
       currentTime,
       duration,
+      selectedPrahar,
+      currentPrahar,
+      setSelectedPrahar,
+      selectTrack,
       setPlaylistIndex,
       toggle,
       next,
       prev,
       seek,
-      registerVinylSlot,
+      raagModalTrack,
     ],
   );
 
   return (
     <PlayerEngineContext.Provider value={value}>
       {children}
-      {portalTarget &&
-        createPortal(
-          <div id={EMBED_ELEMENT_ID} className="h-full w-full [&_iframe]:h-full [&_iframe]:w-full" />,
-          portalTarget,
-        )}
+      {/* Stable off-screen YouTube container that never unmounts or moves during resize/navigation */}
+      <div
+        id={EMBED_ELEMENT_ID}
+        className="fixed -left-[9999px] top-0 h-1 w-1 opacity-0 pointer-events-none overflow-hidden"
+        aria-hidden="true"
+      />
     </PlayerEngineContext.Provider>
   );
 }

@@ -2,6 +2,8 @@ import { getPlaylists } from "@/lib/get-playlists";
 import { PlayerEngineProvider } from "@/components/player/player-engine";
 import { DesktopPlayer } from "@/components/player/desktop-player";
 import { MobilePlayer } from "@/components/player/mobile-player";
+import { RaagModal } from "@/components/player/raag-modal";
+import { ShortcutsModal } from "@/components/player/shortcuts-modal";
 import { TopBar } from "@/components/top-bar/top-bar";
 
 export default async function Home() {
@@ -17,30 +19,34 @@ export default async function Home() {
         <PlayerEngineProvider initialPlaylists={playlists}>
           <TopBar />
 
-          {/* ── Main Heading: म्यूज़िक माला ── */}
-          <div className="flex flex-1 flex-col items-center justify-center gap-3 px-4 pt-16 pb-4 sm:pt-20">
+          {/* ── Main Heading: म्यूज़िक माला (Yatra One) ── */}
+          <div className="flex flex-1 flex-col items-center justify-center gap-1.5 sm:gap-2.5 md:gap-3 px-3 sm:px-4 pt-12 pb-2 sm:pt-16 md:pt-20 w-full max-w-5xl mx-auto">
             {/* Decorative top flourish rule */}
-            <div className="flex w-full max-w-xs sm:max-w-md items-center gap-3">
+            <div className="flex w-full max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-lg items-center gap-2 sm:gap-3">
               <span className="h-px flex-1 bg-gradient-to-r from-transparent via-amber/50 to-amber" />
-              <span className="text-[12px] font-utility tracking-widest text-amber/80">✦ ✨ ✦</span>
+              <span className="text-[10px] sm:text-[12px] font-utility tracking-widest text-amber/80 select-none">
+                ✦ ✨ ✦
+              </span>
               <span className="h-px flex-1 bg-gradient-to-l from-transparent via-amber/50 to-amber" />
             </div>
 
-            {/* Main responsive heading */}
+            {/* Main responsive heading using Yatra One */}
             <h1
               lang="hi"
-              style={{ fontFamily: "var(--font-kalam)" }}
-              className="text-center font-bold tracking-normal select-none my-1"
+              style={{ fontFamily: "var(--font-yatra)" }}
+              className="text-center font-normal tracking-normal select-none my-0 sm:my-1 max-w-full px-2"
               aria-label="म्यूज़िक माला"
             >
               <span
-                className="inline-block text-4xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[1.3] sm:leading-[1.25] py-3 px-4 transition-all duration-300"
+                className="inline-block text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-[8.2rem] leading-[1.2] sm:leading-[1.22] md:leading-[1.18] py-1.5 sm:py-2.5 px-2 sm:px-4 transition-all duration-300"
                 style={{
-                  background: "linear-gradient(135deg, #FFE082 0%, #FFB300 30%, #E65100 70%, #FFCA28 100%)",
+                  background:
+                    "linear-gradient(135deg, #FFE082 0%, #FFB300 30%, #E65100 70%, #FFCA28 100%)",
                   WebkitBackgroundClip: "text",
                   WebkitTextFillColor: "transparent",
                   backgroundClip: "text",
-                  filter: "drop-shadow(0 0 24px rgba(255, 179, 0, 0.45)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6))",
+                  filter:
+                    "drop-shadow(0 0 24px rgba(255, 179, 0, 0.45)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6))",
                 }}
               >
                 म्यूज़िक माला
@@ -48,23 +54,29 @@ export default async function Home() {
             </h1>
 
             {/* Subtitle / Tagline */}
-            <p className="font-display text-xs sm:text-sm md:text-base tracking-[0.2em] text-cream/75 uppercase text-center font-medium">
-              क्लासिक हिंदी संगीत &bull; Vintage Melodies
+            <p className="font-display text-[10.5px] xs:text-xs sm:text-sm md:text-base tracking-[0.14em] sm:tracking-[0.18em] md:tracking-[0.22em] text-cream/75 uppercase text-center font-medium px-2 max-w-md sm:max-w-xl">
+              शास्त्रीय राग समय चक्र &bull; Vintage Melodies
             </p>
 
             {/* Decorative bottom flourish rule */}
-            <div className="flex w-full max-w-xs sm:max-w-md items-center gap-3">
+            <div className="flex w-full max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-lg items-center gap-2 sm:gap-3">
               <span className="h-px flex-1 bg-gradient-to-r from-transparent via-amber/50 to-amber" />
-              <span className="text-[11px] font-utility text-amber/70">✦</span>
+              <span className="text-[9px] sm:text-[11px] font-utility text-amber/70 select-none">
+                ✦
+              </span>
               <span className="h-px flex-1 bg-gradient-to-l from-transparent via-amber/50 to-amber" />
             </div>
           </div>
 
           {/* Player controls bottom wrapper */}
-          <div className="flex w-full items-end justify-center px-4 pb-6 safe-b">
+          <div className="flex w-full items-end justify-center px-2 sm:px-4 pb-3 sm:pb-6 safe-b">
             <DesktopPlayer />
             <MobilePlayer />
           </div>
+
+          {/* Modals */}
+          <RaagModal />
+          <ShortcutsModal />
         </PlayerEngineProvider>
       </main>
     </>

@@ -12,7 +12,7 @@
   --font-display: var(--font-display-raw), Georgia, serif;
   --font-body: var(--font-body-raw), system-ui, sans-serif;
   --font-utility: var(--font-utility-raw), ui-monospace, monospace;
-  --font-kalam: var(--font-kalam-raw), cursive;
+  --font-yatra: var(--font-yatra-raw), cursive, system-ui;
 }
 
 html,
@@ -33,16 +33,18 @@ body {
   inset: 0;
   background-image:
     linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 45%, rgba(0, 0, 0, 0.8)),
-    url("/bg/scene-wide.png");
+    url("/bg/scene-wide.webp");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  will-change: transform;
 }
 
-@media (orientation: portrait) {
+@media (orientation: portrait), (max-width: 640px) {
   .hero-bg {
     background-image:
       linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 45%, rgba(0, 0, 0, 0.8)),
-      url("/bg/scene-tall.png");
+      url("/bg/scene-tall.webp");
   }
 }
 
