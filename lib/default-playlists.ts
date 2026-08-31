@@ -1,0 +1,63 @@
+import type { Playlist, Track } from "./types";
+
+export const DEFAULT_TRACKS: Track[] = [
+  {
+    id: "default-1",
+    title: "Gayatri Mantra",
+    artist: "Anuradha Paudwal",
+    film: "Bhakti Bhaav",
+    year: 2020,
+    duration: 300,
+    videoId: "NW9vT3Y_-c4",
+    raag: "Bhairav",
+    raagHindi: "भैरव",
+    thaat: "Bhairav",
+    prahar: "morning",
+    timeSlot: "06:00 - 09:00 (प्रातःकाल)",
+    mood: "शांति एवं नव-जागरण (Devotion & Serenity)",
+    deity: "Devi",
+    description: "प्रातःकालीन पावन गायत्री महामंत्र, जो बुद्धि और चेतना को जागृत करता है।",
+  },
+  {
+    id: "default-2",
+    title: "Shree Hanuman Chalisa",
+    artist: "Hariharan",
+    film: "T-Series Bhakti",
+    year: 1992,
+    duration: 580,
+    videoId: "AETFvQonfV8",
+    raag: "Bilawal",
+    raagHindi: "बिलावल",
+    thaat: "Bilawal",
+    prahar: "morning",
+    timeSlot: "06:00 - 09:00 (प्रातः प्रहर)",
+    mood: "उत्साह, शक्ति एवं संरक्षण (Strength & Protection)",
+    deity: "Hanuman",
+    description: "बिलावल राग आधारित दिव्य हनुमान चालीसा, जो सकल संकटों का नाश करती है।",
+  },
+  {
+    id: "default-3",
+    title: "Achyutam Keshavam",
+    artist: "Vikram Hazra",
+    film: "Art of Living",
+    year: 2015,
+    duration: 320,
+    videoId: "O8FjK_0hD8g",
+    raag: "Pahadi",
+    raagHindi: "पहाड़ी",
+    thaat: "Bilawal",
+    prahar: "anytime",
+    timeSlot: "सर्वकालीन / सांध्यकाल (Anytime / Evening)",
+    mood: "माधुर्य एवं कृष्ण शरणागति (Sweet Devotion)",
+    deity: "Krishna",
+    description: "राग पहाड़ी के सरल व मधुर स्वरों में भगवान श्री कृष्ण के दिव्य नामों का संकीर्तन।",
+  },
+];
+
+export const FALLBACK_PLAYLISTS: Playlist[] = [
+  {
+    id: "youtube-playlist",
+    name: "म्यूज़िक माला",
+    tracks: DEFAULT_TRACKS,
+  },
+];

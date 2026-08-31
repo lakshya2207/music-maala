@@ -5,23 +5,28 @@ import { enrichTracksWithAI } from "@/lib/gemini";
 import type { Track } from "@/lib/types";
 
 export async function POST() {
+  console.log("[Enrich Raags API] Starting Raag & Prahar enrichment request...");
   try {
     const db = await connectToDatabase();
     if (!db) {
+      console.error("[Enrich Raags API] MongoDB connection failed.");
       return NextResponse.json(
         { error: "MONGODB_URI environment variable is missing or connection failed." },
         { status: 500 }
       );
     }
 
+    console.log("[Enrich Raags API] Step 1/3: Retrieving current playlist tracks from MongoDB...");
     const playlistDoc = await PlaylistModel.findOne({ id: "youtube-playlist" });
     if (!playlistDoc || !playlistDoc.tracks || playlistDoc.tracks.length === 0) {
+      console.warn("[Enrich Raags API] No tracks found in MongoDB playlist.");
       return NextResponse.json(
         { error: "No tracks found in playlist. Please sync with YouTube first." },
         { status: 404 }
       );
     }
 
+    console.log(`[Enrich Raags API] Found ${playlistDoc.tracks.length} tracks to enrich.`);
     const rawTracks: Track[] = playlistDoc.tracks.map((t: any) => ({
       id: t.id,
       title: t.title,
@@ -40,12 +45,15 @@ export async function POST() {
       description: t.description,
     }));
 
+    console.log("[Enrich Raags API] Step 2/3: Executing AI / Heuristic Raag analysis...");
     const result = await enrichTracksWithAI(rawTracks);
 
+    console.log(`[Enrich Raags API] Step 3/3: Saving ${result.tracks.length} enriched tracks back to MongoDB (Model: ${result.model})...`);
     playlistDoc.tracks = result.tracks as any;
     playlistDoc.updatedAt = new Date();
     await playlistDoc.save();
 
+    console.log("[Enrich Raags API] Successfully saved enriched tracks to MongoDB.");
     return NextResponse.json({
       ok: true,
       count: result.tracks.length,
@@ -54,7 +62,7 @@ export async function POST() {
       tracks: result.tracks,
     });
   } catch (err) {
-    console.error("Error in /api/enrich-raags:", err);
+    console.error("[Enrich Raags API] Error in /api/enrich-raags:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

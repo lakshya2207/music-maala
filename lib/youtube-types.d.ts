@@ -30,7 +30,7 @@ declare namespace YT {
     events?: PlayerEvents;
   }
 
-  class Player {
+    class Player {
     constructor(elementId: string | HTMLElement, options: PlayerOptions);
     playVideo(): void;
     pauseVideo(): void;
@@ -40,6 +40,11 @@ declare namespace YT {
     getCurrentTime(): number;
     getDuration(): number;
     getPlayerState(): PlayerState;
+    mute(): void;
+    unMute(): void;
+    isMuted(): boolean;
+    setVolume(volume: number): void;
+    getVolume(): number;
     destroy(): void;
   }
 }

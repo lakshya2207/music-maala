@@ -39,8 +39,10 @@ function parseTitle(raw: string): Pick<Track, "title" | "artist" | "film" | "yea
 }
 
 export async function POST() {
+  console.log("[YouTube Sync API] Starting playlist synchronization process...");
   const apiKey = process.env.YOUTUBE_API_KEY;
   if (!apiKey) {
+    console.warn("[YouTube Sync API] YOUTUBE_API_KEY is not set.");
     return NextResponse.json(
       { error: "YOUTUBE_API_KEY is not set. Add it to environment variables." },
       { status: 500 }
@@ -50,8 +52,11 @@ export async function POST() {
   try {
     const rawItems: { videoId: string; title: string }[] = [];
     let pageToken: string | undefined;
+    let pageCount = 0;
 
+    console.log(`[YouTube Sync API] Step 1/4: Fetching items for playlist "${PLAYLIST_ID}" from YouTube Data API...`);
     do {
+      pageCount++;
       const params = new URLSearchParams({
         part: "snippet",
         playlistId: PLAYLIST_ID,
@@ -64,6 +69,7 @@ export async function POST() {
       const data = await res.json();
 
       if (data.error) {
+        console.error("[YouTube Sync API] Error from YouTube playlistItems API:", data.error.message);
         return NextResponse.json({ error: data.error.message }, { status: 500 });
       }
 
@@ -75,13 +81,16 @@ export async function POST() {
         }
       }
 
+      console.log(`[YouTube Sync API] Page ${pageCount}: Fetched ${data.items?.length || 0} items (Total valid: ${rawItems.length})`);
       pageToken = data.nextPageToken;
     } while (pageToken);
 
     if (rawItems.length === 0) {
+      console.warn("[YouTube Sync API] Playlist is empty or contains no public videos.");
       return NextResponse.json({ error: "Playlist is empty or contains no public videos." }, { status: 422 });
     }
 
+    console.log(`[YouTube Sync API] Step 2/4: Fetching video durations for ${rawItems.length} videos...`);
     const durations: Record<string, number> = {};
     for (let i = 0; i < rawItems.length; i += 50) {
       const ids = rawItems.slice(i, i + 50).map((v) => v.videoId).join(",");
@@ -93,6 +102,7 @@ export async function POST() {
       }
     }
 
+    console.log("[YouTube Sync API] Step 3/4: Parsing video titles, artists, and durations...");
     const tracks: Track[] = rawItems.map((item, i) => ({
       id: `yt-${i + 1}`,
       ...parseTitle(item.title),
@@ -106,9 +116,10 @@ export async function POST() {
       tracks,
     };
 
-    // Save directly to MongoDB
+    console.log(`[YouTube Sync API] Step 4/4: Connecting to MongoDB to persist ${tracks.length} tracks...`);
     const db = await connectToDatabase();
     if (!db) {
+      console.error("[YouTube Sync API] MongoDB connection failed.");
       return NextResponse.json(
         { error: "MONGODB_URI environment variable is missing or connection failed." },
         { status: 500 }
@@ -121,6 +132,7 @@ export async function POST() {
       { upsert: true, new: true }
     );
 
+    console.log(`[YouTube Sync API] Successfully synced ${tracks.length} tracks to MongoDB.`);
     return NextResponse.json({
       ok: true,
       count: tracks.length,
@@ -128,6 +140,7 @@ export async function POST() {
       dbSynced: true,
     });
   } catch (err) {
+    console.error("[YouTube Sync API] Unexpected error during playlist sync:", err);
     return NextResponse.json({ error: String(err) }, { status: 500 });
   }
 }

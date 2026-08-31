@@ -12,7 +12,9 @@ export async function enrichTracksWithAI(tracks: Track[]): Promise<EnrichmentRes
   const apiKey = process.env.GEMINI_API_KEY;
 
   if (!apiKey || apiKey.trim() === "") {
+    console.log("[Gemini AI] GEMINI_API_KEY not set. Using curated Classical Knowledge Base heuristics...");
     const enriched = tracks.map((t) => enrichTrackRaag(t));
+    console.log(`[Gemini AI] Enriched ${enriched.length} track(s) using local classical heuristics.`);
     return {
       tracks: enriched,
       usedAI: false,
@@ -21,6 +23,7 @@ export async function enrichTracksWithAI(tracks: Track[]): Promise<EnrichmentRes
   }
 
   try {
+    console.log(`[Gemini AI] Step 1/3: Preparing prompt for ${tracks.length} track(s) for Indian Classical Sangeet analysis...`);
     const prompt = `
 You are an expert in Indian Classical Music (Hindustani & Carnatic Sangeet), Raag-Samay Chakra (8 Prahars of the day), and Bhakti Sangeet.
 Analyze the following list of devotional songs / bhajans and determine their Indian Classical Raag, Thaat, optimal Prahar (time of day), Mood/Rasa, Deity, and brief spiritual significance.
@@ -65,8 +68,10 @@ Return ONLY a valid JSON array of objects with the exact structure:
 ]
 `;
 
+    const modelId = process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
+    console.log(`[Gemini AI] Step 2/3: Dispatching request to ${modelId} API...`);
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/${modelId}:generateContent?key=${apiKey}`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -82,7 +87,7 @@ Return ONLY a valid JSON array of objects with the exact structure:
 
     if (!res.ok) {
       const errText = await res.text();
-      console.warn("Gemini API call failed, falling back to curated heuristics:", errText);
+      console.warn("[Gemini AI] API call failed, falling back to curated heuristics:", errText);
       const enriched = tracks.map((t) => enrichTrackRaag(t));
       return {
         tracks: enriched,
@@ -96,6 +101,7 @@ Return ONLY a valid JSON array of objects with the exact structure:
     const rawContent = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
     if (!rawContent) {
+      console.warn("[Gemini AI] No candidates returned from Gemini. Using heuristic fallback.");
       const enriched = tracks.map((t) => enrichTrackRaag(t));
       return {
         tracks: enriched,
@@ -104,6 +110,7 @@ Return ONLY a valid JSON array of objects with the exact structure:
       };
     }
 
+    console.log("[Gemini AI] Step 3/3: Successfully parsed AI Raag classifications. Merging with tracks...");
     const parsedResults: Array<{
       index: number;
       raag: string;
@@ -144,13 +151,14 @@ Return ONLY a valid JSON array of objects with the exact structure:
       };
     });
 
+    console.log(`[Gemini AI] Successfully enriched ${enrichedTracks.length} tracks using Gemini 3.5 Flash Lite.`);
     return {
       tracks: enrichedTracks,
       usedAI: true,
-      model: "Gemini 1.5 Flash",
+      model: "Gemini 3.5 Flash Lite",
     };
   } catch (err) {
-    console.error("Error during AI Raag enrichment:", err);
+    console.error("[Gemini AI] Error during AI Raag enrichment:", err);
     const enriched = tracks.map((t) => enrichTrackRaag(t));
     return {
       tracks: enriched,

@@ -18,20 +18,20 @@ export function DesktopPlayer() {
         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <p className="truncate font-display text-[15px] font-semibold leading-tight text-cream">
+              <p className="truncate font-display text-[15.5px] font-bold leading-tight text-white drop-shadow-sm">
                 {track.title}
               </p>
               {track.raag && (
                 <button
                   onClick={() => setRaagModalTrack(track)}
-                  className="shrink-0 px-2 py-0.5 rounded-full bg-amber/15 border border-amber/30 text-amber text-[10px] font-utility font-medium hover:bg-amber/25 transition-colors"
+                  className="shrink-0 px-2 py-0.5 rounded-full bg-amber/20 border border-amber/40 text-amber text-[10px] font-utility font-semibold hover:bg-amber/30 transition-colors shadow-sm"
                   title="View Raag Lore (Press R)"
                 >
                   ✦ {track.raagHindi ? `राग ${track.raagHindi}` : track.raag}
                 </button>
               )}
             </div>
-            <p className="truncate text-[12.5px] text-cream/70 mt-0.5">
+            <p className="truncate text-[12.5px] text-cream/90 font-medium mt-0.5">
               {track.artist} {track.film && track.film !== "Unknown" ? `· ${track.film}` : ""}{" "}
               {track.year ? `(${track.year})` : ""}
             </p>

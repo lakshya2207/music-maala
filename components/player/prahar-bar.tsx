@@ -46,7 +46,7 @@ export function PraharBar() {
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 bg-amber/15 hover:bg-amber/25 text-amber border border-amber/30 transition-all active:scale-95 font-utility text-[11px] sm:text-xs font-medium"
+            className="flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 bg-amber/20 hover:bg-amber/30 text-amber border border-amber/45 transition-all active:scale-95 font-utility text-[11px] sm:text-xs font-semibold shadow-sm"
             title="Click to change Prahar or Auto Mode"
           >
             <span>{activePrahar.icon}</span>
@@ -74,8 +74,8 @@ export function PraharBar() {
 
           {/* Prahar Picker Dropdown Menu */}
           {isOpen && (
-            <div className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-[280px] xs:w-80 rounded-2xl glass p-2 border border-white/20 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-1">
-              <div className="px-3 py-1.5 text-[10px] font-utility uppercase tracking-wider text-cream/40 border-b border-white/10">
+            <div className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-[280px] xs:w-80 rounded-2xl glass p-2.5 border border-white/25 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-1">
+              <div className="px-3 py-1.5 text-[11px] font-utility uppercase tracking-wider text-cream/70 font-semibold border-b border-white/10">
                 समय चक्र एवं प्रहर चयन
               </div>
 
@@ -88,15 +88,15 @@ export function PraharBar() {
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-colors ${
                   selectedPrahar === "auto"
-                    ? "bg-amber text-dusk font-semibold"
+                    ? "bg-amber text-dusk font-bold shadow-md"
                     : "text-cream hover:bg-white/10"
                 }`}
               >
                 <div className="flex items-center gap-2">
                   <span>✨</span>
                   <div>
-                    <p className="leading-tight">समय चक्र (Live Auto Clock)</p>
-                    <p className={`text-[10px] ${selectedPrahar === "auto" ? "text-dusk/70" : "text-cream/50"}`}>
+                    <p className="leading-tight font-semibold">समय चक्र (Live Auto Clock)</p>
+                    <p className={`text-[10px] ${selectedPrahar === "auto" ? "text-dusk/80 font-medium" : "text-cream/70"}`}>
                       वर्तमान समय अनुसार: {currentPrahar.name}
                     </p>
                   </div>
@@ -113,11 +113,11 @@ export function PraharBar() {
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-colors ${
                   selectedPrahar === "all"
-                    ? "bg-amber text-dusk font-semibold"
+                    ? "bg-amber text-dusk font-bold shadow-md"
                     : "text-cream hover:bg-white/10"
                 }`}
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 font-semibold">
                   <span>📜</span>
                   <span>सभी भजन (Play All Tracks)</span>
                 </div>
@@ -144,20 +144,20 @@ export function PraharBar() {
                         }}
                         className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left text-xs transition-colors ${
                           isSelected
-                            ? "bg-amber text-dusk font-semibold"
+                            ? "bg-amber text-dusk font-bold"
                             : "text-cream hover:bg-white/10"
                         }`}
                       >
                         <div className="flex items-center gap-2 truncate">
                           <span>{p.icon}</span>
-                          <span className="truncate">{p.name}</span>
+                          <span className="truncate font-medium">{p.name}</span>
                           {isCurrent && (
-                            <span className={`text-[9px] px-1.5 py-0.2 rounded font-utility ${isSelected ? "bg-dusk/20 text-dusk" : "bg-amber/20 text-amber"}`}>
+                            <span className={`text-[9px] px-1.5 py-0.2 rounded font-utility font-bold ${isSelected ? "bg-dusk/20 text-dusk" : "bg-amber text-dusk shadow-sm"}`}>
                               NOW
                             </span>
                           )}
                         </div>
-                        <span className={`text-[10px] font-utility ml-2 shrink-0 tabular ${isSelected ? "text-dusk/70" : "text-cream/40"}`}>
+                        <span className={`text-[10px] font-utility ml-2 shrink-0 tabular ${isSelected ? "text-dusk/80" : "text-cream/60"}`}>
                           {p.timeRange}
                         </span>
                       </button>
@@ -168,23 +168,23 @@ export function PraharBar() {
           )}
         </div>
 
-        {/* Center: Track's Raag badge (hidden on ultra small screens to prevent crowdedness) */}
+        {/* Center: Track's Raag badge */}
         {track?.raag && (
           <button
             type="button"
             onClick={() => setRaagModalTrack(track)}
-            className="hidden xs:flex items-center gap-1 text-[11px] sm:text-xs text-cream/90 hover:text-amber transition-colors px-2 py-0.5 rounded-md hover:bg-white/5 truncate max-w-[120px] sm:max-w-none"
+            className="hidden xs:flex items-center gap-1.5 text-[11.5px] sm:text-xs text-cream hover:text-amber transition-colors px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 hover:border-amber/30 truncate max-w-[120px] sm:max-w-none shadow-sm"
             title="Click to view Raag details and spiritual lore"
           >
             <span className="text-amber">✦</span>
-            <span className="font-medium truncate">
+            <span className="font-semibold truncate">
               {track.raagHindi ? `राग ${track.raagHindi}` : `Raag ${track.raag}`}
             </span>
           </button>
         )}
 
         {/* Right: Available songs counter */}
-        <div className="text-[10.5px] sm:text-xs font-utility text-cream/50 tabular whitespace-nowrap shrink-0">
+        <div className="text-[11px] sm:text-xs font-utility text-cream/80 font-medium tabular whitespace-nowrap shrink-0">
           <span>{activeTracks.length} भजन</span>
         </div>
       </div>

@@ -18,6 +18,8 @@ export default function AdminPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [result, setResult] = useState<SyncResult | null>(null);
   const [preview, setPreview] = useState<Playlist | null>(null);
+  const [enrichStatus, setEnrichStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [enrichResult, setEnrichResult] = useState<{ ok: boolean; count?: number; model?: string; usedAI?: boolean; error?: string } | null>(null);
 
   async function handleRefetch() {
     setStatus("loading");
@@ -46,6 +48,35 @@ export default function AdminPage() {
     } catch (err) {
       setResult({ ok: false, error: String(err) });
       setStatus("error");
+    }
+  }
+
+  async function handleEnrichRaags() {
+    setEnrichStatus("loading");
+    setEnrichResult(null);
+
+    try {
+      const res = await fetch("/api/enrich-raags", { method: "POST" });
+      const data = await res.json();
+
+      if (!res.ok || !data.ok) {
+        setEnrichResult({ ok: false, error: data.error ?? "Enrichment failed" });
+        setEnrichStatus("error");
+        return;
+      }
+
+      setEnrichResult(data);
+      setEnrichStatus("success");
+
+      // Refresh table preview
+      const cacheRes = await fetch("/api/playlist-cache");
+      if (cacheRes.ok) {
+        const playlists: Playlist[] = await cacheRes.json();
+        setPreview(playlists[0] ?? null);
+      }
+    } catch (err) {
+      setEnrichResult({ ok: false, error: String(err) });
+      setEnrichStatus("error");
     }
   }
 
@@ -208,56 +239,130 @@ export default function AdminPage() {
           )}
         </div>
 
+        {/* AI Raag & Prahar Enrichment Card */}
+        <div className="glass rounded-3xl p-8 space-y-6 border border-amber/25 shadow-xl">
+          <div className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xl">✨</span>
+              <h2 className="font-display text-2xl font-semibold text-amber">
+                AI Raag & Prahar Classification
+              </h2>
+            </div>
+            <p className="text-sm text-cream/70">
+              Analyzes all synced bhajans using <strong>Google Gemini 3.5 Flash Lite</strong> (or curated classical heuristics) to determine their Classical Raag, Thaat, 8-Prahar time slot, Mood/Rasa, and spiritual lore.
+            </p>
+          </div>
+
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span
+                className={`inline-block size-2 rounded-full ${
+                  enrichStatus === "loading"
+                    ? "bg-amber animate-pulse"
+                    : enrichStatus === "success"
+                    ? "bg-emerald-400"
+                    : enrichStatus === "error"
+                    ? "bg-red-400"
+                    : "bg-cream/20"
+                }`}
+              />
+              <span className="text-sm font-utility text-cream/80">
+                {enrichStatus === "idle"
+                  ? "Ready for AI enrichment"
+                  : enrichStatus === "loading"
+                  ? "Analyzing with Gemini AI…"
+                  : enrichStatus === "success"
+                  ? `Enriched ${enrichResult?.count ?? 0} tracks via ${enrichResult?.model || "AI"}`
+                  : "Enrichment failed"}
+              </span>
+            </div>
+
+            <button
+              onClick={handleEnrichRaags}
+              disabled={enrichStatus === "loading"}
+              className={`
+                flex items-center gap-2 rounded-full px-6 py-2.5 text-sm font-semibold
+                transition-all duration-200
+                ${enrichStatus === "loading"
+                  ? "bg-amber/20 text-amber/60 cursor-not-allowed"
+                  : "bg-amber text-dusk hover:bg-amber-deep active:scale-95 shadow-lg shadow-amber/20"}
+              `}
+            >
+              {enrichStatus === "loading" ? (
+                <>
+                  <svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="40 20" />
+                  </svg>
+                  Classifying…
+                </>
+              ) : (
+                <>
+                  <span>✨</span>
+                  <span>Enrich Raags with AI</span>
+                </>
+              )}
+            </button>
+          </div>
+
+          {enrichStatus === "error" && enrichResult?.error && (
+            <div className="rounded-2xl border border-red-500/30 bg-red-500/10 p-4">
+              <p className="text-sm text-red-300 font-utility">{enrichResult.error}</p>
+            </div>
+          )}
+        </div>
+
         {/* Track preview table */}
         {preview && preview.tracks.length > 0 && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="font-display text-lg font-semibold text-cream">
-                {preview.tracks.length} tracks synced
+                {preview.tracks.length} tracks in database
               </h2>
-              <span className="text-xs text-cream/40 font-utility">
-                Refresh the main page to hear them
-              </span>
+              <Link href="/raags" className="text-xs text-amber font-utility hover:underline">
+                View Raags & Prahars View ↗
+              </Link>
             </div>
 
-            <div className="glass rounded-2xl overflow-hidden">
+            <div className="glass rounded-2xl overflow-hidden border border-white/15">
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-white/10 text-left">
-                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/40 w-10">#</th>
-                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/40">Title</th>
-                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/40 hidden sm:table-cell">Artist</th>
-                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/40 hidden sm:table-cell">Film</th>
-                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/40 hidden md:table-cell">Year</th>
-                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/40">Video ID</th>
+                    <tr className="border-b border-white/10 text-left bg-white/5">
+                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 w-10 font-bold">#</th>
+                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">Title</th>
+                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">राग (Raag)</th>
+                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">प्रहर (Prahar)</th>
+                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 hidden sm:table-cell font-bold">Artist</th>
+                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">Video ID</th>
                     </tr>
                   </thead>
                   <tbody>
                     {preview.tracks.map((track, i) => (
                       <tr
                         key={track.id}
-                        className="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors"
+                        className="border-b border-white/5 last:border-0 hover:bg-white/10 transition-colors"
                       >
-                        <td className="px-4 py-3 text-cream/30 font-utility tabular text-xs">{i + 1}</td>
-                        <td className="px-4 py-3 text-cream font-medium max-w-[180px]">
+                        <td className="px-4 py-3 text-cream/60 font-utility tabular text-xs font-medium">{i + 1}</td>
+                        <td className="px-4 py-3 text-cream font-semibold max-w-[180px]">
                           <span className="block truncate">{track.title}</span>
                         </td>
-                        <td className="px-4 py-3 text-cream/60 hidden sm:table-cell max-w-[120px]">
+                        <td className="px-4 py-3">
+                          <span className="px-2 py-0.5 rounded-full bg-amber/20 text-amber text-xs font-utility font-semibold">
+                            {track.raagHindi ? `राग ${track.raagHindi}` : track.raag || "—"}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3 text-xs text-cream/80 font-utility">
+                          {track.prahar || "anytime"}
+                        </td>
+                        <td className="px-4 py-3 text-cream/70 hidden sm:table-cell max-w-[120px]">
                           <span className="block truncate">{track.artist}</span>
-                        </td>
-                        <td className="px-4 py-3 text-cream/60 hidden sm:table-cell max-w-[120px]">
-                          <span className="block truncate">{track.film}</span>
-                        </td>
-                        <td className="px-4 py-3 text-cream/40 font-utility tabular text-xs hidden md:table-cell">
-                          {track.year || "—"}
                         </td>
                         <td className="px-4 py-3">
                           <a
                             href={`https://youtu.be/${track.videoId}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs font-utility text-amber hover:underline"
+                            className="text-xs font-utility text-amber hover:underline font-semibold"
                           >
                             {track.videoId}
                           </a>

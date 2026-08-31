@@ -20,51 +20,54 @@ export default async function Home() {
           <TopBar />
 
           {/* ── Main Heading: म्यूज़िक माला (Yatra One) ── */}
-          <div className="flex flex-1 flex-col items-center justify-center gap-1.5 sm:gap-2.5 md:gap-3 px-3 sm:px-4 pt-12 pb-2 sm:pt-16 md:pt-20 w-full max-w-5xl mx-auto">
-            {/* Decorative top flourish rule */}
-            <div className="flex w-full max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-lg items-center gap-2 sm:gap-3">
-              <span className="h-px flex-1 bg-gradient-to-r from-transparent via-amber/50 to-amber" />
-              <span className="text-[10px] sm:text-[12px] font-utility tracking-widest text-amber/80 select-none">
-                ✦ ✨ ✦
-              </span>
-              <span className="h-px flex-1 bg-gradient-to-l from-transparent via-amber/50 to-amber" />
-            </div>
+          <div className="flex flex-1 flex-col items-center justify-center gap-2 sm:gap-3 px-3 sm:px-4 pt-12 pb-2 sm:pt-16 md:pt-20 w-full max-w-5xl mx-auto">
+            {/* Center backing scrim container for supreme text legibility */}
+            <div className="flex flex-col items-center gap-1.5 sm:gap-2.5 md:gap-3 py-4 px-3 sm:px-6 rounded-3xl bg-black/25 backdrop-blur-[2px] border border-white/5 shadow-2xl shadow-black/60 max-w-full">
+              {/* Decorative top flourish rule */}
+              <div className="flex w-full max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-lg items-center gap-2 sm:gap-3">
+                <span className="h-px flex-1 bg-gradient-to-r from-transparent via-amber/80 to-amber" />
+                <span className="text-[10px] sm:text-[12px] font-utility tracking-widest text-amber select-none font-semibold">
+                  ✦ ✨ ✦
+                </span>
+                <span className="h-px flex-1 bg-gradient-to-l from-transparent via-amber/80 to-amber" />
+              </div>
 
-            {/* Main responsive heading using Yatra One */}
-            <h1
-              lang="hi"
-              style={{ fontFamily: "var(--font-yatra)" }}
-              className="text-center font-normal tracking-normal select-none my-0 sm:my-1 max-w-full px-2"
-              aria-label="म्यूज़िक माला"
-            >
-              <span
-                className="inline-block text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-[8.2rem] leading-[1.2] sm:leading-[1.22] md:leading-[1.18] py-1.5 sm:py-2.5 px-2 sm:px-4 transition-all duration-300"
-                style={{
-                  background:
-                    "linear-gradient(135deg, #FFE082 0%, #FFB300 30%, #E65100 70%, #FFCA28 100%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  backgroundClip: "text",
-                  filter:
-                    "drop-shadow(0 0 24px rgba(255, 179, 0, 0.45)) drop-shadow(0 6px 12px rgba(0, 0, 0, 0.6))",
-                }}
+              {/* Main responsive heading using Yatra One */}
+              <h1
+                lang="hi"
+                style={{ fontFamily: "var(--font-yatra)" }}
+                className="text-center font-normal tracking-normal select-none my-0 sm:my-1 max-w-full px-2"
+                aria-label="म्यूज़िक माला"
               >
-                म्यूज़िक माला
-              </span>
-            </h1>
+                <span
+                  className="inline-block text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl 2xl:text-[8.2rem] leading-[1.2] sm:leading-[1.22] md:leading-[1.18] py-1.5 sm:py-2.5 px-2 sm:px-4 transition-all duration-300"
+                  style={{
+                    background:
+                      "linear-gradient(135deg, #FFF176 0%, #FFB300 35%, #FF8F00 70%, #FFE082 100%)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                    filter:
+                      "drop-shadow(0 4px 18px rgba(0, 0, 0, 0.95)) drop-shadow(0 0 36px rgba(255, 179, 0, 0.6)) drop-shadow(0 8px 20px rgba(0, 0, 0, 0.9))",
+                  }}
+                >
+                  म्यूज़िक माला
+                </span>
+              </h1>
 
-            {/* Subtitle / Tagline */}
-            <p className="font-display text-[10.5px] xs:text-xs sm:text-sm md:text-base tracking-[0.14em] sm:tracking-[0.18em] md:tracking-[0.22em] text-cream/75 uppercase text-center font-medium px-2 max-w-md sm:max-w-xl">
-              शास्त्रीय राग समय चक्र &bull; Vintage Melodies
-            </p>
+              {/* Subtitle / Tagline */}
+              <p className="font-display text-[11px] xs:text-xs sm:text-sm md:text-base tracking-[0.14em] sm:tracking-[0.18em] md:tracking-[0.22em] text-cream uppercase text-center font-medium px-2 max-w-md sm:max-w-xl text-shadow-sub drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]">
+                शास्त्रीय राग समय चक्र &bull; Vintage Melodies
+              </p>
 
-            {/* Decorative bottom flourish rule */}
-            <div className="flex w-full max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-lg items-center gap-2 sm:gap-3">
-              <span className="h-px flex-1 bg-gradient-to-r from-transparent via-amber/50 to-amber" />
-              <span className="text-[9px] sm:text-[11px] font-utility text-amber/70 select-none">
-                ✦
-              </span>
-              <span className="h-px flex-1 bg-gradient-to-l from-transparent via-amber/50 to-amber" />
+              {/* Decorative bottom flourish rule */}
+              <div className="flex w-full max-w-[160px] xs:max-w-[220px] sm:max-w-md md:max-w-lg items-center gap-2 sm:gap-3">
+                <span className="h-px flex-1 bg-gradient-to-r from-transparent via-amber/80 to-amber" />
+                <span className="text-[9px] sm:text-[11px] font-utility text-amber select-none font-semibold">
+                  ✦
+                </span>
+                <span className="h-px flex-1 bg-gradient-to-l from-transparent via-amber/80 to-amber" />
+              </div>
             </div>
           </div>
 

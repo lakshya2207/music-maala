@@ -13,9 +13,9 @@ function formatTime(totalSeconds: number) {
 export function TimeDisplay({ className = "" }: { className?: string }) {
   const { currentTime, duration } = usePlayerEngine();
   return (
-    <div className={`flex gap-1 text-[10.5px] tabular font-utility text-cream-dim ${className}`}>
+    <div className={`flex gap-1 text-[11px] tabular font-utility text-cream/90 font-medium ${className}`}>
       <span>{formatTime(currentTime)}</span>
-      <span>/</span>
+      <span className="text-cream/50">/</span>
       <span>{formatTime(duration)}</span>
     </div>
   );

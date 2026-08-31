@@ -49,12 +49,12 @@ export function RaagModal() {
           >
             {track.raagHindi ? `राग ${track.raagHindi}` : track.raag ? `राग ${track.raag}` : "राग भैरवी"}
             {track.raag && track.raag !== track.raagHindi && (
-              <span className="text-base sm:text-lg text-cream/70 font-sans font-normal ml-2">
+              <span className="text-base sm:text-lg text-cream/90 font-sans font-medium ml-2">
                 ({track.raag})
               </span>
             )}
           </h2>
-          <p className="text-xs text-cream/60 truncate font-body">
+          <p className="text-xs text-cream/85 truncate font-body font-medium">
             भजन: {track.title} {track.artist ? `• ${track.artist}` : ""}
           </p>
         </div>
@@ -62,62 +62,62 @@ export function RaagModal() {
         {/* Info Grid */}
         <div className="grid grid-cols-2 gap-3 sm:gap-4 font-body">
           {/* Prahar / Time */}
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-3.5 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-amber font-utility">
+          <div className="rounded-2xl bg-white/10 border border-white/15 p-3.5 space-y-1 shadow-sm">
+            <div className="flex items-center gap-1.5 text-xs text-amber font-utility font-semibold">
               <span>{praharInfo.icon}</span>
               <span>गायन समय (Prahar)</span>
             </div>
-            <p className="text-sm font-semibold text-cream">
+            <p className="text-sm font-bold text-cream">
               {praharInfo.name}
             </p>
-            <p className="text-[11px] text-cream/50 font-utility tabular">
+            <p className="text-[11px] text-cream/70 font-utility tabular font-medium">
               {track.timeSlot || praharInfo.timeRange}
             </p>
           </div>
 
           {/* Thaat */}
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-3.5 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-amber font-utility">
+          <div className="rounded-2xl bg-white/10 border border-white/15 p-3.5 space-y-1 shadow-sm">
+            <div className="flex items-center gap-1.5 text-xs text-amber font-utility font-semibold">
               <span>🎼</span>
               <span>ठाठ (Parent Thaat)</span>
             </div>
-            <p className="text-sm font-semibold text-cream">
+            <p className="text-sm font-bold text-cream">
               {track.thaat || master?.thaat || "Bilawal"}
             </p>
-            <p className="text-[11px] text-cream/50 font-utility">
+            <p className="text-[11px] text-cream/70 font-utility font-medium">
               {master?.swaraNotes || "शुद्ध स्वर"}
             </p>
           </div>
 
           {/* Mood / Rasa */}
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-3.5 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-amber font-utility">
+          <div className="rounded-2xl bg-white/10 border border-white/15 p-3.5 space-y-1 shadow-sm">
+            <div className="flex items-center gap-1.5 text-xs text-amber font-utility font-semibold">
               <span>✨</span>
               <span>रस एवं भाव (Mood)</span>
             </div>
-            <p className="text-xs sm:text-sm font-medium text-cream leading-tight">
+            <p className="text-xs sm:text-sm font-semibold text-cream leading-tight">
               {track.mood || master?.mood || "भक्ति भाव एवं शांति"}
             </p>
           </div>
 
           {/* Deity / Devata */}
-          <div className="rounded-2xl bg-white/5 border border-white/10 p-3.5 space-y-1">
-            <div className="flex items-center gap-1.5 text-xs text-amber font-utility">
+          <div className="rounded-2xl bg-white/10 border border-white/15 p-3.5 space-y-1 shadow-sm">
+            <div className="flex items-center gap-1.5 text-xs text-amber font-utility font-semibold">
               <span>🪔</span>
               <span>आराध्य स्वरूप (Deity)</span>
             </div>
-            <p className="text-xs sm:text-sm font-medium text-cream leading-tight">
+            <p className="text-xs sm:text-sm font-semibold text-cream leading-tight">
               {track.deity || "सर्व देव / Universal"}
             </p>
           </div>
         </div>
 
         {/* Lore / Description */}
-        <div className="rounded-2xl bg-amber/10 border border-amber/25 p-4 space-y-1.5">
-          <p className="text-xs font-utility uppercase tracking-wider text-amber font-medium">
+        <div className="rounded-2xl bg-amber/15 border border-amber/35 p-4 space-y-1.5 shadow-md">
+          <p className="text-xs font-utility uppercase tracking-wider text-amber font-bold">
             आध्यात्मिक महत्व एवं राग प्रभाव
           </p>
-          <p className="text-xs sm:text-sm text-cream/90 leading-relaxed">
+          <p className="text-xs sm:text-sm text-cream leading-relaxed font-medium">
             {track.description ||
               master?.spiritualSignificance ||
               praharInfo.description ||
@@ -126,11 +126,11 @@ export function RaagModal() {
         </div>
 
         {/* Footer info */}
-        <div className="flex items-center justify-between text-[11px] font-utility text-cream/40 pt-2 border-t border-white/10">
+        <div className="flex items-center justify-between text-[11px] font-utility text-cream/70 pt-2 border-t border-white/10">
           <span>समय चक्र प्रणाली • 8 Prahars</span>
           <button
             onClick={() => setRaagModalTrack(null)}
-            className="text-amber hover:underline font-semibold"
+            className="text-amber hover:underline font-bold"
           >
             वापस संगीत पर जाएँ
           </button>

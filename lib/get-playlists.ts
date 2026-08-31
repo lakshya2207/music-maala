@@ -1,75 +1,18 @@
 import type { Playlist, Track } from "./types";
 import { connectToDatabase } from "./mongodb";
 import { PlaylistModel } from "@/models/Playlist";
+import { DEFAULT_TRACKS, FALLBACK_PLAYLISTS } from "./default-playlists";
 
-export const DEFAULT_TRACKS: Track[] = [
-  {
-    id: "default-1",
-    title: "Gayatri Mantra",
-    artist: "Anuradha Paudwal",
-    film: "Bhakti Bhaav",
-    year: 2020,
-    duration: 300,
-    videoId: "NW9vT3Y_-c4",
-    raag: "Bhairav",
-    raagHindi: "भैरव",
-    thaat: "Bhairav",
-    prahar: "morning",
-    timeSlot: "06:00 - 09:00 (प्रातःकाल)",
-    mood: "शांति एवं नव-जागरण (Devotion & Serenity)",
-    deity: "Devi",
-    description: "प्रातःकालीन पावन गायत्री महामंत्र, जो बुद्धि और चेतना को जागृत करता है।",
-  },
-  {
-    id: "default-2",
-    title: "Shree Hanuman Chalisa",
-    artist: "Hariharan",
-    film: "T-Series Bhakti",
-    year: 1992,
-    duration: 580,
-    videoId: "AETFvQonfV8",
-    raag: "Bilawal",
-    raagHindi: "बिलावल",
-    thaat: "Bilawal",
-    prahar: "morning",
-    timeSlot: "06:00 - 09:00 (प्रातः प्रहर)",
-    mood: "उत्साह, शक्ति एवं संरक्षण (Strength & Protection)",
-    deity: "Hanuman",
-    description: "बिलावल राग आधारित दिव्य हनुमान चालीसा, जो सकल संकटों का नाश करती है।",
-  },
-  {
-    id: "default-3",
-    title: "Achyutam Keshavam",
-    artist: "Vikram Hazra",
-    film: "Art of Living",
-    year: 2015,
-    duration: 320,
-    videoId: "O8FjK_0hD8g",
-    raag: "Pahadi",
-    raagHindi: "पहाड़ी",
-    thaat: "Bilawal",
-    prahar: "anytime",
-    timeSlot: "सर्वकालीन / सांध्यकाल (Anytime / Evening)",
-    mood: "माधुर्य एवं कृष्ण शरणागति (Sweet Devotion)",
-    deity: "Krishna",
-    description: "राग पहाड़ी के सरल व मधुर स्वरों में भगवान श्री कृष्ण के दिव्य नामों का संकीर्तन।",
-  },
-];
-
-export const FALLBACK_PLAYLISTS: Playlist[] = [
-  {
-    id: "youtube-playlist",
-    name: "म्यूज़िक माला",
-    tracks: DEFAULT_TRACKS,
-  },
-];
+export { DEFAULT_TRACKS, FALLBACK_PLAYLISTS };
 
 export async function getPlaylists(): Promise<Playlist[]> {
   try {
     const db = await connectToDatabase();
     if (db) {
+      console.log("[Playlists Engine] Querying MongoDB for playlists...");
       const docs = await PlaylistModel.find({}).lean();
       if (docs && docs.length > 0) {
+        console.log(`[Playlists Engine] Found ${docs.length} playlist(s) in MongoDB with ${docs[0]?.tracks?.length || 0} track(s).`);
         return docs.map((doc) => ({
           id: doc.id,
           name: doc.name,
@@ -93,7 +36,9 @@ export async function getPlaylists(): Promise<Playlist[]> {
         }));
       }
 
+      console.log("[Playlists Engine] MongoDB collection empty. Seeding initial fallback playlist...");
       const seeded = await PlaylistModel.create(FALLBACK_PLAYLISTS[0]);
+      console.log(`[Playlists Engine] Seeded fallback playlist with ${seeded.tracks.length} track(s).`);
       return [
         {
           id: seeded.id,
@@ -119,8 +64,9 @@ export async function getPlaylists(): Promise<Playlist[]> {
       ];
     }
   } catch (err) {
-    console.warn("MongoDB fetch error, falling back to default playlists:", err);
+    console.warn("[Playlists Engine] MongoDB fetch error, falling back to static presets:", err);
   }
 
+  console.log(`[Playlists Engine] Using fallback playlist with ${FALLBACK_PLAYLISTS[0]?.tracks?.length || 0} track(s).`);
   return FALLBACK_PLAYLISTS;
 }

@@ -4,8 +4,10 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getCurrentPrahar } from "@/lib/raags";
+import { usePlayerEngineOptional } from "@/components/player/player-engine";
 
 export function HamburgerMenu() {
+  const playerEngine = usePlayerEngineOptional();
   const [isOpen, setIsOpen] = useState(false);
   const [timeStr, setTimeStr] = useState<string>("");
   const [prahar, setPrahar] = useState(getCurrentPrahar());
@@ -172,8 +174,8 @@ export function HamburgerMenu() {
                       {link.label}
                     </p>
                     <p
-                      className={`text-[11px] truncate mt-0.5 ${
-                        link.active ? "text-dusk/70" : "text-cream/40"
+                      className={`text-[11.5px] truncate mt-0.5 ${
+                        link.active ? "text-dusk/80 font-medium" : "text-cream/70"
                       }`}
                     >
                       {link.subLabel}
@@ -186,9 +188,9 @@ export function HamburgerMenu() {
 
             {/* Live Clock & Prahar Status Widget */}
             <div className="rounded-2xl bg-white/5 border border-white/10 p-3.5 space-y-2">
-              <div className="flex items-center justify-between text-xs font-utility text-cream/50 border-b border-white/5 pb-2">
+              <div className="flex items-center justify-between text-xs font-utility text-cream/70 border-b border-white/5 pb-2">
                 <span>🕒 भारतीय समय (IST)</span>
-                <span className="text-amber font-semibold tabular">
+                <span className="text-amber font-bold tabular">
                   {timeStr || "--:--"}
                 </span>
               </div>
@@ -200,26 +202,45 @@ export function HamburgerMenu() {
                     <p className="text-xs font-semibold text-cream">
                       {prahar.name}
                     </p>
-                    <p className="text-[10px] text-cream/40 font-utility tabular">
+                    <p className="text-[10px] text-cream/70 font-utility tabular">
                       {prahar.timeRange}
                     </p>
                   </div>
                 </div>
 
-                <span className="px-2 py-0.5 rounded-full bg-amber/15 text-amber text-[10px] font-utility font-bold">
+                <span className="px-2 py-0.5 rounded-full bg-amber/20 text-amber text-[10px] font-utility font-bold shadow-sm">
                   ACTIVE
                 </span>
               </div>
             </div>
 
             {/* Keyboard Shortcuts Hint & Footer */}
-            <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-cream/50 font-utility">
-              <span className="text-[11px]">शॉर्टकट्स के लिए <kbd className="text-amber font-bold">?</kbd> दबाएँ</span>
+            <div className="pt-2 border-t border-white/10 flex items-center justify-between text-xs text-cream/70 font-utility">
+              {playerEngine ? (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsOpen(false);
+                    playerEngine.setShortcutsModalOpen(true);
+                  }}
+                  className="flex items-center gap-1.5 text-[11px] text-cream/90 hover:text-amber transition-colors p-1 -m-1 rounded hover:bg-white/5 active:scale-95"
+                  title="Open Keyboard Shortcuts Modal"
+                >
+                  <span>⌨️ शॉर्टकट्स</span>
+                  <kbd className="px-1.5 py-0.5 rounded bg-white/15 text-amber font-bold text-[10px]">
+                    ?
+                  </kbd>
+                </button>
+              ) : (
+                <span className="text-[11px]">
+                  शॉर्टकट्स के लिए <kbd className="text-amber font-bold">?</kbd> दबाएँ
+                </span>
+              )}
               <a
                 href="https://github.com/lakshya2207"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-amber hover:underline text-[11px]"
+                className="text-amber hover:underline text-[11px] font-semibold"
               >
                 GitHub ↗
               </a>

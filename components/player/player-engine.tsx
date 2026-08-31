@@ -24,6 +24,7 @@ type PlayerEngineValue = {
   activeTracks: Track[];
   playing: boolean;
   ready: boolean;
+  muted: boolean;
   currentTime: number;
   duration: number;
   selectedPrahar: "auto" | "all" | PraharId;
@@ -32,11 +33,14 @@ type PlayerEngineValue = {
   setPlaylistIndex: (index: number) => void;
   selectTrack: (trackId: string) => void;
   toggle: () => void;
+  toggleMute: () => void;
   next: () => void;
   prev: () => void;
   seek: (seconds: number) => void;
   raagModalTrack: Track | null;
   setRaagModalTrack: (track: Track | null) => void;
+  shortcutsModalOpen: boolean;
+  setShortcutsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const PlayerEngineContext = createContext<PlayerEngineValue | null>(null);
@@ -45,6 +49,10 @@ export function usePlayerEngine() {
   const ctx = useContext(PlayerEngineContext);
   if (!ctx) throw new Error("usePlayerEngine must be used within PlayerEngineProvider");
   return ctx;
+}
+
+export function usePlayerEngineOptional() {
+  return useContext(PlayerEngineContext);
 }
 
 const DEFAULT_FALLBACK_TRACK: Track = {
@@ -82,6 +90,7 @@ export function PlayerEngineProvider({
   const [trackIndex, setTrackIndex] = useState(0);
   const [playing, setPlaying] = useState(false);
   const [ready, setReady] = useState(false);
+  const [muted, setMuted] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
@@ -89,6 +98,7 @@ export function PlayerEngineProvider({
   const [selectedPrahar, setSelectedPraharState] = useState<"auto" | "all" | PraharId>("auto");
   const [currentPrahar, setCurrentPrahar] = useState<PraharInfo>(PRAHARS.evening);
   const [raagModalTrack, setRaagModalTrack] = useState<Track | null>(null);
+  const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false);
 
   const playerRef = useRef<YT.Player | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -319,6 +329,18 @@ export function PlayerEngineProvider({
     setCurrentTime(seconds);
   }, []);
 
+  const toggleMute = useCallback(() => {
+    const player = playerRef.current;
+    if (!player) return;
+    if (muted) {
+      player.unMute();
+      setMuted(false);
+    } else {
+      player.mute();
+      setMuted(true);
+    }
+  }, [muted]);
+
   const value = useMemo<PlayerEngineValue>(
     () => ({
       playlists: safePlaylists,
@@ -328,6 +350,7 @@ export function PlayerEngineProvider({
       activeTracks,
       playing,
       ready,
+      muted,
       currentTime,
       duration,
       selectedPrahar,
@@ -336,11 +359,14 @@ export function PlayerEngineProvider({
       selectTrack,
       setPlaylistIndex,
       toggle,
+      toggleMute,
       next,
       prev,
       seek,
       raagModalTrack,
       setRaagModalTrack,
+      shortcutsModalOpen,
+      setShortcutsModalOpen,
     }),
     [
       safePlaylists,
@@ -350,6 +376,7 @@ export function PlayerEngineProvider({
       activeTracks,
       playing,
       ready,
+      muted,
       currentTime,
       duration,
       selectedPrahar,
@@ -358,10 +385,12 @@ export function PlayerEngineProvider({
       selectTrack,
       setPlaylistIndex,
       toggle,
+      toggleMute,
       next,
       prev,
       seek,
       raagModalTrack,
+      shortcutsModalOpen,
     ],
   );
 

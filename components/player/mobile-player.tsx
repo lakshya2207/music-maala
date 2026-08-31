@@ -29,12 +29,12 @@ export function MobilePlayer() {
 
           <div className="min-w-0 flex-1 space-y-0.5">
             <div className="flex items-center justify-between gap-1">
-              <p className="truncate font-display text-[14.5px] font-semibold leading-snug text-cream">
+              <p className="truncate font-display text-[15px] font-bold leading-snug text-white drop-shadow-sm">
                 {track.title}
               </p>
             </div>
 
-            <p className="truncate text-[11.5px] text-cream/70">
+            <p className="truncate text-[12px] text-cream/90 font-medium">
               {track.artist} {track.film && track.film !== "Unknown" ? `· ${track.film}` : ""}{" "}
               {track.year ? `(${track.year})` : ""}
             </p>
@@ -45,12 +45,12 @@ export function MobilePlayer() {
                 <button
                   type="button"
                   onClick={() => setRaagModalTrack(track)}
-                  className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber/15 border border-amber/30 text-amber text-[10px] font-utility font-medium hover:bg-amber/25 active:scale-95 transition-all"
+                  className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber/20 border border-amber/40 text-amber text-[10px] font-utility font-semibold hover:bg-amber/30 active:scale-95 transition-all shadow-sm"
                   title="View Raag Lore"
                 >
                   <span>✦</span>
                   <span>{track.raagHindi ? `राग ${track.raagHindi}` : track.raag}</span>
-                  <span className="text-[9px] opacity-60">ⓘ</span>
+                  <span className="text-[9px] opacity-70">ⓘ</span>
                 </button>
               </div>
             )}
@@ -60,7 +60,7 @@ export function MobilePlayer() {
         {/* Seek Bar & Progress */}
         <div className="space-y-1 pt-1">
           <SeekBar />
-          <div className="flex items-center justify-between text-[10.5px] font-utility tabular text-cream/50 px-0.5">
+          <div className="flex items-center justify-between text-[11px] font-utility tabular text-cream/80 font-medium px-0.5">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>

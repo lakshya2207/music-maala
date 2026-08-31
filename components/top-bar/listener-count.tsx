@@ -60,15 +60,15 @@ export function ListenerCount() {
   }, []);
 
   return (
-    <div className="glass flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-cream transition-all duration-300 hover:border-amber/30">
+    <div className="glass flex items-center gap-2 rounded-full px-3 py-1.5 text-[13px] text-cream transition-all duration-300 hover:border-amber/40 shadow-lg">
       <span className="relative flex h-2 w-2">
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
-        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.9)]" />
       </span>
-      <span className="tabular font-utility font-semibold text-amber" suppressHydrationWarning>
+      <span className="tabular font-utility font-bold text-amber" suppressHydrationWarning>
         {loaded ? count : "1"}
       </span>
-      <span className="text-cream-dim sm:inline text-[12px]">
+      <span className="text-cream/90 sm:inline text-[12px] font-medium">
         {count === 1 ? "live listener" : "live tuned in"}
       </span>
     </div>

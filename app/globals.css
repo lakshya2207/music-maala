@@ -1,13 +1,13 @@
 @import "tailwindcss";
 
 @theme {
-  --color-dusk: #0b0e14;
-  --color-dusk-soft: #131722;
-  --color-cream: #f3ecda;
-  --color-cream-dim: #f3ecdab3;
-  --color-amber: #d9a441;
-  --color-amber-deep: #b87a2a;
-  --color-amber-glow: #d9a44166;
+  --color-dusk: #080a0f;
+  --color-dusk-soft: #111520;
+  --color-cream: #fbf8ef;
+  --color-cream-dim: #dfd7c2;
+  --color-amber: #f5b041;
+  --color-amber-deep: #c97d20;
+  --color-amber-glow: rgba(245, 176, 65, 0.45);
 
   --font-display: var(--font-display-raw), Georgia, serif;
   --font-body: var(--font-body-raw), system-ui, sans-serif;
@@ -27,12 +27,12 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* ---------- Fixed hero background ---------- */
+/* ---------- Fixed hero background with vibrant artwork visibility ---------- */
 .hero-bg {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 45%, rgba(0, 0, 0, 0.8)),
+    linear-gradient(to bottom, rgba(8, 10, 15, 0.3) 0%, transparent 30%, transparent 65%, rgba(8, 10, 15, 0.75) 100%),
     url("/bg/scene-wide.webp");
   background-size: cover;
   background-position: center;
@@ -43,7 +43,7 @@ body {
 @media (orientation: portrait), (max-width: 640px) {
   .hero-bg {
     background-image:
-      linear-gradient(to bottom, rgba(0, 0, 0, 0.35), transparent 45%, rgba(0, 0, 0, 0.8)),
+      linear-gradient(to bottom, rgba(8, 10, 15, 0.35) 0%, transparent 30%, transparent 65%, rgba(8, 10, 15, 0.75) 100%),
       url("/bg/scene-tall.webp");
   }
 }
@@ -53,7 +53,7 @@ body {
   position: fixed;
   inset: 0;
   mix-blend-mode: overlay;
-  opacity: 0.3;
+  opacity: 0.25;
   pointer-events: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
@@ -105,22 +105,33 @@ body {
   right: max(1rem, env(safe-area-inset-right));
 }
 
-/* ---------- Glass pill / card recipe ---------- */
+/* ---------- High-Contrast Dark Frosted Glass Recipe ---------- */
 .glass {
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.055));
-  backdrop-filter: blur(48px) saturate(1.7);
-  -webkit-backdrop-filter: blur(48px) saturate(1.7);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: linear-gradient(145deg, rgba(22, 27, 40, 0.85) 0%, rgba(10, 13, 20, 0.92) 100%);
+  backdrop-filter: blur(40px) saturate(1.8);
+  -webkit-backdrop-filter: blur(40px) saturate(1.8);
   box-shadow:
-    0 16px 48px -12px rgba(0, 0, 0, 0.8),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 20px 50px -12px rgba(0, 0, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 0 20px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Text Shadow Helpers ---------- */
+.text-shadow-hero {
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 32px rgba(0, 0, 0, 0.85);
+}
+
+.text-shadow-sub {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95);
 }
 
 /* ---------- Seek bar ---------- */
 .seek-rail {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .tabular {
   font-variant-numeric: tabular-nums;
 }
+
