@@ -466,7 +466,8 @@ export function enrichTrackRaag(track: Track): Track {
     }
   }
 
-  if (textToSearch.includes("aarti") || textToSearch.includes("आरती") || textToSearch.includes("sandhya")) {
+  // Heuristic rule engine covering all 8 Prahars
+  if (textToSearch.includes("aarti") || textToSearch.includes("आरती") || textToSearch.includes("sandhya") || textToSearch.includes("deep") || textToSearch.includes("दीप")) {
     const master = RAAG_MASTER.Yaman;
     return {
       ...track,
@@ -478,6 +479,96 @@ export function enrichTrackRaag(track: Track): Track {
       mood: "सांध्य आरती एवं समर्पण (Evening Aarti)",
       deity: "Universal",
       description: "संध्या आरती और दीप वंदना के लिए राग यमन के कल्याणकारी स्वर।",
+    };
+  }
+
+  if (textToSearch.includes("suprabhatam") || textToSearch.includes("सुप्रभात") || textToSearch.includes("prabhat") || textToSearch.includes("gayatri") || textToSearch.includes("गायत्री") || textToSearch.includes("dhyan")) {
+    const master = RAAG_MASTER.Lalit || RAAG_MASTER.Bhairav;
+    return {
+      ...track,
+      raag: master.name,
+      raagHindi: master.nameHindi,
+      thaat: master.thaat,
+      prahar: "dawn",
+      timeSlot: "03:00 - 06:00 (उषाकाल / ब्रह्म मुहूर्त)",
+      mood: "चेतना जागरण एवं ब्रह्म मुहूर्त ध्यान (Awakening & Dhyan)",
+      deity: "Universal",
+      description: "ब्रह्म मुहूर्त में आत्म-जागरण और प्रभु के ध्यान हेतु समर्पित पावन स्वर।",
+    };
+  }
+
+  if (textToSearch.includes("shiv tandav") || textToSearch.includes("तांडव") || textToSearch.includes("tandav") || textToSearch.includes("mahakaal") || textToSearch.includes("महाकाल")) {
+    const master = RAAG_MASTER.Malkauns;
+    return {
+      ...track,
+      raag: "Malkauns",
+      raagHindi: master.nameHindi,
+      thaat: master.thaat,
+      prahar: "late-night",
+      timeSlot: master.timeSlot,
+      mood: "गंभीर शिव तांडव एवं ध्यान (Midnight Transcendence)",
+      deity: "Shiva",
+      description: "मध्य रात्रि में भगवान शिव के दिव्य स्वरूप का गंभीर और रहस्यमयी राग।",
+    };
+  }
+
+  if (textToSearch.includes("achyutam") || textToSearch.includes("अच्युतम") || textToSearch.includes("keshavam") || textToSearch.includes("lullaby") || textToSearch.includes("shayan")) {
+    const master = RAAG_MASTER.Kafi;
+    return {
+      ...track,
+      raag: "Kafi",
+      raagHindi: master.nameHindi,
+      thaat: master.thaat,
+      prahar: "night",
+      timeSlot: master.timeSlot,
+      mood: "माधुर्य एवं शयन भक्ति (Divine Night Serenity)",
+      deity: "Krishna",
+      description: "रात्रि प्रहर में प्रभु के मधुर नाम संकीर्तन और विश्राम का पावन राग।",
+    };
+  }
+
+  if (textToSearch.includes("madhurashtakam") || textToSearch.includes("मधुराष्टकम्") || textToSearch.includes("sarang") || textToSearch.includes("गोपाल")) {
+    const master = RAAG_MASTER["Shuddha Sarang"] || RAAG_MASTER.Kafi;
+    return {
+      ...track,
+      raag: "Shuddha Sarang",
+      raagHindi: "शुद्ध सारंग",
+      thaat: "Kafi",
+      prahar: "afternoon",
+      timeSlot: "12:00 - 15:00 (मध्याह्न)",
+      mood: "शांत एवं शीतल भक्ति (Midday Serenity)",
+      deity: "Krishna",
+      description: "दोपहर के समय मन को शीतलता और ईश्वर भक्ति प्रदान करने वाला राग।",
+    };
+  }
+
+  if (textToSearch.includes("radha") || textToSearch.includes("राधा") || textToSearch.includes("virah") || textToSearch.includes("विरह") || textToSearch.includes("longing")) {
+    const master = RAAG_MASTER.Bhimpalasi;
+    return {
+      ...track,
+      raag: "Bhimpalasi",
+      raagHindi: master.nameHindi,
+      thaat: master.thaat,
+      prahar: "late-afternoon",
+      timeSlot: master.timeSlot,
+      mood: "विरह वेदना एवं उत्कट प्रेम (Soulful Yearning)",
+      deity: "Krishna",
+      description: "अपराह्न काल में भक्त और भगवान के मिलन की तड़प को अभिव्यक्त करने वाला राग।",
+    };
+  }
+
+  if (textToSearch.includes("vishnu") || textToSearch.includes("विष्णु") || textToSearch.includes("sahasranama") || textToSearch.includes("सहस्रनाम") || textToSearch.includes("narayan")) {
+    const master = RAAG_MASTER.Jaunpuri;
+    return {
+      ...track,
+      raag: "Jaunpuri",
+      raagHindi: master.nameHindi,
+      thaat: master.thaat,
+      prahar: "late-morning",
+      timeSlot: master.timeSlot,
+      mood: "प्रसन्नता एवं स्तुति (Uplifting Praise)",
+      deity: "Vishnu",
+      description: "मध्याह्न पूर्व बेला में भगवान नारायण की स्तुति और नव-ऊर्जा का संचार।",
     };
   }
 
@@ -496,7 +587,7 @@ export function enrichTrackRaag(track: Track): Track {
     };
   }
 
-  if (textToSearch.includes("krishna") || textToSearch.includes("कृष्ण") || textToSearch.includes("radha") || textToSearch.includes("राधा") || textToSearch.includes("bansi") || textToSearch.includes("murli")) {
+  if (textToSearch.includes("krishna") || textToSearch.includes("कृष्ण") || textToSearch.includes("bansi") || textToSearch.includes("murli")) {
     const master = RAAG_MASTER.Pahadi;
     return {
       ...track,
@@ -565,9 +656,18 @@ export function getFilteredTracks(
 
   const targetPraharId = filter === "auto" ? currentPrahar.id : filter;
 
-  const matched = tracks.filter(
-    (t) => t.prahar === targetPraharId || t.prahar === "anytime"
-  );
+  // 1. Prioritize exact matches for the targeted Prahar
+  const exactMatches = tracks.filter((t) => t.prahar === targetPraharId);
+  if (exactMatches.length > 0) {
+    return exactMatches;
+  }
 
-  return matched.length > 0 ? matched : tracks;
+  // 2. Fallback to anytime tracks if targeted Prahar has no specific songs
+  const anytimeMatches = tracks.filter((t) => t.prahar === "anytime");
+  if (anytimeMatches.length > 0) {
+    return anytimeMatches;
+  }
+
+  // 3. Fallback to entire list
+  return tracks;
 }

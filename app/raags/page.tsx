@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { Playlist, Track, PraharId } from "@/lib/types";
 import { PRAHARS, RAAG_MASTER, getCurrentPrahar } from "@/lib/raags";
 import { FALLBACK_PLAYLISTS } from "@/lib/default-playlists";
-import { HamburgerMenu } from "@/components/top-bar/hamburger-menu";
+import { FlowerShower } from "@/components/top-bar/flower-shower";
 import Link from "next/link";
 
 export default function RaagsPage() {
@@ -72,7 +72,7 @@ export default function RaagsPage() {
       {/* Nav */}
       <header className="relative z-10 flex items-center justify-between border-b border-white/10 px-3 sm:px-8 py-3.5 backdrop-blur-md bg-dusk/70 sticky top-0">
         <div className="flex items-center gap-2 sm:gap-3">
-          <HamburgerMenu />
+          <FlowerShower />
           <Link
             href="/"
             className="flex items-center gap-1.5 text-cream/70 hover:text-amber transition-colors text-xs sm:text-sm font-medium"

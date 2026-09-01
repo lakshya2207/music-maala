@@ -1,4 +1,4 @@
-import { HamburgerMenu } from "./hamburger-menu";
+import { FlowerShower } from "./flower-shower";
 import { ListenerCount } from "./listener-count";
 import { SocialLinks } from "./social-links";
 import Link from "next/link";
@@ -6,9 +6,9 @@ import Link from "next/link";
 export function TopBar() {
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-center justify-between safe-t safe-l safe-r px-2.5 sm:px-4 py-1.5">
-      {/* Left side: Hamburger Menu & Listener Count */}
+      {/* Left side: Flower Shower Offering & Listener Count */}
       <div className="pointer-events-auto flex items-center gap-2">
-        <HamburgerMenu />
+        <FlowerShower />
         <ListenerCount />
       </div>
 

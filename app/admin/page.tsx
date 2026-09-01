@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import type { Playlist } from "@/lib/types";
-import { HamburgerMenu } from "@/components/top-bar/hamburger-menu";
+import { FlowerShower } from "@/components/top-bar/flower-shower";
 import Link from "next/link";
 
 type SyncResult = {
@@ -103,7 +103,7 @@ export default function AdminPage() {
       {/* Nav */}
       <header className="relative z-10 flex items-center justify-between border-b border-white/10 px-4 sm:px-8 py-3.5 backdrop-blur-md bg-dusk/70 sticky top-0">
         <div className="flex items-center gap-2.5 sm:gap-3">
-          <HamburgerMenu />
+          <FlowerShower />
           <Link
             href="/"
             className="flex items-center gap-1.5 text-cream/60 hover:text-cream transition-colors text-xs sm:text-sm font-medium"
@@ -249,7 +249,7 @@ export default function AdminPage() {
               </h2>
             </div>
             <p className="text-sm text-cream/70">
-              Analyzes all synced bhajans using <strong>Google Gemini 3.5 Flash Lite</strong> (or curated classical heuristics) to determine their Classical Raag, Thaat, 8-Prahar time slot, Mood/Rasa, and spiritual lore.
+              Analyzes all synced bhajans using <strong>Gemini 3.7 Flash</strong> with auto-cascading fallback (3.7 → 3.6 → 3.5 → 2.5 → Curated Heuristics) to accurately classify Classical Raags, Thaats, 8-Prahar time cycles, and spiritual lore.
             </p>
           </div>
 
