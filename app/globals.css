@@ -82,8 +82,82 @@ body {
   animation: blink 1s step-start infinite;
 }
 
+/* ---------- Vintage Radio & Temple Loudspeaker Animations ---------- */
+@keyframes soundwave {
+  0% {
+    transform: scale(0.6) rotate(-10deg);
+    opacity: 0.9;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6) rotate(-10deg);
+    opacity: 0;
+  }
+}
+
+.soundwave-ring-1 {
+  animation: soundwave 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite;
+}
+
+.soundwave-ring-2 {
+  animation: soundwave 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite 0.7s;
+}
+
+.soundwave-ring-3 {
+  animation: soundwave 2.2s cubic-bezier(0.2, 0.6, 0.4, 1) infinite 1.4s;
+}
+
+@keyframes reel-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.reel-spinning {
+  animation: reel-spin 3s linear infinite;
+}
+
+@keyframes radio-glow {
+  0%, 100% {
+    filter: drop-shadow(0 0 12px rgba(245, 176, 65, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 24px rgba(245, 176, 65, 0.65));
+  }
+}
+
+.radio-glow {
+  animation: radio-glow 4s ease-in-out infinite;
+}
+
+@keyframes led-glow {
+  0%, 100% {
+    opacity: 0.95;
+    box-shadow: 0 0 10px 3px rgba(239, 68, 68, 0.75), inset 0 0 4px rgba(255, 255, 255, 0.6);
+  }
+  50% {
+    opacity: 0.7;
+    box-shadow: 0 0 6px 2px rgba(239, 68, 68, 0.4), inset 0 0 2px rgba(255, 255, 255, 0.4);
+  }
+}
+
+.radio-led-active {
+  animation: led-glow 2s ease-in-out infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .vinyl-spin {
+  .vinyl-spin,
+  .reel-spinning,
+  .soundwave-ring-1,
+  .soundwave-ring-2,
+  .soundwave-ring-3,
+  .radio-glow,
+  .radio-led-active {
     animation: none;
   }
   .clock-colon {
@@ -133,5 +207,41 @@ body {
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Stylized Vintage Scrollbar for Peher Row ---------- */
+.peher-scroll-track::-webkit-scrollbar {
+  height: 5px;
+}
+
+.peher-scroll-track::-webkit-scrollbar-button {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.peher-scroll-track::-webkit-scrollbar-track {
+  background: rgba(15, 8, 4, 0.85);
+  border-radius: 9999px;
+  border: 1px solid rgba(245, 176, 65, 0.2);
+  margin: 0 4px;
+}
+
+.peher-scroll-track::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #d97706 0%, #f5b041 50%, #d97706 100%);
+  border-radius: 9999px;
+  box-shadow: 0 0 10px rgba(245, 176, 65, 0.6);
+  border: 1px solid rgba(254, 240, 138, 0.3);
+}
+
+.peher-scroll-track::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(90deg, #f5b041 0%, #fde047 50%, #f5b041 100%);
+  box-shadow: 0 0 14px rgba(254, 240, 138, 0.85);
+}
+
+/* Firefox support */
+.peher-scroll-track {
+  scrollbar-width: thin;
+  scrollbar-color: #f5b041 rgba(15, 8, 4, 0.85);
 }
 

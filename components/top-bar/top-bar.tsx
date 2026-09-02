@@ -1,31 +1,19 @@
-import { HamburgerMenu } from "./hamburger-menu";
 import { FlowerShower } from "./flower-shower";
 import { ListenerCount } from "./listener-count";
-import { SocialLinks } from "./social-links";
-import Link from "next/link";
+import { Clock } from "./clock";
 
 export function TopBar() {
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-30 flex items-center justify-between safe-t safe-l safe-r px-2.5 sm:px-4 py-1.5">
-      {/* Left side: Navigation Menu, Flower Shower Offering & Listener Count */}
+      {/* Left side: Sacred Flower Shower Offering & Live Listener Count (No Navigation) */}
       <div className="pointer-events-auto flex items-center gap-1.5 sm:gap-2">
-        <HamburgerMenu />
         <FlowerShower />
         <ListenerCount />
       </div>
 
-      {/* Right side: Quick Raags link + GitHub */}
+      {/* Right side: Live Indian Standard Time (IST) Clock */}
       <div className="pointer-events-auto flex items-center gap-1.5 sm:gap-2">
-        <Link
-          href="/raags"
-          className="glass flex items-center gap-1 sm:gap-1.5 rounded-full px-2.5 sm:px-3 py-1.5 text-[11px] sm:text-xs font-medium text-cream/90 hover:text-amber hover:border-amber/40 transition-all active:scale-95"
-          title="Explore Classical Raags & 8 Prahars"
-        >
-          <span className="text-xs">🎼</span>
-          <span className="hidden xs:inline">राग & प्रहर</span>
-          <span className="xs:hidden">राग</span>
-        </Link>
-        <SocialLinks />
+        <Clock />
       </div>
     </header>
   );
