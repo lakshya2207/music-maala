@@ -397,12 +397,13 @@ export function PlayerEngineProvider({
   return (
     <PlayerEngineContext.Provider value={value}>
       {children}
-      {/* Stable off-screen YouTube container that never unmounts or moves during resize/navigation */}
+      {/* Stable off-screen YouTube container that isolates YouTube IFrame API DOM replacements from React reconciliation */}
       <div
-        id={EMBED_ELEMENT_ID}
         className="fixed -left-[9999px] top-0 h-1 w-1 opacity-0 pointer-events-none overflow-hidden"
         aria-hidden="true"
-      />
+      >
+        <div id={EMBED_ELEMENT_ID} />
+      </div>
     </PlayerEngineContext.Provider>
   );
 }

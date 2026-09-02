@@ -1,13 +1,20 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { usePlayerEngine } from "./player-engine";
 import { PRAHARS, RAAG_MASTER } from "@/lib/raags";
 import type { PraharId } from "@/lib/types";
 
 export function RaagModal() {
   const { raagModalTrack, setRaagModalTrack } = usePlayerEngine();
+  const [mounted, setMounted] = useState(false);
 
-  if (!raagModalTrack) return null;
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted || !raagModalTrack) return null;
 
   const track = raagModalTrack;
   const master = (track.raag && RAAG_MASTER[track.raag]) || null;
@@ -15,9 +22,9 @@ export function RaagModal() {
     PRAHARS[(track.prahar as PraharId) || (master?.prahar as PraharId) || "anytime"] ||
     PRAHARS.anytime;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200"
       onClick={() => setRaagModalTrack(null)}
     >
       <div
@@ -136,6 +143,7 @@ export function RaagModal() {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
