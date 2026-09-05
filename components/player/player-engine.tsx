@@ -11,8 +11,8 @@ import {
 } from "react";
 import { track as trackAnalyticsEvent } from "@vercel/analytics";
 import { loadYouTubeAPI } from "@/lib/load-youtube-api";
-import type { Playlist, Track, PraharId, PraharInfo } from "@/lib/types";
-import { getCurrentPrahar, getFilteredTracks, PRAHARS } from "@/lib/raags";
+import type { Playlist, Track, PaharId, PaharInfo } from "@/lib/types";
+import { getCurrentPahar, getFilteredTracks, PRAHARS } from "@/lib/raags";
 
 const EMBED_ELEMENT_ID = "yt-embed-target";
 
@@ -27,9 +27,9 @@ type PlayerEngineValue = {
   muted: boolean;
   currentTime: number;
   duration: number;
-  selectedPrahar: "auto" | "all" | PraharId;
-  currentPrahar: PraharInfo;
-  setSelectedPrahar: (prahar: "auto" | "all" | PraharId) => void;
+  selectedPahar: "auto" | "all" | PaharId;
+  currentPahar: PaharInfo;
+  setSelectedPahar: (pahar: "auto" | "all" | PaharId) => void;
   setPlaylistIndex: (index: number) => void;
   selectTrack: (trackId: string) => void;
   toggle: () => void;
@@ -68,7 +68,7 @@ const DEFAULT_FALLBACK_TRACK: Track = {
   raag: "Bhairav",
   raagHindi: "भैरव",
   thaat: "Bhairav",
-  prahar: "morning",
+  pahar: "morning",
   timeSlot: "06:00 - 09:00 (प्रातःकाल)",
   mood: "शांति एवं नव-जागरण (Devotion & Serenity)",
   deity: "Devi",
@@ -96,9 +96,9 @@ export function PlayerEngineProvider({
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
 
-  // Prahar & Raag state
-  const [selectedPrahar, setSelectedPraharState] = useState<"auto" | "all" | PraharId>("auto");
-  const [currentPrahar, setCurrentPrahar] = useState<PraharInfo>(PRAHARS.evening);
+  // Pahar & Raag state
+  const [selectedPahar, setSelectedPaharState] = useState<"auto" | "all" | PaharId>("auto");
+  const [currentPahar, setCurrentPahar] = useState<PaharInfo>(PRAHARS.evening);
   const [raagModalTrack, setRaagModalTrack] = useState<Track | null>(null);
   const [raagLibraryOpen, setRaagLibraryOpen] = useState(false);
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false);
@@ -111,11 +111,11 @@ export function PlayerEngineProvider({
   const isPlayingRef = useRef<boolean>(false);
   isPlayingRef.current = playing;
 
-  // Live IST Prahar updater
+  // Live IST Pahar updater
   useEffect(() => {
-    setCurrentPrahar(getCurrentPrahar());
+    setCurrentPahar(getCurrentPahar());
     const timer = setInterval(() => {
-      setCurrentPrahar(getCurrentPrahar());
+      setCurrentPahar(getCurrentPahar());
     }, 60000);
     return () => clearInterval(timer);
   }, []);
@@ -144,10 +144,10 @@ export function PlayerEngineProvider({
       ? playlist.tracks
       : [DEFAULT_FALLBACK_TRACK];
 
-  // Filtered queue based on selected Prahar
+  // Filtered queue based on selected Pahar
   const activeTracks = useMemo(() => {
-    return getFilteredTracks(rawTracks, selectedPrahar, currentPrahar);
-  }, [rawTracks, selectedPrahar, currentPrahar]);
+    return getFilteredTracks(rawTracks, selectedPahar, currentPahar);
+  }, [rawTracks, selectedPahar, currentPahar]);
 
   const trackIndexClamped = Math.min(
     Math.max(0, trackIndex),
@@ -276,9 +276,9 @@ export function PlayerEngineProvider({
     };
   }, [playing, track?.duration]);
 
-  const setSelectedPrahar = useCallback(
-    (prahar: "auto" | "all" | PraharId) => {
-      setSelectedPraharState(prahar);
+  const setSelectedPahar = useCallback(
+    (pahar: "auto" | "all" | PaharId) => {
+      setSelectedPaharState(pahar);
       setTrackIndex(0);
       setCurrentTime(0);
     },
@@ -356,9 +356,9 @@ export function PlayerEngineProvider({
       muted,
       currentTime,
       duration,
-      selectedPrahar,
-      currentPrahar,
-      setSelectedPrahar,
+      selectedPahar,
+      currentPahar,
+      setSelectedPahar,
       selectTrack,
       setPlaylistIndex,
       toggle,
@@ -384,9 +384,9 @@ export function PlayerEngineProvider({
       muted,
       currentTime,
       duration,
-      selectedPrahar,
-      currentPrahar,
-      setSelectedPrahar,
+      selectedPahar,
+      currentPahar,
+      setSelectedPahar,
       selectTrack,
       setPlaylistIndex,
       toggle,

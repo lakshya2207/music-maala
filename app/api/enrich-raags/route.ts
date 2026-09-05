@@ -5,7 +5,7 @@ import { enrichTracksWithAI } from "@/lib/gemini";
 import type { Track } from "@/lib/types";
 
 export async function POST() {
-  console.log("[Enrich Raags API] Starting Raag & Prahar enrichment request...");
+  console.log("[Enrich Raags API] Starting Raag & Pahar enrichment request...");
   try {
     const db = await connectToDatabase();
     if (!db) {
@@ -38,7 +38,7 @@ export async function POST() {
       raag: t.raag,
       raagHindi: t.raagHindi,
       thaat: t.thaat,
-      prahar: t.prahar,
+      pahar: t.pahar,
       timeSlot: t.timeSlot,
       mood: t.mood,
       deity: t.deity,

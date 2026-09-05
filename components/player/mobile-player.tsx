@@ -4,7 +4,7 @@ import { usePlayerEngine } from "./player-engine";
 import { Vinyl } from "./vinyl";
 import { SeekBar } from "./seek-bar";
 import { Transport } from "./transport";
-import { PraharBar } from "./prahar-bar";
+import { PaharBar } from "./pahar-bar";
 
 function formatTime(totalSeconds: number) {
   if (!Number.isFinite(totalSeconds) || totalSeconds < 0) return "0:00";
@@ -18,8 +18,8 @@ export function MobilePlayer() {
 
   return (
     <div className="flex w-full max-w-md flex-col items-center gap-2 sm:hidden px-2 pb-1">
-      {/* Prahar Bar on mobile */}
-      <PraharBar />
+      {/* Pahar Bar on mobile */}
+      <PaharBar />
 
       {/* Main Glass Player Card */}
       <div className="glass flex w-full flex-col gap-3 rounded-[24px] p-4 border border-white/15 shadow-2xl backdrop-blur-2xl">

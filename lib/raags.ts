@@ -1,6 +1,6 @@
-import type { PraharId, PraharInfo, Track } from "./types";
+import type { PaharId, PaharInfo, Track } from "./types";
 
-export const PRAHARS: Record<PraharId, PraharInfo> = {
+export const PRAHARS: Record<PaharId, PaharInfo> = {
   dawn: {
     id: "dawn",
     name: "उषाकाल (ब्रह्म मुहूर्त)",
@@ -11,13 +11,13 @@ export const PRAHARS: Record<PraharId, PraharInfo> = {
     icon: "🌌",
     mood: "आत्म-चिंतन, ध्यान एवं दिव्य समर्पण (Meditation & Surrender)",
     description:
-      "रात्रि के अंतिम प्रहर में प्रकृति शांत एवं पावन होती है। यह समय ब्रह्म मुहूर्त का है, जब कोमल रे और धैवत वाले गंभीर राग मन को आत्म-साक्षात्कार और प्रभु स्मरण की ओर ले जाते हैं।",
+      "रात्रि के अंतिम पहर में प्रकृति शांत एवं पावन होती है। यह समय ब्रह्म मुहूर्त का है, जब कोमल रे और धैवत वाले गंभीर राग मन को आत्म-साक्षात्कार और प्रभु स्मरण की ओर ले जाते हैं।",
     representativeRaags: ["Lalit", "Bhatiyar", "Vibhas", "Jogia", "Ramkali"],
   },
   morning: {
     id: "morning",
-    name: "प्रातः प्रहर",
-    nameEnglish: "Early Morning (Pratham Prahar)",
+    name: "प्रातः पहर",
+    nameEnglish: "Early Morning (Pratham Pahar)",
     startHour: 6,
     endHour: 9,
     timeRange: "06:00 - 09:00",
@@ -29,34 +29,34 @@ export const PRAHARS: Record<PraharId, PraharInfo> = {
   },
   "late-morning": {
     id: "late-morning",
-    name: "मध्याह्न पूर्व प्रहर",
-    nameEnglish: "Late Morning (Dwitiya Prahar)",
+    name: "मध्याह्न पूर्व पहर",
+    nameEnglish: "Late Morning (Dwitiya Pahar)",
     startHour: 9,
     endHour: 12,
     timeRange: "09:00 - 12:00",
     icon: "☀️",
     mood: "उल्लास, उत्साह एवं एकाग्रता (Joy, Energy & Focus)",
     description:
-      "दिन के दूसरे प्रहर में सूर्य का तेज बढ़ता है। राग जौनपुरी, आसावरी और अल्हैया बिलावल मन में उमंग, कर्मठता और प्रसन्नता का भाव जगाते हैं।",
+      "दिन के दूसरे पहर में सूर्य का तेज बढ़ता है। राग जौनपुरी, आसावरी और अल्हैया बिलावल मन में उमंग, कर्मठता और प्रसन्नता का भाव जगाते हैं।",
     representativeRaags: ["Jaunpuri", "Asavari", "Alhaiya Bilawal", "Deshkar", "Devgandhar"],
   },
   afternoon: {
     id: "afternoon",
-    name: "मध्याह्न प्रहर",
-    nameEnglish: "Afternoon (Tritiya Prahar)",
+    name: "मध्याह्न पहर",
+    nameEnglish: "Afternoon (Tritiya Pahar)",
     startHour: 12,
     endHour: 15,
     timeRange: "12:00 - 15:00",
     icon: "🌤️",
     mood: "गंभीरता, शांति एवं शीतलता (Tranquility & Peace)",
     description:
-      "दोपहर की धूप में सारंग अंग के राग मन को शीतल और शांत करते हैं। यह प्रहर स्थिरता, आत्म-शांति और प्रभु के मधुर स्वरूप के ध्यान का है।",
+      "दोपहर की धूप में सारंग अंग के राग मन को शीतल और शांत करते हैं। यह पहर स्थिरता, आत्म-शांति और प्रभु के मधुर स्वरूप के ध्यान का है।",
     representativeRaags: ["Shuddha Sarang", "Brindavani Sarang", "Madhmad Sarang", "Gaud Sarang"],
   },
   "late-afternoon": {
     id: "late-afternoon",
-    name: "अपराह्न प्रहर",
-    nameEnglish: "Late Afternoon (Chaturtha Prahar)",
+    name: "अपराह्न पहर",
+    nameEnglish: "Late Afternoon (Chaturtha Pahar)",
     startHour: 15,
     endHour: 18,
     timeRange: "15:00 - 18:00",
@@ -68,7 +68,7 @@ export const PRAHARS: Record<PraharId, PraharInfo> = {
   },
   evening: {
     id: "evening",
-    name: "सांध्य प्रहर (आरती काल)",
+    name: "सांध्य पहर (आरती काल)",
     nameEnglish: "Evening Twilight (Sandhivrakash / Aarti)",
     startHour: 18,
     endHour: 21,
@@ -81,21 +81,21 @@ export const PRAHARS: Record<PraharId, PraharInfo> = {
   },
   night: {
     id: "night",
-    name: "रात्रि प्रहर",
-    nameEnglish: "Prime Night (Dwitiya Prahar Raatri)",
+    name: "रात्रि पहर",
+    nameEnglish: "Prime Night (Dwitiya Pahar Raatri)",
     startHour: 21,
     endHour: 24,
     timeRange: "21:00 - 00:00",
     icon: "🌙",
     mood: "माधुर्य, प्रेम एवं आत्मिक विश्राम (Sweetness & Soulful Rest)",
     description:
-      "रात्रि के समय राग काफी, बागेश्री और जयजयवंती का गायन-वादन अत्यंत मनोहारी होता है। यह प्रहर मधुर रस, कृष्ण लीला और शांत विश्राम का है।",
+      "रात्रि के समय राग काफी, बागेश्री और जयजयवंती का गायन-वादन अत्यंत मनोहारी होता है। यह पहर मधुर रस, कृष्ण लीला और शांत विश्राम का है।",
     representativeRaags: ["Kafi", "Bageshri", "Jaijaiwanti", "Khamaj", "Rageshri", "Desh", "Chandrakauns"],
   },
   "late-night": {
     id: "late-night",
-    name: "मध्य रात्रि प्रहर",
-    nameEnglish: "Midnight (Tritiya Prahar Raatri)",
+    name: "मध्य रात्रि पहर",
+    nameEnglish: "Midnight (Tritiya Pahar Raatri)",
     startHour: 0,
     endHour: 3,
     timeRange: "00:00 - 03:00",
@@ -124,7 +124,7 @@ export interface RaagDetails {
   name: string;
   nameHindi: string;
   thaat: string;
-  prahar: PraharId;
+  pahar: PaharId;
   timeSlot: string;
   mood: string;
   vadiSamvadi?: string;
@@ -137,7 +137,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Bhairav",
     nameHindi: "भैरव",
     thaat: "Bhairav",
-    prahar: "morning",
+    pahar: "morning",
     timeSlot: "06:00 - 09:00 (प्रातःकाल)",
     mood: "भक्ति (Devotion), शांत (Peace), गंभीरता (Solemnity)",
     vadiSamvadi: "वादी: धैवत (Dha), संवादी: ऋषभ (Re)",
@@ -149,7 +149,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Ahir Bhairav",
     nameHindi: "अहीर भैरव",
     thaat: "Bhairav",
-    prahar: "morning",
+    pahar: "morning",
     timeSlot: "06:00 - 09:00 (प्रातःकाल)",
     mood: "करुणा (Compassion), सात्विक भक्ति (Pure Devotion)",
     vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
@@ -161,7 +161,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Bhairavi",
     nameHindi: "भैरवी",
     thaat: "Bhairavi",
-    prahar: "anytime",
+    pahar: "anytime",
     timeSlot: "सर्वकालीन / प्रातःकाल (Anytime / Morning)",
     mood: "शृंगार, करुणा एवं पूर्ण समर्पण (Surrender & Supreme Devotion)",
     vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
@@ -173,7 +173,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Yaman",
     nameHindi: "यमन (कल्याण)",
     thaat: "Kalyan",
-    prahar: "evening",
+    pahar: "evening",
     timeSlot: "18:00 - 21:00 (सांध्य आरती)",
     mood: "आनंद (Bliss), भक्ति (Devotion), शांति (Peace)",
     vadiSamvadi: "वादी: गंधार (Ga), संवादी: निषाद (Ni)",
@@ -185,7 +185,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Bhupali",
     nameHindi: "भूपाली",
     thaat: "Kalyan",
-    prahar: "evening",
+    pahar: "evening",
     timeSlot: "18:00 - 21:00 (सांध्यकाल)",
     mood: "भक्ति रस, सरलता एवं प्रसन्नता (Pure Joy & Reverence)",
     vadiSamvadi: "वादी: गंधार (Ga), संवादी: धैवत (Dha)",
@@ -197,7 +197,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Pahadi",
     nameHindi: "पहाड़ी",
     thaat: "Bilawal",
-    prahar: "anytime",
+    pahar: "anytime",
     timeSlot: "सर्वकालीन / सांध्यकाल (Anytime / Evening)",
     mood: "माधुर्य (Sweetness), प्रेम (Love), लोक-भक्ति (Folk Devotion)",
     vadiSamvadi: "वादी: पंचम (Pa), संवादी: षड्ज (Sa)",
@@ -209,7 +209,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Shivranjani",
     nameHindi: "शिवरंजनी",
     thaat: "Kafi",
-    prahar: "anytime",
+    pahar: "anytime",
     timeSlot: "सर्वकालीन / रात्रि (Anytime / Night)",
     mood: "करुण रस (Pathos), विरह एवं गहन भक्ति (Deep Yearning)",
     vadiSamvadi: "वादी: पंचम (Pa), संवादी: षड्ज (Sa)",
@@ -221,7 +221,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Bhimpalasi",
     nameHindi: "भीमपलासी",
     thaat: "Kafi",
-    prahar: "late-afternoon",
+    pahar: "late-afternoon",
     timeSlot: "15:00 - 18:00 (अपराह्न)",
     mood: "शांत, शृंगार एवं भक्ति (Peace & Yearning)",
     vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
@@ -233,8 +233,8 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Kafi",
     nameHindi: "काफी",
     thaat: "Kafi",
-    prahar: "night",
-    timeSlot: "21:00 - 00:00 (रात्रि प्रहर)",
+    pahar: "night",
+    timeSlot: "21:00 - 00:00 (रात्रि पहर)",
     mood: "होली, रसिया एवं प्रेम भक्ति (Festive & Loving Devotion)",
     vadiSamvadi: "वादी: पंचम (Pa), संवादी: षड्ज (Sa)",
     swaraNotes: "कोमल गंधार और कोमल निषाद (g, n)",
@@ -245,8 +245,8 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Bilawal",
     nameHindi: "बिलावल",
     thaat: "Bilawal",
-    prahar: "morning",
-    timeSlot: "06:00 - 09:00 (प्रातः प्रहर)",
+    pahar: "morning",
+    timeSlot: "06:00 - 09:00 (प्रातः पहर)",
     mood: "उमंग, उत्साह एवं स्तुति (Celebration & Praise)",
     vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
     swaraNotes: "सभी शुद्ध स्वर",
@@ -257,7 +257,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Khamaj",
     nameHindi: "खमाज",
     thaat: "Khamaj",
-    prahar: "night",
+    pahar: "night",
     timeSlot: "21:00 - 00:00 (रात्रि)",
     mood: "माधुर्य, शृंगार एवं समर्पण (Sweetness & Devotion)",
     vadiSamvadi: "वादी: गंधार (Ga), संवादी: निषाद (Ni)",
@@ -269,8 +269,8 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Puriya Dhanashree",
     nameHindi: "पूरिया धनाश्री",
     thaat: "Purvi",
-    prahar: "evening",
-    timeSlot: "18:00 - 21:00 (सांध्य प्रहर)",
+    pahar: "evening",
+    timeSlot: "18:00 - 21:00 (सांध्य पहर)",
     mood: "गंभीर भक्ति, वैराग्य एवं प्रकाश (Solemn Devotion)",
     vadiSamvadi: "वादी: पंचम (Pa), संवादी: ऋषभ (Re)",
     swaraNotes: "कोमल रे, तीव्र म, कोमल ध (r, M', d)",
@@ -281,7 +281,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Malkauns",
     nameHindi: "मालकौंस",
     thaat: "Bhairavi",
-    prahar: "late-night",
+    pahar: "late-night",
     timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
     mood: "वीर रस, शिव तांडव एवं ध्यान (Mystic Energy & Dhyan)",
     vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
@@ -293,7 +293,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Darbari Kanada",
     nameHindi: "दरबारी कानड़ा",
     thaat: "Asavari",
-    prahar: "late-night",
+    pahar: "late-night",
     timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
     mood: "गंभीरता, ऐश्वर्य एवं मौन (Majesty & Deep Introspection)",
     vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
@@ -305,7 +305,7 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     name: "Mishra Pilu",
     nameHindi: "मिश्र पीलू",
     thaat: "Kafi",
-    prahar: "anytime",
+    pahar: "anytime",
     timeSlot: "सर्वकालीन / अपराह्न (Anytime / Late Afternoon)",
     mood: "आत्मीयता, भावुकता एवं समर्पण (Soulful Longing)",
     vadiSamvadi: "वादी: गंधार (Ga), संवादी: निषाद (Ni)",
@@ -319,7 +319,7 @@ const KNOWN_TRACK_MAPPINGS: Record<
   string,
   {
     raag: string;
-    prahar: PraharId;
+    pahar: PaharId;
     mood: string;
     deity: string;
     description: string;
@@ -327,91 +327,91 @@ const KNOWN_TRACK_MAPPINGS: Record<
 > = {
   "hanuman chutki": {
     raag: "Bilawal",
-    prahar: "morning",
+    pahar: "morning",
     mood: "उत्साह, भक्ति एवं शक्ति (Energy & Strength)",
     deity: "Hanuman",
     description: "बिलावल अंग की ऊर्जावान धुन, जो वीर हनुमान के पराक्रम और सेवा भाव को उजागर करती है।",
   },
   "shri krishna govind": {
     raag: "Bhimpalasi",
-    prahar: "late-afternoon",
+    pahar: "late-afternoon",
     mood: "माधुर्य, शांत रस एवं कृष्ण भक्ति (Sweet Krishna Devotion)",
     deity: "Krishna",
     description: "रवींद्र जैन जी द्वारा रचित राग भीमपलासी आधारित यह भजन कृष्ण शरणागति का अनुपम उदाहरण है।",
   },
   "hanuman tumhara": {
     raag: "Bilawal",
-    prahar: "morning",
+    pahar: "morning",
     mood: "स्तुति एवं मंगल भाव (Praise & Blessing)",
     deity: "Hanuman",
     description: "मंगलवार एवं प्रातःकालीन स्मरण हेतु बिलावल राग आधारित पावन हनुमान स्तुति।",
   },
   "ashutosh shashank": {
     raag: "Bhairav",
-    prahar: "morning",
+    pahar: "morning",
     mood: "सात्विक शांति एवं शिव वंदना (Divine Shiva Praise)",
     deity: "Shiva",
     description: "राग भैरव के पावन स्वरों में भगवान भोलेनाथ की प्रातःकालीन वंदना एवं स्तुति।",
   },
   "jai jagdish hare": {
     raag: "Bhairavi",
-    prahar: "evening",
+    pahar: "evening",
     mood: "आरती भाव एवं पूर्ण शरणागति (Universal Aarti)",
     deity: "Universal",
     description: "सर्वकालीन राग भैरवी आधारित सर्वमान्य सांध्य आरती, जो समस्त संकटों का निवारण करती है।",
   },
   "teri murli": {
     raag: "Pahadi",
-    prahar: "evening",
+    pahar: "evening",
     mood: "राधा-कृष्ण प्रेम एवं माधुर्य (Radha Krishna Love)",
     deity: "Krishna",
     description: "राग पहाड़ी और मिश्र काफी के मधुर स्वरों में बरसाने की राधा रानी का कृष्ण वियोग और प्रेम।",
   },
   "shyam teri bansi": {
     raag: "Pahadi",
-    prahar: "evening",
+    pahar: "evening",
     mood: "भक्ति, शृंगार एवं शांति (Sweet Melody)",
     deity: "Krishna",
     description: "फिल्म 'गीत गाता चल' का यह कालजयी भजन राग पहाड़ी पर आधारित है, जो मन को सम्मोहित करता है।",
   },
   "radhe tere charno": {
     raag: "Pahadi",
-    prahar: "anytime",
+    pahar: "anytime",
     mood: "चरण रज की अभिलाषा एवं दास्य भक्ति (Devout Surrender)",
     deity: "Krishna",
     description: "राग पहाड़ी के भावुक स्वरों में श्री राधा रानी के युगल चरणों में विश्राम की प्रार्थना।",
   },
   "main tulsi": {
     raag: "Bhairavi",
-    prahar: "morning",
+    pahar: "morning",
     mood: "पवित्रता एवं मातृत्व भाव (Purity & Devotion)",
     deity: "Devi",
     description: "लता मंगेशकर जी के स्वरों में राग भैरवी पर आधारित तुलसी वंदना एवं आध्यात्मिक समर्पण।",
   },
   "shyam choodi": {
     raag: "Khamaj",
-    prahar: "night",
+    pahar: "night",
     mood: "लीला रस एवं बाल-सुलभ आनंद (Krishna Leela Joy)",
     deity: "Krishna",
     description: "राग खमाज और लोक संगीत का अद्भुत संगम, जो भगवान कृष्ण की मनोहारी मनिहारी लीला दर्शाता है।",
   },
   "kabhi ram banke": {
     raag: "Bhupali",
-    prahar: "morning",
+    pahar: "morning",
     mood: "समन्वय, भक्ति एवं आनंद (Omnipresent Divinity)",
     deity: "Rama",
     description: "राग भूपाली के पाँच शुद्ध स्वरों में प्रभु के सर्वव्यापी रूपों का मधुर गुणगान।",
   },
   "are dwarpalo": {
     raag: "Shivranjani",
-    prahar: "anytime",
+    pahar: "anytime",
     mood: "मित्रता, करुणा एवं अश्रुपूर्ण मिलन (Sudama Krishna Reunion)",
     deity: "Krishna",
     description: "राग शिवरंजनी के करुण स्वरों में भक्त सुदामा और भगवान श्री कृष्ण की अमर मित्रता का प्रसंग।",
   },
 };
 
-export function getCurrentPrahar(date: Date = new Date()): PraharInfo {
+export function getCurrentPahar(date: Date = new Date()): PaharInfo {
   const formatter = new Intl.DateTimeFormat("en-IN", {
     timeZone: "Asia/Kolkata",
     hour: "numeric",
@@ -430,12 +430,12 @@ export function getCurrentPrahar(date: Date = new Date()): PraharInfo {
   return PRAHARS["late-night"];
 }
 
-export function getPraharById(id: PraharId): PraharInfo {
+export function getPaharById(id: PaharId): PaharInfo {
   return PRAHARS[id] ?? PRAHARS.anytime;
 }
 
 export function enrichTrackRaag(track: Track): Track {
-  if (track.raag && track.prahar) {
+  if (track.raag && track.pahar) {
     const master = RAAG_MASTER[track.raag];
     return {
       ...track,
@@ -457,7 +457,7 @@ export function enrichTrackRaag(track: Track): Track {
         raag: mapping.raag,
         raagHindi: master.nameHindi,
         thaat: master.thaat,
-        prahar: mapping.prahar,
+        pahar: mapping.pahar,
         timeSlot: master.timeSlot,
         mood: mapping.mood,
         deity: mapping.deity,
@@ -466,7 +466,7 @@ export function enrichTrackRaag(track: Track): Track {
     }
   }
 
-  // Heuristic rule engine covering all 8 Prahars
+  // Heuristic rule engine covering all 8 Pahars
   if (textToSearch.includes("aarti") || textToSearch.includes("आरती") || textToSearch.includes("sandhya") || textToSearch.includes("deep") || textToSearch.includes("दीप")) {
     const master = RAAG_MASTER.Yaman;
     return {
@@ -474,7 +474,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Yaman",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "evening",
+      pahar: "evening",
       timeSlot: master.timeSlot,
       mood: "सांध्य आरती एवं समर्पण (Evening Aarti)",
       deity: "Universal",
@@ -489,7 +489,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: master.name,
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "dawn",
+      pahar: "dawn",
       timeSlot: "03:00 - 06:00 (उषाकाल / ब्रह्म मुहूर्त)",
       mood: "चेतना जागरण एवं ब्रह्म मुहूर्त ध्यान (Awakening & Dhyan)",
       deity: "Universal",
@@ -504,7 +504,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Malkauns",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "late-night",
+      pahar: "late-night",
       timeSlot: master.timeSlot,
       mood: "गंभीर शिव तांडव एवं ध्यान (Midnight Transcendence)",
       deity: "Shiva",
@@ -519,11 +519,11 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Kafi",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "night",
+      pahar: "night",
       timeSlot: master.timeSlot,
       mood: "माधुर्य एवं शयन भक्ति (Divine Night Serenity)",
       deity: "Krishna",
-      description: "रात्रि प्रहर में प्रभु के मधुर नाम संकीर्तन और विश्राम का पावन राग।",
+      description: "रात्रि पहर में प्रभु के मधुर नाम संकीर्तन और विश्राम का पावन राग।",
     };
   }
 
@@ -534,7 +534,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Shuddha Sarang",
       raagHindi: "शुद्ध सारंग",
       thaat: "Kafi",
-      prahar: "afternoon",
+      pahar: "afternoon",
       timeSlot: "12:00 - 15:00 (मध्याह्न)",
       mood: "शांत एवं शीतल भक्ति (Midday Serenity)",
       deity: "Krishna",
@@ -549,7 +549,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Bhimpalasi",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "late-afternoon",
+      pahar: "late-afternoon",
       timeSlot: master.timeSlot,
       mood: "विरह वेदना एवं उत्कट प्रेम (Soulful Yearning)",
       deity: "Krishna",
@@ -564,7 +564,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Jaunpuri",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "late-morning",
+      pahar: "late-morning",
       timeSlot: master.timeSlot,
       mood: "प्रसन्नता एवं स्तुति (Uplifting Praise)",
       deity: "Vishnu",
@@ -579,7 +579,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Bhairav",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "morning",
+      pahar: "morning",
       timeSlot: master.timeSlot,
       mood: "शांत एवं गंभीर शिव भक्ति (Shiva Dhyan)",
       deity: "Shiva",
@@ -594,7 +594,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Pahadi",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "evening",
+      pahar: "evening",
       timeSlot: master.timeSlot,
       mood: "माधुर्य एवं युगल प्रेम (Krishna Bhakti)",
       deity: "Krishna",
@@ -609,7 +609,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Bilawal",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "morning",
+      pahar: "morning",
       timeSlot: master.timeSlot,
       mood: "उत्साह एवं संकट-मोचन भाव (Strength & Protection)",
       deity: "Hanuman",
@@ -624,7 +624,7 @@ export function enrichTrackRaag(track: Track): Track {
       raag: "Bhupali",
       raagHindi: master.nameHindi,
       thaat: master.thaat,
-      prahar: "morning",
+      pahar: "morning",
       timeSlot: master.timeSlot,
       mood: "मर्यादा एवं शांत भक्ति (Maryada & Peace)",
       deity: "Rama",
@@ -638,7 +638,7 @@ export function enrichTrackRaag(track: Track): Track {
     raag: "Bhairavi",
     raagHindi: master.nameHindi,
     thaat: master.thaat,
-    prahar: "anytime",
+    pahar: "anytime",
     timeSlot: master.timeSlot,
     mood: "सर्वकालीन भक्ति रस (Universal Devotion)",
     deity: "Universal",
@@ -648,24 +648,24 @@ export function enrichTrackRaag(track: Track): Track {
 
 export function getFilteredTracks(
   tracks: Track[],
-  filter: "auto" | "all" | PraharId,
-  currentPrahar: PraharInfo
+  filter: "auto" | "all" | PaharId,
+  currentPahar: PaharInfo
 ): Track[] {
   if (!tracks || tracks.length === 0) return [];
   if (filter === "all") return tracks;
 
-  const targetPraharId = filter === "auto" ? currentPrahar.id : filter;
+  const targetPaharId = filter === "auto" ? currentPahar.id : filter;
 
-  // 1. Primary tracks matching targeted Prahar
-  const praharTracks = tracks.filter((t) => t.prahar === targetPraharId);
+  // 1. Primary tracks matching targeted Pahar
+  const paharTracks = tracks.filter((t) => t.pahar === targetPaharId);
 
   // 2. Secondary Sarvakalin / Anytime tracks (excluding any duplicates)
   const anytimeTracks = tracks.filter(
-    (t) => t.prahar === "anytime" && !praharTracks.some((pt) => pt.id === t.id)
+    (t) => t.pahar === "anytime" && !paharTracks.some((pt) => pt.id === t.id)
   );
 
-  // 3. Combine: current Prahar songs first, then Sarvakalin/Evertime songs
-  const combined = [...praharTracks, ...anytimeTracks];
+  // 3. Combine: current Pahar songs first, then Sarvakalin/Evertime songs
+  const combined = [...paharTracks, ...anytimeTracks];
 
   if (combined.length > 0) {
     return combined;

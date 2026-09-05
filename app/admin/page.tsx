@@ -128,7 +128,7 @@ export default function AdminPage() {
           href="/raags"
           className="text-xs text-cream/50 hover:text-cream font-utility transition-colors hidden sm:block"
         >
-          Raags & Prahars →
+          Raags & Pahars →
         </Link>
       </header>
 
@@ -239,17 +239,17 @@ export default function AdminPage() {
           )}
         </div>
 
-        {/* AI Raag & Prahar Enrichment Card */}
+        {/* AI Raag & Pahar Enrichment Card */}
         <div className="glass rounded-3xl p-8 space-y-6 border border-amber/25 shadow-xl">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <span className="text-xl">✨</span>
               <h2 className="font-display text-2xl font-semibold text-amber">
-                AI Raag & Prahar Classification
+                AI Raag & Pahar Classification
               </h2>
             </div>
             <p className="text-sm text-cream/70">
-              Analyzes all synced bhajans using <strong>Gemini 3.7 Flash</strong> with auto-cascading fallback (3.7 → 3.6 → 3.5 → 2.5 → Curated Heuristics) to accurately classify Classical Raags, Thaats, 8-Prahar time cycles, and spiritual lore.
+              Analyzes all synced bhajans using <strong>Gemini 3.7 Flash</strong> with auto-cascading fallback (3.7 → 3.6 → 3.5 → 2.5 → Curated Heuristics) to accurately classify Classical Raags, Thaats, 8-Pahar time cycles, and spiritual lore.
             </p>
           </div>
 
@@ -319,7 +319,7 @@ export default function AdminPage() {
                 {preview.tracks.length} tracks in database
               </h2>
               <Link href="/raags" className="text-xs text-amber font-utility hover:underline">
-                View Raags & Prahars View ↗
+                View Raags & Pahars View ↗
               </Link>
             </div>
 
@@ -331,7 +331,7 @@ export default function AdminPage() {
                       <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 w-10 font-bold">#</th>
                       <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">Title</th>
                       <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">राग (Raag)</th>
-                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">प्रहर (Prahar)</th>
+                      <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">पहर (Pahar)</th>
                       <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 hidden sm:table-cell font-bold">Artist</th>
                       <th className="px-4 py-3 text-[11px] font-utility uppercase tracking-wider text-cream/60 font-bold">Video ID</th>
                     </tr>
@@ -352,7 +352,7 @@ export default function AdminPage() {
                           </span>
                         </td>
                         <td className="px-4 py-3 text-xs text-cream/80 font-utility">
-                          {track.prahar || "anytime"}
+                          {track.pahar || "anytime"}
                         </td>
                         <td className="px-4 py-3 text-cream/70 hidden sm:table-cell max-w-[120px]">
                           <span className="block truncate">{track.artist}</span>

@@ -3,14 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getCurrentPrahar } from "@/lib/raags";
+import { getCurrentPahar } from "@/lib/raags";
 import { usePlayerEngineOptional } from "@/components/player/player-engine";
 
 export function HamburgerMenu() {
   const playerEngine = usePlayerEngineOptional();
   const [isOpen, setIsOpen] = useState(false);
   const [timeStr, setTimeStr] = useState<string>("");
-  const [prahar, setPrahar] = useState(getCurrentPrahar());
+  const [pahar, setPahar] = useState(getCurrentPahar());
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
@@ -24,7 +24,7 @@ export function HamburgerMenu() {
         hour12: true,
       });
       setTimeStr(formatter.format(now));
-      setPrahar(getCurrentPrahar(now));
+      setPahar(getCurrentPahar(now));
     }
 
     updateClock();
@@ -68,8 +68,8 @@ export function HamburgerMenu() {
     },
     {
       href: "/raags",
-      label: "राग एवं प्रहर दर्शन",
-      subLabel: "Classical Raags & 8 Prahars",
+      label: "राग एवं पहर दर्शन",
+      subLabel: "Classical Raags & 8 Pahars",
       icon: "🎼",
       active: pathname === "/raags",
     },
@@ -186,7 +186,7 @@ export function HamburgerMenu() {
               ))}
             </nav>
 
-            {/* Live Clock & Prahar Status Widget */}
+            {/* Live Clock & Pahar Status Widget */}
             <div className="rounded-2xl bg-white/5 border border-white/10 p-3.5 space-y-2">
               <div className="flex items-center justify-between text-xs font-utility text-cream/70 border-b border-white/5 pb-2">
                 <span>🕒 भारतीय समय (IST)</span>
@@ -197,13 +197,13 @@ export function HamburgerMenu() {
 
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">{prahar.icon}</span>
+                  <span className="text-lg">{pahar.icon}</span>
                   <div>
                     <p className="text-xs font-semibold text-cream">
-                      {prahar.name}
+                      {pahar.name}
                     </p>
                     <p className="text-[10px] text-cream/70 font-utility tabular">
-                      {prahar.timeRange}
+                      {pahar.timeRange}
                     </p>
                   </div>
                 </div>

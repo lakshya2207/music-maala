@@ -1,4 +1,4 @@
-import type { Track, PraharId } from "./types";
+import type { Track, PaharId } from "./types";
 import { enrichTrackRaag, RAAG_MASTER } from "./raags";
 
 export interface EnrichmentResult {
@@ -23,9 +23,9 @@ export async function enrichTracksWithAI(tracks: Track[]): Promise<EnrichmentRes
   }
 
   try {
-    console.log(`[Gemini AI] Step 1/3: Preparing 8-Prahar prompt for ${tracks.length} track(s) for Indian Classical Sangeet analysis...`);
+    console.log(`[Gemini AI] Step 1/3: Preparing 8-Pahar prompt for ${tracks.length} track(s) for Indian Classical Sangeet analysis...`);
     const prompt = `
-You are an expert scholar and musicologist in Indian Classical Music (Hindustani & Carnatic Sangeet), the Raag-Samay Chakra (Time Theory of 8 Prahars), and Bhakti Sangeet.
+You are an expert scholar and musicologist in Indian Classical Music (Hindustani & Carnatic Sangeet), the Raag-Samay Chakra (Time Theory of 8 Pahars), and Bhakti Sangeet.
 
 Your task is to analyze the following list of devotional songs/bhajans and classify each song into its classical Indian Raag, parent Thaat, one of the 8 DISTINCT PRAHARS of the day, Mood/Rasa, Deity, and spiritual significance.
 
@@ -37,35 +37,35 @@ DO NOT group all songs into generic 'morning' or 'evening'. Avoid 'anytime' unle
    - Awakening of consciousness, soul surrender, morning invocation, Suprabhatam, deep dhyana.
    - Raags: Lalit, Bhatiyar, Vibhas, Jogia, Ramkali, Bairagi, Ahir Lalit.
 
-2. "morning" (06:00 - 09:00, प्रातः प्रहर / प्रथम प्रहर):
+2. "morning" (06:00 - 09:00, प्रातः पहर / प्रथम पहर):
    - Sunrise, fresh devotion, invigorating spiritual energy, Hanuman Chalisa, Gayatri Mantra, Prabhati.
    - Raags: Bhairav, Ahir Bhairav, Bilawal, Todi, Nat Bhairav, Gunakali, Gurjari Todi.
 
-3. "late-morning" (09:00 - 12:00, मध्याह्न पूर्व / द्वितीय प्रहर):
+3. "late-morning" (09:00 - 12:00, मध्याह्न पूर्व / द्वितीय पहर):
    - Bright daytime sunshine, uplifting worship, Vishnu Sahasranama, dynamic stutis.
    - Raags: Jaunpuri, Asavari, Alhaiya Bilawal, Deshkar, Devgandhar.
 
-4. "afternoon" (12:00 - 15:00, मध्याह्न प्रहर / तृतीय प्रहर):
+4. "afternoon" (12:00 - 15:00, मध्याह्न पहर / तृतीय पहर):
    - Peak midday calmness, serene cooling contemplative devotion, Madhurashtakam.
    - Raags: Shuddha Sarang, Brindavani Sarang, Madhmad Sarang, Gaud Sarang.
 
-5. "late-afternoon" (15:00 - 18:00, अपराह्न प्रहर / चतुर्थ प्रहर):
+5. "late-afternoon" (15:00 - 18:00, अपराह्न पहर / चतुर्थ पहर):
    - Waning day, emotional yearning, Radha-Krishna viraha bhakti, soulful surrender.
    - Raags: Bhimpalasi, Multani, Patdeep, Dhanashree, Madhuvanti.
 
-6. "evening" (18:00 - 21:00, सांध्य प्रहर / संध्या आरती काल / Sandhivrakash Uttar):
+6. "evening" (18:00 - 21:00, सांध्य पहर / संध्या आरती काल / Sandhivrakash Uttar):
    - Sunset twilight, lamp offering (Deep Daan), Aarti, festive devotion, joyful celebration.
    - Raags: Yaman, Bhupali, Puriya Dhanashree, Marwa, Shuddha Kalyan, Hameer.
 
-7. "night" (21:00 - 00:00, रात्रि प्रहर / द्वितीय प्रहर रात्रि):
+7. "night" (21:00 - 00:00, रात्रि पहर / द्वितीय पहर रात्रि):
    - Sweet divine intimacy, soothing lullaby, divine resting, Achyutam Keshavam, Krishna Leela.
    - Raags: Kafi, Bageshri, Jaijaiwanti, Khamaj, Desh, Chandrakauns, Rageshri, Tilak Kamod.
 
-8. "late-night" (00:00 - 03:00, मध्य रात्रि प्रहर / तृतीय प्रहर रात्रि):
+8. "late-night" (00:00 - 03:00, मध्य रात्रि पहर / तृतीय पहर रात्रि):
    - Midnight silence, profound trance, Shiva Tandav, deep mystical dissolution into the infinite.
    - Raags: Malkauns, Darbari Kanada, Bihag, Jog, Kedar, Shankara, Adana.
 
-(Only use "anytime" for universally non-time-bound raags like Bhairavi, Pahadi, Shivranjani if none of the 8 prahars fit).
+(Only use "anytime" for universally non-time-bound raags like Bhairavi, Pahadi, Shivranjani if none of the 8 pahars fit).
 
 Songs to analyze:
 ${JSON.stringify(
@@ -89,7 +89,7 @@ Return ONLY a valid JSON array of objects with the exact structure:
     "raag": "string (e.g. Bhairav, Yaman, Malkauns, Bhimpalasi, Sarang, Jaunpuri, Kafi, Lalit)",
     "raagHindi": "string (राग का देवनागरी नाम, e.g. भैरव, यमन, मालकौंस, भीमपलासी)",
     "thaat": "string (e.g. Bhairav, Kalyan, Kafi, Bilawal, Asavari, Bhairavi, Todi, Marwa, Poorvi, Khamaj)",
-    "prahar": "dawn" | "morning" | "late-morning" | "afternoon" | "late-afternoon" | "evening" | "night" | "late-night" | "anytime",
+    "pahar": "dawn" | "morning" | "late-morning" | "afternoon" | "late-afternoon" | "evening" | "night" | "late-night" | "anytime",
     "timeSlot": "string (e.g. 06:00 - 09:00 (प्रातःकाल))",
     "mood": "string (e.g. सांध्य आरती एवं समर्पण)",
     "deity": "string (e.g. Shiva, Krishna, Rama, Hanuman, Devi, Universal)",
@@ -186,7 +186,7 @@ Return ONLY a valid JSON array of objects with the exact structure:
       raag: string;
       raagHindi?: string;
       thaat?: string;
-      prahar: PraharId;
+      pahar: PaharId;
       timeSlot?: string;
       mood?: string;
       deity?: string;
@@ -219,7 +219,7 @@ Return ONLY a valid JSON array of objects with the exact structure:
           track.raagHindi ||
           (master ? master.nameHindi : aiResult.raag || "भैरवी"),
         thaat: aiResult.thaat || track.thaat || (master ? master.thaat : "Bilawal"),
-        prahar: aiResult.prahar || track.prahar || (master ? master.prahar : "anytime"),
+        pahar: aiResult.pahar || track.pahar || (master ? master.pahar : "anytime"),
         timeSlot:
           aiResult.timeSlot ||
           track.timeSlot ||

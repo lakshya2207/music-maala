@@ -14,9 +14,9 @@ interface Petal {
   swayAmp: number;
   swayOffset: number;
   opacity: number;
+  maxOpacity: number;
   type: "marigold" | "rose" | "lotus" | "jasmine" | "sparkle";
   color: string;
-  secondaryColor: string;
 }
 
 export function FlowerShower() {
@@ -25,20 +25,37 @@ export function FlowerShower() {
   const petalsRef = useRef<Petal[]>([]);
   const animationFrameRef = useRef<number | null>(null);
   const showerTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  const showerStartTimeRef = useRef<number>(0);
 
-  const spawnPetals = useCallback((count = 70) => {
-    const width = window.innerWidth || 1200;
+  // Resize canvas handler (only on mount / resize, avoiding per-frame layout thrashing)
+  const resizeCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.scale(dpr, dpr);
+    }
+  }, []);
+
+  const spawnPetals = useCallback((count?: number) => {
+    const width = window.innerWidth || 360;
+    const isMobile = width < 640;
+
+    // Mobile performance tuning: limit count so mobile GPUs never hang or stutter
+    const targetCount = count ?? (isMobile ? 30 : 60);
+
     const colors = {
-      marigold: { primary: "#f59e0b", secondary: "#d97706" }, // Golden Marigold
-      rose: { primary: "#ef4444", secondary: "#991b1b" },     // Deep Rose Red
-      lotus: { primary: "#ec4899", secondary: "#be185d" },    // Pink Lotus
-      jasmine: { primary: "#fef08a", secondary: "#ffffff" },  // Creamy White Jasmine
-      sparkle: { primary: "#fde047", secondary: "#ffffff" },  // Divine Sparkle
+      marigold: "#f59e0b", // Rich Golden Marigold
+      rose: "#ef4444",     // Vivid Red Rose
+      lotus: "#ec4899",    // Pink Lotus
+      jasmine: "#fef08a",  // Soft Jasmine Cream
+      sparkle: "#fde047",  // Divine Golden Sparkle
     };
 
     const newPetals: Petal[] = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < targetCount; i++) {
       const typeChoice = Math.random();
       let type: Petal["type"] = "marigold";
       if (typeChoice < 0.35) type = "marigold";
@@ -47,23 +64,42 @@ export function FlowerShower() {
       else if (typeChoice < 0.95) type = "jasmine";
       else type = "sparkle";
 
-      const palette = colors[type];
+      // 3 distinct opacity & depth tiers:
+      // ~35% FULLY OPAQUE (0.92 - 1.0) - Bold, solid foreground petals
+      // ~40% SEMI-TRANSLUCENT (0.60 - 0.78) - Midground depth
+      // ~25% ETHEREAL TRANSLUCENT (0.30 - 0.48) - Soft background petals
+      const tierChoice = Math.random();
+      let maxOpacity: number;
+      let sizeScale = 1;
+
+      if (tierChoice < 0.35) {
+        maxOpacity = 0.92 + Math.random() * 0.08; // Fully Opaque (Solid!)
+        sizeScale = 1.15;
+      } else if (tierChoice < 0.75) {
+        maxOpacity = 0.60 + Math.random() * 0.18; // Semi-Translucent
+        sizeScale = 1.0;
+      } else {
+        maxOpacity = 0.30 + Math.random() * 0.18; // Soft Ethereal Translucent
+        sizeScale = 0.85;
+      }
+
+      const baseSize = type === "sparkle" ? 2.5 + Math.random() * 3 : (isMobile ? 7 + Math.random() * 8 : 9 + Math.random() * 11);
 
       newPetals.push({
         x: Math.random() * width,
-        y: -30 - Math.random() * 250, // Staggered spawn above viewport
-        vx: (Math.random() - 0.5) * 1.2,
-        vy: 2.2 + Math.random() * 2.8,
-        size: type === "sparkle" ? 3 + Math.random() * 4 : 10 + Math.random() * 14,
+        y: -20 - Math.random() * 160,
+        vx: (Math.random() - 0.5) * 0.9,
+        vy: 1.8 + Math.random() * 2.0,
+        size: baseSize * sizeScale,
         rotation: Math.random() * Math.PI * 2,
-        vRotation: (Math.random() - 0.5) * 0.08,
-        swayFreq: 0.02 + Math.random() * 0.03,
-        swayAmp: 1.2 + Math.random() * 2.2,
+        vRotation: (Math.random() - 0.5) * 0.05,
+        swayFreq: 0.015 + Math.random() * 0.025,
+        swayAmp: 0.8 + Math.random() * 1.5,
         swayOffset: Math.random() * Math.PI * 2,
-        opacity: 0.85 + Math.random() * 0.15,
+        opacity: 0.05, // Fade in from 0.05
+        maxOpacity,
         type,
-        color: palette.primary,
-        secondaryColor: palette.secondary,
+        color: colors[type],
       });
     }
 
@@ -79,58 +115,97 @@ export function FlowerShower() {
     if (p.type === "sparkle") {
       ctx.fillStyle = p.color;
       ctx.beginPath();
-      ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+      for (let i = 0; i < 4; i++) {
+        ctx.rotate(Math.PI / 4);
+        ctx.lineTo(0, p.size * 1.2);
+        ctx.rotate(Math.PI / 4);
+        ctx.lineTo(0, p.size * 0.35);
+      }
+      ctx.closePath();
       ctx.fill();
       ctx.restore();
       return;
     }
 
-    // Draw floral petal shape
-    ctx.beginPath();
-    ctx.moveTo(0, -p.size);
-    ctx.bezierCurveTo(p.size * 0.8, -p.size * 0.6, p.size * 0.8, p.size * 0.6, 0, p.size);
-    ctx.bezierCurveTo(-p.size * 0.8, p.size * 0.6, -p.size * 0.8, -p.size * 0.6, 0, -p.size);
-    ctx.closePath();
+    // Draw multi-petaled FLOWER BLOSSOM (Marigold, Rose, Lotus, Jasmine)
+    const numPetals = p.type === "marigold" ? 7 : 5;
+    const r = p.size;
+    const coreRadius = r * (p.type === "marigold" ? 0.42 : 0.32);
 
-    // Gradient fill for realistic petal depth
-    const grad = ctx.createLinearGradient(-p.size / 2, -p.size, p.size / 2, p.size);
-    grad.addColorStop(0, p.color);
-    grad.addColorStop(1, p.secondaryColor);
-    ctx.fillStyle = grad;
+    // 1. Draw surrounding petals around center
+    ctx.fillStyle = p.color;
+    for (let i = 0; i < numPetals; i++) {
+      const angle = (i * 2 * Math.PI) / numPetals;
+      const nextAngle = ((i + 1) * 2 * Math.PI) / numPetals;
+      const midAngle = (angle + nextAngle) / 2;
+
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.quadraticCurveTo(
+        Math.cos(angle) * r * 1.3,
+        Math.sin(angle) * r * 1.3,
+        Math.cos(midAngle) * r,
+        Math.sin(midAngle) * r
+      );
+      ctx.quadraticCurveTo(
+        Math.cos(nextAngle) * r * 1.3,
+        Math.sin(nextAngle) * r * 1.3,
+        0,
+        0
+      );
+      ctx.fill();
+    }
+
+    // 2. Center core / seed (stamen)
+    ctx.fillStyle = p.type === "marigold" ? "#b45309" : p.type === "rose" ? "#881337" : p.type === "lotus" ? "#be185d" : "#ca8a04";
+    ctx.beginPath();
+    ctx.arc(0, 0, coreRadius, 0, Math.PI * 2);
     ctx.fill();
 
-    // Subtle center vein on petal
-    ctx.beginPath();
-    ctx.moveTo(0, -p.size * 0.7);
-    ctx.lineTo(0, p.size * 0.7);
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.35)";
-    ctx.lineWidth = 1;
-    ctx.stroke();
+    // 3. Stamen center dots for detail
+    if (p.type !== "marigold") {
+      ctx.fillStyle = "#fde047";
+      for (let s = 0; s < 4; s++) {
+        const sAngle = (s * Math.PI) / 2;
+        ctx.beginPath();
+        ctx.arc(
+          Math.cos(sAngle) * (coreRadius * 0.5),
+          Math.sin(sAngle) * (coreRadius * 0.5),
+          0.8,
+          0,
+          Math.PI * 2
+        );
+        ctx.fill();
+      }
+    }
 
     ctx.restore();
   };
 
   const startShower = () => {
     setIsShowering(true);
-    showerStartTimeRef.current = performance.now();
-    spawnPetals(85);
+    const isMobile = window.innerWidth < 640;
 
-    // Add a second small wave after 1.5s for continuous fullness
+    spawnPetals(isMobile ? 30 : 55);
+
+    // Wave 2 after 1s
     setTimeout(() => {
-      spawnPetals(45);
-    }, 1200);
+      spawnPetals(isMobile ? 15 : 30);
+    }, 1000);
 
     if (showerTimeoutRef.current) {
       clearTimeout(showerTimeoutRef.current);
     }
 
-    // Shower lasts 4.5 to 5 seconds
     showerTimeoutRef.current = setTimeout(() => {
       setIsShowering(false);
-    }, 4800);
+    }, 4200);
   };
 
   useEffect(() => {
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
+
     let animId: number;
 
     const render = () => {
@@ -146,15 +221,12 @@ export function FlowerShower() {
         return;
       }
 
-      if (canvas.width !== window.innerWidth || canvas.height !== window.innerHeight) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-      }
+      const width = window.innerWidth;
+      const height = window.innerHeight;
 
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.clearRect(0, 0, width, height);
 
       if (petalsRef.current.length > 0) {
-        const height = canvas.height;
         const now = performance.now();
 
         for (let i = petalsRef.current.length - 1; i >= 0; i--) {
@@ -163,15 +235,20 @@ export function FlowerShower() {
           p.x += p.vx + Math.sin(now * p.swayFreq + p.swayOffset) * p.swayAmp;
           p.rotation += p.vRotation;
 
-          // Fade out near bottom of screen
-          if (p.y > height - 120) {
-            p.opacity -= 0.02;
+          // Smooth fade in near top
+          if (p.opacity < p.maxOpacity) {
+            p.opacity = Math.min(p.maxOpacity, p.opacity + 0.04);
+          }
+
+          // Smooth fade out near bottom of viewport
+          if (p.y > height - 160) {
+            p.opacity -= 0.015;
           }
 
           drawPetal(ctx, p);
 
-          // Remove petals once they leave screen or fully fade
-          if (p.y > height + 50 || p.opacity <= 0) {
+          // Remove petals once off screen or fully faded
+          if (p.y > height + 40 || p.opacity <= 0) {
             petalsRef.current.splice(i, 1);
           }
         }
@@ -184,10 +261,11 @@ export function FlowerShower() {
     animationFrameRef.current = animId;
 
     return () => {
+      window.removeEventListener("resize", resizeCanvas);
       if (animId) cancelAnimationFrame(animId);
       if (showerTimeoutRef.current) clearTimeout(showerTimeoutRef.current);
     };
-  }, []);
+  }, [resizeCanvas]);
 
   return (
     <>
@@ -205,7 +283,7 @@ export function FlowerShower() {
         className={`glass flex items-center gap-1.5 rounded-full px-3 sm:px-3.5 py-1.5 text-xs text-cream hover:text-amber border border-amber/35 hover:border-amber/60 hover:bg-amber/20 transition-all duration-300 active:scale-90 shadow-lg shadow-amber/10 group select-none ${
           isShowering ? "ring-2 ring-amber/50 bg-amber/20 scale-105" : ""
         }`}
-        title="पुष्प वर्षा करें • Offer Flower Shower (4-5s)"
+        title="पुष्प वर्षा करें • Offer Flower Shower"
       >
         <span className="text-base leading-none transition-transform duration-300 group-hover:rotate-45 group-active:scale-125">
           🌸

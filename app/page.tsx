@@ -20,7 +20,7 @@ export default async function Home() {
           <TopBar />
 
           {/* ── Main Hero & Self-Descriptive Header: म्यूज़िक माला रेडियो ── */}
-          <div className="flex flex-1 flex-col items-center justify-center gap-2 sm:gap-3 px-2 sm:px-4 pt-52 pb-50 sm:pt-32 md:pt-48 w-full max-w-4xl mx-auto text-center">
+          <div className="flex flex-1 flex-col items-center justify-center gap-2 sm:gap-3 px-2 sm:px-4 py-[30vh] w-full max-w-4xl mx-auto text-center">
             {/* Center backing scrim container for supreme legibility and sacred ambiance */}
             <div className="flex flex-col items-center gap-2 sm:gap-2.5 py-2.5 sm:py-5 px-3 sm:px-8 rounded-2xl sm:rounded-3xl bg-black/25 sm:bg-black/40 backdrop-blur-sm sm:backdrop-blur-md border border-amber/20 shadow-2xl shadow-black/80 max-w-full">
               {/* Live Vintage Radio Pill */}
@@ -66,14 +66,14 @@ export default async function Home() {
 
               {/* English Subtitle */}
               <p className="font-display text-[10px] xs:text-[11px] sm:text-sm md:text-base tracking-[0.14em] sm:tracking-[0.20em] text-cream uppercase text-center font-semibold px-1 max-w-md sm:max-w-xl text-shadow-sub">
-                Music Maala Radio &bull; 8 Prahars Classical Music Broadcast
+                Music Maala Radio &bull; 8 Pahars Classical Music Broadcast
               </p>
 
               {/* Narrative & Raags Link */}
               <div className="mt-0.5 max-w-2xl text-center space-y-2 border-t border-white/10 pt-2 sm:pt-3">
                 <p className="font-body text-[11.5px] sm:text-sm text-cream/90 leading-relaxed font-normal px-1">
                   <span className="text-amber font-semibold">राग और समय चक्र का पावन संगम: </span>
-                  भारतीय शास्त्रीय संगीत में दिन के २४ घंटों को ८ पावन प्रहरों में बांटा गया है। यह विंटेज रेडियो वर्तमान समय अनुसार उस प्रहर के भजनों और रागों को स्वतः प्रसारित करता है।
+                  भारतीय शास्त्रीय संगीत में दिन के २४ घंटों को ८ पावन पहरों में बांटा गया है। यह विंटेज रेडियो वर्तमान समय अनुसार उस पहर के भजनों और रागों को स्वतः प्रसारित करता है।
                 </p>
 
                 {/* Raag & Songs Section Link */}
@@ -83,7 +83,7 @@ export default async function Home() {
           </div>
 
           {/* ── Centerpiece Vintage Temple Radio Player with Dual Rotary Tuners ── */}
-          <div className="flex w-full flex-col py-50 items-center justify-center px-1.5 sm:px-4">
+          <div className="flex w-full flex-col py-[30vh] items-center justify-center px-1.5 sm:px-4">
             <RadioPlayer />
           </div>
 

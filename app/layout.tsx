@@ -33,7 +33,7 @@ const yatraOne = Yatra_One({
 export const metadata: Metadata = {
   title: "Music Maala Radio | म्यूज़िक माला रेडियो - 24×7 Vintage & Classical Radio",
   description:
-    "A 24×7 vintage radio dial broadcasting classic Indian devotional melodies and ragas synchronized with the 8 sacred Prahars of the day.",
+    "A 24×7 vintage radio dial broadcasting classic Indian devotional melodies and ragas synchronized with the 8 sacred Pahars of the day.",
 };
 
 export const viewport: Viewport = {

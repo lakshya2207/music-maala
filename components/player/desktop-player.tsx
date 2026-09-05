@@ -4,14 +4,14 @@ import { usePlayerEngine } from "./player-engine";
 import { Vinyl } from "./vinyl";
 import { SeekBar, TimeDisplay } from "./seek-bar";
 import { Transport } from "./transport";
-import { PraharBar } from "./prahar-bar";
+import { PaharBar } from "./pahar-bar";
 
 export function DesktopPlayer() {
   const { track, setRaagModalTrack } = usePlayerEngine();
 
   return (
     <div className="hidden w-full max-w-xl sm:flex sm:flex-col sm:items-center sm:gap-2.5">
-      <PraharBar />
+      <PaharBar />
       <div className="glass flex w-full items-center gap-4 rounded-full p-3 pr-5 border border-white/15 shadow-2xl backdrop-blur-xl">
         <Vinyl which="desktop" size={80} />
 

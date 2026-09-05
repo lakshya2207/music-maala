@@ -4,11 +4,11 @@ import { usePlayerEngine } from "./player-engine";
 import { PRAHARS } from "@/lib/raags";
 import { useState, useRef, useEffect } from "react";
 
-export function PraharBar() {
+export function PaharBar() {
   const {
-    currentPrahar,
-    selectedPrahar,
-    setSelectedPrahar,
+    currentPahar,
+    selectedPahar,
+    setSelectedPahar,
     activeTracks,
     track,
     setRaagModalTrack,
@@ -30,32 +30,32 @@ export function PraharBar() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const activePrahar =
-    selectedPrahar === "auto"
-      ? currentPrahar
-      : selectedPrahar === "all"
+  const activePahar =
+    selectedPahar === "auto"
+      ? currentPahar
+      : selectedPahar === "all"
       ? PRAHARS.anytime
-      : PRAHARS[selectedPrahar] || currentPrahar;
+      : PRAHARS[selectedPahar] || currentPahar;
 
   return (
     <div className="relative z-20 flex flex-col items-center gap-2 w-full max-w-lg px-1">
-      {/* Top Prahar Bar Pill */}
+      {/* Top Pahar Bar Pill */}
       <div className="glass flex items-center justify-between gap-1.5 sm:gap-3 rounded-full px-3 sm:px-4 py-1.5 w-full border border-white/15 shadow-xl text-xs sm:text-sm">
-        {/* Left: Current Prahar Badge & Mode Dropdown Toggle */}
+        {/* Left: Current Pahar Badge & Mode Dropdown Toggle */}
         <div className="relative flex items-center gap-1.5" ref={dropdownRef}>
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
             className="flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 bg-amber/20 hover:bg-amber/30 text-amber border border-amber/45 transition-all active:scale-95 font-utility text-[11px] sm:text-xs font-semibold shadow-sm"
-            title="Click to change Prahar or Auto Mode"
+            title="Click to change Pahar or Auto Mode"
           >
-            <span>{activePrahar.icon}</span>
+            <span>{activePahar.icon}</span>
             <span className="truncate max-w-[140px] xs:max-w-none">
-              {selectedPrahar === "auto"
-                ? `समय चक्र: ${currentPrahar.name}`
-                : selectedPrahar === "all"
+              {selectedPahar === "auto"
+                ? `समय चक्र: ${currentPahar.name}`
+                : selectedPahar === "all"
                 ? "सभी भजन (All)"
-                : activePrahar.name}
+                : activePahar.name}
             </span>
             <svg
               viewBox="0 0 20 20"
@@ -72,22 +72,22 @@ export function PraharBar() {
             </svg>
           </button>
 
-          {/* Prahar Picker Dropdown Menu */}
+          {/* Pahar Picker Dropdown Menu */}
           {isOpen && (
             <div className="absolute left-0 bottom-full mb-2 sm:bottom-auto sm:top-full sm:mt-2 w-[280px] xs:w-80 rounded-2xl glass p-2.5 border border-white/25 shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in zoom-in-95 duration-150 space-y-1">
               <div className="px-3 py-1.5 text-[11px] font-utility uppercase tracking-wider text-cream/70 font-semibold border-b border-white/10">
-                समय चक्र एवं प्रहर चयन
+                समय चक्र एवं पहर चयन
               </div>
 
               {/* Auto mode */}
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedPrahar("auto");
+                  setSelectedPahar("auto");
                   setIsOpen(false);
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-colors ${
-                  selectedPrahar === "auto"
+                  selectedPahar === "auto"
                     ? "bg-amber text-dusk font-bold shadow-md"
                     : "text-cream hover:bg-white/10"
                 }`}
@@ -96,23 +96,23 @@ export function PraharBar() {
                   <span>✨</span>
                   <div>
                     <p className="leading-tight font-semibold">समय चक्र (Live Auto Clock)</p>
-                    <p className={`text-[10px] ${selectedPrahar === "auto" ? "text-dusk/80 font-medium" : "text-cream/70"}`}>
-                      वर्तमान समय अनुसार: {currentPrahar.name}
+                    <p className={`text-[10px] ${selectedPahar === "auto" ? "text-dusk/80 font-medium" : "text-cream/70"}`}>
+                      वर्तमान समय अनुसार: {currentPahar.name}
                     </p>
                   </div>
                 </div>
-                {selectedPrahar === "auto" && <span>✓</span>}
+                {selectedPahar === "auto" && <span>✓</span>}
               </button>
 
               {/* All tracks mode */}
               <button
                 type="button"
                 onClick={() => {
-                  setSelectedPrahar("all");
+                  setSelectedPahar("all");
                   setIsOpen(false);
                 }}
                 className={`w-full flex items-center justify-between px-3 py-2 rounded-xl text-left text-xs transition-colors ${
-                  selectedPrahar === "all"
+                  selectedPahar === "all"
                     ? "bg-amber text-dusk font-bold shadow-md"
                     : "text-cream hover:bg-white/10"
                 }`}
@@ -121,25 +121,25 @@ export function PraharBar() {
                   <span>📜</span>
                   <span>सभी भजन (Play All Tracks)</span>
                 </div>
-                {selectedPrahar === "all" && <span>✓</span>}
+                {selectedPahar === "all" && <span>✓</span>}
               </button>
 
               <div className="h-px bg-white/10 my-1" />
 
-              {/* 8 Prahars list */}
+              {/* 8 Pahars list */}
               <div className="max-h-48 overflow-y-auto space-y-0.5 pr-1">
                 {Object.values(PRAHARS)
                   .filter((p) => p.id !== "anytime")
                   .map((p) => {
-                    const isCurrent = currentPrahar.id === p.id;
-                    const isSelected = selectedPrahar === p.id;
+                    const isCurrent = currentPahar.id === p.id;
+                    const isSelected = selectedPahar === p.id;
 
                     return (
                       <button
                         key={p.id}
                         type="button"
                         onClick={() => {
-                          setSelectedPrahar(p.id);
+                          setSelectedPahar(p.id);
                           setIsOpen(false);
                         }}
                         className={`w-full flex items-center justify-between px-3 py-1.5 rounded-lg text-left text-xs transition-colors ${

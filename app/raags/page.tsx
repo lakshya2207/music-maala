@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import type { Playlist, Track, PraharId } from "@/lib/types";
-import { PRAHARS, RAAG_MASTER, getCurrentPrahar } from "@/lib/raags";
+import type { Playlist, Track, PaharId } from "@/lib/types";
+import { PRAHARS, RAAG_MASTER, getCurrentPahar } from "@/lib/raags";
 import { FALLBACK_PLAYLISTS } from "@/lib/default-playlists";
 import { FlowerShower } from "@/components/top-bar/flower-shower";
 import Link from "next/link";
@@ -10,13 +10,13 @@ import Link from "next/link";
 export default function RaagsPage() {
   const [playlist, setPlaylist] = useState<Playlist | null>(FALLBACK_PLAYLISTS[0] || null);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState<"prahars" | "raags" | "deities" | "all">("prahars");
-  const [currentPrahar, setCurrentPrahar] = useState(getCurrentPrahar());
+  const [activeTab, setActiveTab] = useState<"pahars" | "raags" | "deities" | "all">("pahars");
+  const [currentPahar, setCurrentPahar] = useState(getCurrentPahar());
   const [selectedLoreTrack, setSelectedLoreTrack] = useState<Track | null>(null);
 
   useEffect(() => {
     fetchPlaylist();
-    const timer = setInterval(() => setCurrentPrahar(getCurrentPrahar()), 60000);
+    const timer = setInterval(() => setCurrentPahar(getCurrentPahar()), 60000);
     return () => clearInterval(timer);
   }, []);
 
@@ -91,7 +91,7 @@ export default function RaagsPage() {
 
         <div className="flex items-center gap-2">
           <span className="text-xs px-3 py-1 rounded-full bg-amber/15 text-amber border border-amber/30 font-utility font-medium">
-            {currentPrahar.icon} अभी का समय: {currentPrahar.name} ({currentPrahar.timeRange})
+            {currentPahar.icon} अभी का समय: {currentPahar.name} ({currentPahar.timeRange})
           </span>
         </div>
 
@@ -118,11 +118,11 @@ export default function RaagsPage() {
             style={{ fontFamily: "var(--font-yatra)" }}
             className="text-3xl sm:text-5xl md:text-6xl text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber to-amber-500 font-normal leading-tight"
           >
-            राग एवं प्रहर अनुसार भजन
+            राग एवं पहर अनुसार भजन
           </h1>
 
           <p className="text-sm sm:text-base text-cream/80 max-w-xl mx-auto leading-relaxed font-body">
-            भारतीय शास्त्रीय संगीत में प्रत्येक प्रहर और राग का प्रकृति, मन एवं आध्यात्मिक साधना से सीधा संबंध है। अपने समय एवं भाव के अनुसार भजन सुनें।
+            भारतीय शास्त्रीय संगीत में प्रत्येक पहर और राग का प्रकृति, मन एवं आध्यात्मिक साधना से सीधा संबंध है। अपने समय एवं भाव के अनुसार भजन सुनें।
           </p>
 
           {/* Search bar */}
@@ -147,14 +147,14 @@ export default function RaagsPage() {
           {/* Tabs */}
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2">
             <button
-              onClick={() => setActiveTab("prahars")}
+              onClick={() => setActiveTab("pahars")}
               className={`px-4 py-2 rounded-full text-xs font-semibold transition-all ${
-                activeTab === "prahars"
+                activeTab === "pahars"
                   ? "bg-amber text-dusk shadow-lg shadow-amber/20 scale-105"
                   : "bg-white/5 text-cream/70 hover:bg-white/10"
               }`}
             >
-              🌅 ८ प्रहर (8 Prahars)
+              🌅 ८ पहर (8 Pahars)
             </button>
             <button
               onClick={() => setActiveTab("raags")}
@@ -189,14 +189,14 @@ export default function RaagsPage() {
           </div>
         </div>
 
-        {/* Tab 1: Prahars View */}
-        {activeTab === "prahars" && (
+        {/* Tab 1: Pahars View */}
+        {activeTab === "pahars" && (
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {Object.values(PRAHARS).map((p) => {
-                const isCurrent = currentPrahar.id === p.id;
-                const praharTracks = searchedTracks.filter(
-                  (t) => t.prahar === p.id || (p.id === "anytime" && t.prahar === "anytime")
+                const isCurrent = currentPahar.id === p.id;
+                const paharTracks = searchedTracks.filter(
+                  (t) => t.pahar === p.id || (p.id === "anytime" && t.pahar === "anytime")
                 );
 
                 return (
@@ -232,7 +232,7 @@ export default function RaagsPage() {
                       </div>
 
                       <span className="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-cream/60 font-utility tabular">
-                        {praharTracks.length} भजन
+                        {paharTracks.length} भजन
                       </span>
                     </div>
 
@@ -255,13 +255,13 @@ export default function RaagsPage() {
                     </div>
 
                     {/* Track List */}
-                    {praharTracks.length > 0 && (
+                    {paharTracks.length > 0 && (
                       <div className="space-y-2 pt-2 border-t border-white/10">
                         <p className="text-[11px] font-utility text-cream/40 uppercase tracking-wider">
-                          इस प्रहर के भजन:
+                          इस पहर के भजन:
                         </p>
                         <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
-                          {praharTracks.map((t) => (
+                          {paharTracks.map((t) => (
                             <div
                               key={t.id}
                               className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 hover:bg-white/10 transition-colors gap-2"
@@ -464,15 +464,15 @@ export default function RaagsPage() {
                     <th className="px-4 py-3.5 w-10">#</th>
                     <th className="px-4 py-3.5 min-w-[200px]">Song & Artist</th>
                     <th className="px-4 py-3.5 min-w-[140px]">राग (Raag)</th>
-                    <th className="px-4 py-3.5 min-w-[160px]">प्रहर (Time / Prahar)</th>
+                    <th className="px-4 py-3.5 min-w-[160px]">पहर (Time / Pahar)</th>
                     <th className="px-4 py-3.5 min-w-[120px] hidden sm:table-cell">Deity</th>
                     <th className="px-4 py-3.5 text-right w-20">Play</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5 font-body">
                   {searchedTracks.map((track, i) => {
-                    const praharInfo =
-                      PRAHARS[(track.prahar as PraharId) || "anytime"] || PRAHARS.anytime;
+                    const paharInfo =
+                      PRAHARS[(track.pahar as PaharId) || "anytime"] || PRAHARS.anytime;
 
                     return (
                       <tr key={track.id} className="hover:bg-white/10 transition-colors">
@@ -498,11 +498,11 @@ export default function RaagsPage() {
                         </td>
                         <td className="px-4 py-3.5 text-xs text-cream font-medium">
                           <div className="flex items-center gap-1.5">
-                            <span>{praharInfo.icon}</span>
-                            <span>{praharInfo.name}</span>
+                            <span>{paharInfo.icon}</span>
+                            <span>{paharInfo.name}</span>
                           </div>
                           <span className="text-[11px] text-cream/70 font-utility">
-                            {track.timeSlot || praharInfo.timeRange}
+                            {track.timeSlot || paharInfo.timeRange}
                           </span>
                         </td>
                         <td className="px-4 py-3.5 hidden sm:table-cell">
@@ -565,9 +565,9 @@ export default function RaagsPage() {
 
             <div className="grid grid-cols-2 gap-3 font-body text-xs">
               <div className="rounded-2xl bg-white/10 p-3.5 border border-white/15 shadow-sm">
-                <span className="text-amber font-utility font-semibold">गायन प्रहर:</span>
+                <span className="text-amber font-utility font-semibold">गायन पहर:</span>
                 <p className="font-bold text-cream text-sm mt-0.5">
-                  {selectedLoreTrack.prahar}
+                  {selectedLoreTrack.pahar}
                 </p>
                 <p className="text-cream/70 font-utility text-[11px] font-medium">
                   {selectedLoreTrack.timeSlot}

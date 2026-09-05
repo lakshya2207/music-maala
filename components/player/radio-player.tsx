@@ -2,11 +2,11 @@
 
 import { useRef, useState, useMemo, useCallback } from "react";
 import { usePlayerEngine } from "./player-engine";
-import type { PraharId } from "@/lib/types";
+import type { PaharId } from "@/lib/types";
 
-// Radio channels mapped to sacred Prahars
+// Radio channels mapped to sacred Pahars
 export interface RadioStation {
-  id: "auto" | "all" | PraharId;
+  id: "auto" | "all" | PaharId;
   frequency: number; // in MHz
   label: string;
   hindiName: string;
@@ -21,8 +21,8 @@ export const RADIO_STATIONS: RadioStation[] = [
     id: "auto",
     frequency: 87.5,
     label: "LIVE AUTO",
-    hindiName: "🔴 वर्तमान प्रहर",
-    shortHindi: "लाइव प्रहर",
+    hindiName: "🔴 वर्तमान पहर",
+    shortHindi: "लाइव पहर",
     timeSlot: "IST Live Sync",
     raagHints: "समय चक्र अनुसार स्वतः ट्यूनिंग",
     icon: "📡",
@@ -41,7 +41,7 @@ export const RADIO_STATIONS: RadioStation[] = [
     id: "morning",
     frequency: 91.0,
     label: "91.0 FM",
-    hindiName: "प्रातः प्रहर",
+    hindiName: "प्रातः पहर",
     shortHindi: "प्रातः",
     timeSlot: "06:00 - 09:00",
     raagHints: "भैरव, तोड़ी, बिलावल",
@@ -61,7 +61,7 @@ export const RADIO_STATIONS: RadioStation[] = [
     id: "afternoon",
     frequency: 97.0,
     label: "97.0 FM",
-    hindiName: "मध्याह्न प्रहर",
+    hindiName: "मध्याह्न पहर",
     shortHindi: "मध्याह्न",
     timeSlot: "12:00 - 15:00",
     raagHints: "सारंग अंग, शुद्ध सारंग",
@@ -71,7 +71,7 @@ export const RADIO_STATIONS: RadioStation[] = [
     id: "late-afternoon",
     frequency: 100.0,
     label: "100.0 FM",
-    hindiName: "अपराह्न प्रहर",
+    hindiName: "अपराह्न पहर",
     shortHindi: "अपराह्न",
     timeSlot: "15:00 - 18:00",
     raagHints: "भीमपलासी, मुल्तानी",
@@ -81,7 +81,7 @@ export const RADIO_STATIONS: RadioStation[] = [
     id: "evening",
     frequency: 103.5,
     label: "103.5 FM",
-    hindiName: "सांध्य प्रहर (संध्या)",
+    hindiName: "सांध्य पहर (संध्या)",
     shortHindi: "सांध्य",
     timeSlot: "18:00 - 21:00",
     raagHints: "यमन, भूपाली, पूरिया",
@@ -91,7 +91,7 @@ export const RADIO_STATIONS: RadioStation[] = [
     id: "night",
     frequency: 106.0,
     label: "106.0 FM",
-    hindiName: "रात्रि प्रहर",
+    hindiName: "रात्रि पहर",
     shortHindi: "रात्रि",
     timeSlot: "21:00 - 00:00",
     raagHints: "काफी, बागेश्री, खमाज",
@@ -136,18 +136,18 @@ export function RadioPlayer() {
     currentTime,
     duration,
     seek,
-    selectedPrahar,
-    setSelectedPrahar,
-    currentPrahar,
+    selectedPahar,
+    setSelectedPahar,
+    currentPahar,
     activeTracks,
     setRaagModalTrack,
   } = usePlayerEngine();
 
   // Active station calculation
   const activeStationIndex = useMemo(() => {
-    const idx = RADIO_STATIONS.findIndex((s) => s.id === selectedPrahar);
+    const idx = RADIO_STATIONS.findIndex((s) => s.id === selectedPahar);
     return idx !== -1 ? idx : 0;
-  }, [selectedPrahar]);
+  }, [selectedPahar]);
 
   const activeStation = RADIO_STATIONS[activeStationIndex] || RADIO_STATIONS[0];
 
@@ -156,19 +156,19 @@ export function RadioPlayer() {
     const minFreq = 87.0;
     const maxFreq = 109.0;
     const currentFreq =
-      selectedPrahar === "auto"
-        ? (RADIO_STATIONS.find((s) => s.id === currentPrahar.id)?.frequency ?? 103.5)
+      selectedPahar === "auto"
+        ? (RADIO_STATIONS.find((s) => s.id === currentPahar.id)?.frequency ?? 103.5)
         : activeStation.frequency;
     const clamped = Math.min(maxFreq, Math.max(minFreq, currentFreq));
     return ((clamped - minFreq) / (maxFreq - minFreq)) * 100;
-  }, [selectedPrahar, currentPrahar.id, activeStation]);
+  }, [selectedPahar, currentPahar.id, activeStation]);
 
   // Handle direct station selection from FM scale glass window
   const handleSelectStation = useCallback(
     (station: RadioStation) => {
-      setSelectedPrahar(station.id);
+      setSelectedPahar(station.id);
     },
-    [setSelectedPrahar]
+    [setSelectedPahar]
   );
 
   // Track seek bar interaction
@@ -217,12 +217,12 @@ export function RadioPlayer() {
 
   // Active frequency string
   const activeFreqString = useMemo(() => {
-    if (selectedPrahar === "auto") {
-      const freq = RADIO_STATIONS.find((s) => s.id === currentPrahar.id)?.frequency ?? 103.5;
+    if (selectedPahar === "auto") {
+      const freq = RADIO_STATIONS.find((s) => s.id === currentPahar.id)?.frequency ?? 103.5;
       return `${freq.toFixed(1)} MHz`;
     }
     return `${activeStation.frequency.toFixed(1)} MHz`;
-  }, [selectedPrahar, currentPrahar.id, activeStation]);
+  }, [selectedPahar, currentPahar.id, activeStation]);
 
   return (
     <div className="relative flex flex-col items-center w-full max-w-2xl mx-auto px-1 sm:px-3 py-1 sm:py-3">
@@ -275,7 +275,7 @@ export function RadioPlayer() {
             </div>
           </div>
 
-          {/* ── Analog Backlit Glass Window & Integrated Prahar FM Scale ── */}
+          {/* ── Analog Backlit Glass Window & Integrated Pahar FM Scale ── */}
           <div className="relative z-10 mb-3 sm:mb-4">
             <div
               className="relative w-full h-16 sm:h-20 rounded-xl border-2 border-amber-600/50 p-1.5 sm:p-2 overflow-hidden flex flex-col justify-between shadow-[inset_0_0_15px_rgba(0,0,0,0.9),0_0_12px_rgba(245,176,65,0.15)]"
@@ -322,10 +322,10 @@ export function RadioPlayer() {
                 ))}
               </div>
 
-              {/* Clickable Prahar Stations Bar across FM Glass Window */}
+              {/* Clickable Pahar Stations Bar across FM Glass Window */}
               <div className="relative z-10 flex items-center justify-between gap-0.5 text-[8px] sm:text-[9.5px] font-utility font-bold text-amber-300/90 select-none truncate">
                 {RADIO_STATIONS.map((st) => {
-                  const isCur = selectedPrahar === st.id;
+                  const isCur = selectedPahar === st.id;
                   return (
                     <button
                       key={st.id}
@@ -368,8 +368,8 @@ export function RadioPlayer() {
                   {playing ? "प्रसारण जारी • ON AIR" : "रेдио तैयार • STANDBY"}
                 </span>
                 <span className="text-amber-300 font-semibold text-[10px] sm:text-xs">
-                  {selectedPrahar === "auto"
-                    ? `लाइव प्रहर: ${currentPrahar.name}`
+                  {selectedPahar === "auto"
+                    ? `लाइव पहर: ${currentPahar.name}`
                     : activeStation.hindiName}
                 </span>
               </div>
@@ -430,7 +430,7 @@ export function RadioPlayer() {
                 <div className="flex items-center justify-between text-[10px] sm:text-[11px] font-utility tabular text-cream/70 font-medium px-0.5">
                   <span>{formatTime(displayTime)}</span>
                   <span className="text-[9.5px] text-amber-400/90 uppercase tracking-wider font-semibold">
-                    {activeTracks.length} भजन (प्रहर + सर्वकालीन)
+                    {activeTracks.length} भजन (पहर + सर्वकालीन)
                   </span>
                   <span>{formatTime(duration)}</span>
                 </div>

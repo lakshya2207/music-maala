@@ -22,7 +22,7 @@ const TrackSchema = new Schema<ITrack>(
     raag: { type: String, default: "" },
     raagHindi: { type: String, default: "" },
     thaat: { type: String, default: "" },
-    prahar: { type: String, default: "anytime" },
+    pahar: { type: String, default: "anytime" },
     timeSlot: { type: String, default: "" },
     mood: { type: String, default: "" },
     deity: { type: String, default: "" },

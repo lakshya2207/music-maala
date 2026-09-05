@@ -4,9 +4,9 @@ import { useEffect, useState, useMemo } from "react";
 import { createPortal } from "react-dom";
 import { usePlayerEngine } from "./player-engine";
 import { PRAHARS, RAAG_MASTER } from "@/lib/raags";
-import type { PraharId, Track } from "@/lib/types";
+import type { PaharId, Track } from "@/lib/types";
 
-const PRAHAR_ORDER: (PraharId | "anytime")[] = [
+const PRAHAR_ORDER: (PaharId | "anytime")[] = [
   "dawn",
   "morning",
   "late-morning",
@@ -31,7 +31,7 @@ export function RaagModal() {
   const [mounted, setMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<"track" | "library">("library");
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedPraharFilter, setSelectedPraharFilter] = useState<string>("all");
+  const [selectedPaharFilter, setSelectedPaharFilter] = useState<string>("all");
 
   useEffect(() => {
     setMounted(true);
@@ -58,8 +58,8 @@ export function RaagModal() {
     return playlists.flatMap((p) => p.tracks || []);
   }, [playlists]);
 
-  // Group tracks by Prahar (Peher)
-  const praharGroups = useMemo(() => {
+  // Group tracks by Pahar (Peher)
+  const paharGroups = useMemo(() => {
     const map: Record<string, Track[]> = {
       dawn: [],
       morning: [],
@@ -73,7 +73,7 @@ export function RaagModal() {
     };
 
     allTracks.forEach((t) => {
-      const pid = (t.prahar as PraharId) || "anytime";
+      const pid = (t.pahar as PaharId) || "anytime";
       if (!map[pid]) map[pid] = [];
       map[pid].push(t);
     });
@@ -88,12 +88,12 @@ export function RaagModal() {
     });
   }, [allTracks]);
 
-  // Filtered Prahar groups based on search & prahar filter dropdown
+  // Filtered Pahar groups based on search & pahar filter dropdown
   const filteredGroups = useMemo(() => {
-    return praharGroups
+    return paharGroups
       .map((group) => {
         const matchesDropdown =
-          selectedPraharFilter === "all" || group.id === selectedPraharFilter;
+          selectedPaharFilter === "all" || group.id === selectedPaharFilter;
 
         if (!matchesDropdown) return null;
 
@@ -124,14 +124,14 @@ export function RaagModal() {
         return null;
       })
       .filter((g): g is NonNullable<typeof g> => g !== null);
-  }, [praharGroups, searchQuery, selectedPraharFilter]);
+  }, [paharGroups, searchQuery, selectedPaharFilter]);
 
   if (!mounted || !isOpen) return null;
 
   const track = raagModalTrack;
   const master = track && track.raag ? RAAG_MASTER[track.raag] : null;
-  const praharInfo = track
-    ? PRAHARS[(track.prahar as PraharId) || (master?.prahar as PraharId) || "anytime"] ||
+  const paharInfo = track
+    ? PRAHARS[(track.pahar as PaharId) || (master?.pahar as PaharId) || "anytime"] ||
       PRAHARS.anytime
     : PRAHARS.anytime;
 
@@ -154,7 +154,7 @@ export function RaagModal() {
                 style={{ fontFamily: "var(--font-yatra)" }}
                 className="text-xl sm:text-2xl text-amber font-normal my-0"
               >
-                प्रहर एवं भजन पुस्तकालय
+                पहर एवं भजन पुस्तकालय
               </h2>
               <p className="text-[11px] sm:text-xs text-cream/70 font-utility tracking-wider uppercase">
                 DEVOTIONAL SONGS BY 8 PRAHARS TIME CYCLE
@@ -197,7 +197,7 @@ export function RaagModal() {
                   : "text-cream/75 hover:text-cream"
               }`}
             >
-              प्रहर अनुसार भजन सूची ({allTracks.length})
+              पहर अनुसार भजन सूची ({allTracks.length})
             </button>
           </div>
         )}
@@ -231,12 +231,12 @@ export function RaagModal() {
             <div className="grid grid-cols-2 gap-2.5 sm:gap-3 font-body text-xs">
               <div className="rounded-xl bg-white/10 border border-white/15 p-3 space-y-1">
                 <div className="flex items-center gap-1.5 text-amber font-utility font-semibold">
-                  <span>{praharInfo.icon}</span>
-                  <span>गायन समय (Prahar)</span>
+                  <span>{paharInfo.icon}</span>
+                  <span>गायन समय (Pahar)</span>
                 </div>
-                <p className="text-sm font-bold text-cream">{praharInfo.name}</p>
+                <p className="text-sm font-bold text-cream">{paharInfo.name}</p>
                 <p className="text-[11px] text-cream/70 font-utility tabular">
-                  {track.timeSlot || praharInfo.timeRange}
+                  {track.timeSlot || paharInfo.timeRange}
                 </p>
               </div>
 
@@ -282,13 +282,13 @@ export function RaagModal() {
               <p className="text-xs sm:text-sm text-cream leading-relaxed font-medium">
                 {track.description ||
                   master?.spiritualSignificance ||
-                  praharInfo.description ||
+                  paharInfo.description ||
                   "भारतीय शास्त्रीय संगीत में रागों का समय चक्र मन को एकाग्र कर ईश्वर भक्ति में लीन करने का दिव्य माध्यम है।"}
               </p>
             </div>
           </div>
         ) : (
-          /* ── TAB 2: Songs Grouped by Prahars (Pehers) ── */
+          /* ── TAB 2: Songs Grouped by Pahars (Pehers) ── */
           <div className="flex-1 flex flex-col min-h-0 space-y-3">
             {/* Search & Filter Bar */}
             <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
@@ -296,7 +296,7 @@ export function RaagModal() {
               <div className="relative flex-1">
                 <input
                   type="text"
-                  placeholder="प्रहर, भजन या राग खोजें (Search Prahars, Songs or Raags)..."
+                  placeholder="पहर, भजन या राग खोजें (Search Pahars, Songs or Raags)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-black/40 border border-white/15 text-cream text-xs placeholder:text-cream/40 focus:outline-none focus:border-amber"
@@ -304,13 +304,13 @@ export function RaagModal() {
                 <span className="absolute left-2.5 top-2 text-cream/40 text-xs">🔍</span>
               </div>
 
-              {/* Prahar Quick Filter Dropdown */}
+              {/* Pahar Quick Filter Dropdown */}
               <select
-                value={selectedPraharFilter}
-                onChange={(e) => setSelectedPraharFilter(e.target.value)}
+                value={selectedPaharFilter}
+                onChange={(e) => setSelectedPaharFilter(e.target.value)}
                 className="py-1.5 px-3 rounded-xl bg-black/40 border border-white/15 text-cream text-xs focus:outline-none focus:border-amber font-utility font-medium"
               >
-                <option value="all">समस्त 8 प्रहर (All Prahars)</option>
+                <option value="all">समस्त 8 पहर (All Pahars)</option>
                 <option value="dawn">उषाकाल (Pre-Dawn)</option>
                 <option value="morning">प्रातःकाल (Morning)</option>
                 <option value="late-morning">मध्याह्न पूर्व (Late Morning)</option>
@@ -323,11 +323,11 @@ export function RaagModal() {
               </select>
             </div>
 
-            {/* Prahar Groups List (Scrollable Repertoire) */}
+            {/* Pahar Groups List (Scrollable Repertoire) */}
             <div className="flex-1 overflow-y-auto pr-1 space-y-4 custom-scrollbar">
               {filteredGroups.length === 0 ? (
                 <div className="text-center py-8 text-cream/60 text-xs">
-                  कोई प्रहर या भजन उपलब्ध नहीं मिला।
+                  कोई पहर या भजन उपलब्ध नहीं मिला।
                 </div>
               ) : (
                 filteredGroups.map((group) => {
@@ -338,7 +338,7 @@ export function RaagModal() {
                       key={group.id}
                       className="rounded-2xl bg-white/5 border border-white/10 p-3.5 space-y-2.5 transition-all hover:border-amber/30"
                     >
-                      {/* Prahar Group Header */}
+                      {/* Pahar Group Header */}
                       <div className="flex items-start justify-between border-b border-white/10 pb-2">
                         <div>
                           <div className="flex items-center gap-2">
@@ -362,16 +362,16 @@ export function RaagModal() {
                         </span>
                       </div>
 
-                      {/* Prahar Description */}
+                      {/* Pahar Description */}
                       <p className="text-[11px] text-cream/80 leading-relaxed font-body italic my-0">
                         {pInfo.description}
                       </p>
 
-                      {/* Track List inside this Prahar */}
+                      {/* Track List inside this Pahar */}
                       <div className="space-y-1.5 pt-1">
                         {group.tracks.length === 0 ? (
                           <div className="text-[11px] text-cream/50 italic px-2 py-1">
-                            इस प्रहर के विशेष भजन शीघ्र जोड़े जाएंगे (सर्वकालीन भजन स्वतः प्रसारित होते हैं)।
+                            इस पहर के विशेष भजन शीघ्र जोड़े जाएंगे (सर्वकालीन भजन स्वतः प्रसारित होते हैं)।
                           </div>
                         ) : (
                           group.tracks.map((t) => (
@@ -421,7 +421,7 @@ export function RaagModal() {
 
         {/* Modal Footer */}
         <div className="flex items-center justify-between text-[11px] font-utility text-cream/70 pt-3 border-t border-white/10 mt-2">
-          <span>8 पावन प्रहर एवं समय चक्र भजन संग्रह</span>
+          <span>8 पावन पहर एवं समय चक्र भजन संग्रह</span>
           <button
             onClick={closeModal}
             className="text-amber hover:underline font-bold cursor-pointer"
