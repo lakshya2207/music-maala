@@ -120,6 +120,8 @@ export const PRAHARS: Record<PaharId, PaharInfo> = {
   },
 };
 
+export const PAHARS = PRAHARS;
+
 export interface RaagDetails {
   name: string;
   nameHindi: string;
