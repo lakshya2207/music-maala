@@ -39,6 +39,8 @@ type PlayerEngineValue = {
   seek: (seconds: number) => void;
   raagModalTrack: Track | null;
   setRaagModalTrack: (track: Track | null) => void;
+  raagLibraryOpen: boolean;
+  setRaagLibraryOpen: React.Dispatch<React.SetStateAction<boolean>>;
   shortcutsModalOpen: boolean;
   setShortcutsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -98,6 +100,7 @@ export function PlayerEngineProvider({
   const [selectedPrahar, setSelectedPraharState] = useState<"auto" | "all" | PraharId>("auto");
   const [currentPrahar, setCurrentPrahar] = useState<PraharInfo>(PRAHARS.evening);
   const [raagModalTrack, setRaagModalTrack] = useState<Track | null>(null);
+  const [raagLibraryOpen, setRaagLibraryOpen] = useState(false);
   const [shortcutsModalOpen, setShortcutsModalOpen] = useState(false);
 
   const playerRef = useRef<YT.Player | null>(null);
@@ -365,6 +368,8 @@ export function PlayerEngineProvider({
       seek,
       raagModalTrack,
       setRaagModalTrack,
+      raagLibraryOpen,
+      setRaagLibraryOpen,
       shortcutsModalOpen,
       setShortcutsModalOpen,
     }),
@@ -390,6 +395,7 @@ export function PlayerEngineProvider({
       prev,
       seek,
       raagModalTrack,
+      raagLibraryOpen,
       shortcutsModalOpen,
     ],
   );

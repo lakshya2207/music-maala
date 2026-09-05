@@ -656,18 +656,21 @@ export function getFilteredTracks(
 
   const targetPraharId = filter === "auto" ? currentPrahar.id : filter;
 
-  // 1. Prioritize exact matches for the targeted Prahar
-  const exactMatches = tracks.filter((t) => t.prahar === targetPraharId);
-  if (exactMatches.length > 0) {
-    return exactMatches;
+  // 1. Primary tracks matching targeted Prahar
+  const praharTracks = tracks.filter((t) => t.prahar === targetPraharId);
+
+  // 2. Secondary Sarvakalin / Anytime tracks (excluding any duplicates)
+  const anytimeTracks = tracks.filter(
+    (t) => t.prahar === "anytime" && !praharTracks.some((pt) => pt.id === t.id)
+  );
+
+  // 3. Combine: current Prahar songs first, then Sarvakalin/Evertime songs
+  const combined = [...praharTracks, ...anytimeTracks];
+
+  if (combined.length > 0) {
+    return combined;
   }
 
-  // 2. Fallback to anytime tracks if targeted Prahar has no specific songs
-  const anytimeMatches = tracks.filter((t) => t.prahar === "anytime");
-  if (anytimeMatches.length > 0) {
-    return anytimeMatches;
-  }
-
-  // 3. Fallback to entire list
+  // Fallback to all tracks if neither matching nor anytime tracks are present
   return tracks;
 }
