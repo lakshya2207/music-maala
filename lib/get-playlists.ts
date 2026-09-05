@@ -2,6 +2,7 @@ import type { Playlist, Track } from "./types";
 import { connectToDatabase } from "./mongodb";
 import { PlaylistModel } from "@/models/Playlist";
 import { DEFAULT_TRACKS, FALLBACK_PLAYLISTS } from "./default-playlists";
+import { enrichTrackRaag } from "./raags";
 
 export { DEFAULT_TRACKS, FALLBACK_PLAYLISTS };
 
@@ -16,23 +17,25 @@ export async function getPlaylists(): Promise<Playlist[]> {
         return docs.map((doc) => ({
           id: doc.id,
           name: doc.name,
-          tracks: doc.tracks.map((t: any) => ({
-            id: t.id,
-            title: t.title,
-            artist: t.artist,
-            film: t.film,
-            year: t.year,
-            duration: t.duration,
-            videoId: t.videoId,
-            raag: t.raag || "Bhairavi",
-            raagHindi: t.raagHindi || "भैरवी",
-            thaat: t.thaat || "Bhairavi",
-            pahar: t.pahar || "anytime",
-            timeSlot: t.timeSlot || "सर्वकालीन",
-            mood: t.mood || "भक्ति भाव",
-            deity: t.deity || "Universal",
-            description: t.description || "",
-          })),
+          tracks: doc.tracks.map((t: any) =>
+            enrichTrackRaag({
+              id: t.id,
+              title: t.title,
+              artist: t.artist,
+              film: t.film,
+              year: t.year,
+              duration: t.duration,
+              videoId: t.videoId,
+              raag: t.raag,
+              raagHindi: t.raagHindi,
+              thaat: t.thaat,
+              pahar: t.pahar,
+              timeSlot: t.timeSlot,
+              mood: t.mood,
+              deity: t.deity,
+              description: t.description || "",
+            })
+          ),
         }));
       }
 
@@ -43,23 +46,25 @@ export async function getPlaylists(): Promise<Playlist[]> {
         {
           id: seeded.id,
           name: seeded.name,
-          tracks: seeded.tracks.map((t: any) => ({
-            id: t.id,
-            title: t.title,
-            artist: t.artist,
-            film: t.film,
-            year: t.year,
-            duration: t.duration,
-            videoId: t.videoId,
-            raag: t.raag,
-            raagHindi: t.raagHindi,
-            thaat: t.thaat,
-            pahar: t.pahar,
-            timeSlot: t.timeSlot,
-            mood: t.mood,
-            deity: t.deity,
-            description: t.description,
-          })),
+          tracks: seeded.tracks.map((t: any) =>
+            enrichTrackRaag({
+              id: t.id,
+              title: t.title,
+              artist: t.artist,
+              film: t.film,
+              year: t.year,
+              duration: t.duration,
+              videoId: t.videoId,
+              raag: t.raag,
+              raagHindi: t.raagHindi,
+              thaat: t.thaat,
+              pahar: t.pahar,
+              timeSlot: t.timeSlot,
+              mood: t.mood,
+              deity: t.deity,
+              description: t.description,
+            })
+          ),
         },
       ];
     }

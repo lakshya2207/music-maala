@@ -437,7 +437,10 @@ export function getPaharById(id: PaharId): PaharInfo {
 }
 
 export function enrichTrackRaag(track: Track): Track {
-  if (track.raag && track.pahar) {
+  const hasSpecificPahar = track.pahar && track.pahar !== "anytime";
+  const hasSpecificRaag = track.raag && track.raag !== "Bhairavi";
+
+  if (hasSpecificRaag && hasSpecificPahar && track.raag) {
     const master = RAAG_MASTER[track.raag];
     return {
       ...track,
@@ -654,25 +657,29 @@ export function getFilteredTracks(
   currentPahar: PaharInfo
 ): Track[] {
   if (!tracks || tracks.length === 0) return [];
-  if (filter === "all") return tracks;
+
+  // 0. Ensure all tracks are passed through heuristic enrichment
+  const enrichedTracks = tracks.map((t) => enrichTrackRaag(t));
+
+  if (filter === "all") return enrichedTracks;
 
   const targetPaharId = filter === "auto" ? currentPahar.id : filter;
 
   // 1. Primary tracks matching targeted Pahar
-  const paharTracks = tracks.filter((t) => t.pahar === targetPaharId);
+  const paharTracks = enrichedTracks.filter((t) => t.pahar === targetPaharId);
 
-  // 2. Secondary Sarvakalin / Anytime tracks (excluding any duplicates)
-  const anytimeTracks = tracks.filter(
+  // 2. Secondary Sarvakalin / Anytime tracks (excluding duplicates)
+  const anytimeTracks = enrichedTracks.filter(
     (t) => t.pahar === "anytime" && !paharTracks.some((pt) => pt.id === t.id)
   );
 
-  // 3. Combine: current Pahar songs first, then Sarvakalin/Evertime songs
-  const combined = [...paharTracks, ...anytimeTracks];
+  // 3. Remaining tracks belonging to other Pahars (appended at end of queue)
+  const otherTracks = enrichedTracks.filter(
+    (t) => t.pahar !== targetPaharId && t.pahar !== "anytime"
+  );
 
-  if (combined.length > 0) {
-    return combined;
-  }
+  // Combine: Target Pahar songs FIRST, then Sarvakalin/Anytime songs SECOND, then other Pahars THIRD
+  const combined = [...paharTracks, ...anytimeTracks, ...otherTracks];
 
-  // Fallback to all tracks if neither matching nor anytime tracks are present
-  return tracks;
+  return combined.length > 0 ? combined : enrichedTracks;
 }
