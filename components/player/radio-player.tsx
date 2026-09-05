@@ -151,17 +151,13 @@ export function RadioPlayer() {
 
   const activeStation = RADIO_STATIONS[activeStationIndex] || RADIO_STATIONS[0];
 
-  // Current dial needle percentage across FM 87.0 - 109.0 MHz scale
+  // Current dial needle percentage aligned perfectly across the 10 FM station columns
   const needlePercent = useMemo(() => {
-    const minFreq = 87.0;
-    const maxFreq = 109.0;
-    const currentFreq =
-      selectedPahar === "auto"
-        ? (RADIO_STATIONS.find((s) => s.id === currentPahar.id)?.frequency ?? 103.5)
-        : activeStation.frequency;
-    const clamped = Math.min(maxFreq, Math.max(minFreq, currentFreq));
-    return ((clamped - minFreq) / (maxFreq - minFreq)) * 100;
-  }, [selectedPahar, currentPahar.id, activeStation]);
+    const activeId = selectedPahar === "auto" ? currentPahar.id : selectedPahar;
+    const idx = RADIO_STATIONS.findIndex((s) => s.id === activeId);
+    const validIdx = idx !== -1 ? idx : 0;
+    return ((validIdx + 0.5) / RADIO_STATIONS.length) * 100;
+  }, [selectedPahar, currentPahar.id]);
 
   // Handle direct station selection from FM scale glass window
   const handleSelectStation = useCallback(
@@ -286,15 +282,15 @@ export function RadioPlayer() {
             >
               {/* Glowing Red Frequency Needle */}
               <div
-                className="absolute top-0 bottom-0 w-[3px] bg-red-600 shadow-[0_0_10px_rgba(239,68,68,1)] rounded-full transition-all duration-500 ease-out z-20 pointer-events-none"
+                className="absolute top-0 bottom-0 w-[3px] -translate-x-1/2 bg-red-600 shadow-[0_0_12px_rgba(239,68,68,1)] rounded-full transition-all duration-500 ease-out z-20 pointer-events-none"
                 style={{ left: `${needlePercent}%` }}
               >
-                <div className="w-1.5 h-1.5 rounded-full bg-red-400 absolute -top-0.5 -left-[2px]" />
+                <div className="w-2 h-2 rounded-full bg-red-400 border border-white/60 absolute -top-0.5 -left-[2.5px] shadow-md" />
               </div>
 
-              {/* FM Scale Numbers */}
-              <div className="relative z-10 flex items-center justify-between text-[9px] sm:text-[10.5px] font-utility font-black text-amber-200/90 select-none tracking-tight">
-                <span className="text-amber-400 font-bold">FM</span>
+              {/* FM Scale Numbers (10 Grid Columns matching stations) */}
+              <div className="relative z-10 grid grid-cols-10 text-center text-[9px] sm:text-[10.5px] font-utility font-black text-amber-200/90 select-none tracking-tight">
+                <span className="text-amber-400 font-bold truncate">FM</span>
                 <span>88</span>
                 <span>91</span>
                 <span>94</span>
@@ -303,7 +299,7 @@ export function RadioPlayer() {
                 <span>103</span>
                 <span>106</span>
                 <span>108</span>
-                <span className="text-amber-400 font-bold">MHz</span>
+                <span className="text-amber-400 font-bold truncate">MHz</span>
               </div>
 
               {/* Dial Tick Marks */}
@@ -323,7 +319,7 @@ export function RadioPlayer() {
               </div>
 
               {/* Clickable Pahar Stations Bar across FM Glass Window */}
-              <div className="relative z-10 flex items-center justify-between gap-0.5 text-[8px] sm:text-[9.5px] font-utility font-bold text-amber-300/90 select-none truncate">
+              <div className="relative z-10 grid grid-cols-10 gap-0.5 text-center text-[8px] sm:text-[9.5px] font-utility font-bold text-amber-300/90 select-none">
                 {RADIO_STATIONS.map((st) => {
                   const isCur = selectedPahar === st.id;
                   return (
@@ -331,9 +327,9 @@ export function RadioPlayer() {
                       key={st.id}
                       type="button"
                       onClick={() => handleSelectStation(st)}
-                      className={`px-1 py-0.5 rounded transition-all cursor-pointer truncate ${
+                      className={`px-0.5 py-0.5 rounded transition-all cursor-pointer truncate ${
                         isCur
-                          ? "bg-amber text-neutral-950 font-black shadow-sm"
+                          ? "bg-amber text-neutral-950 font-black shadow-sm scale-105"
                           : "hover:text-cream hover:bg-white/10"
                       }`}
                       title={`${st.hindiName} (${st.label})`}
@@ -365,7 +361,7 @@ export function RadioPlayer() {
                   }`}
                 >
                   <span className="w-1.5 h-1.5 rounded-full bg-current" />
-                  {playing ? "प्रसारण जारी • ON AIR" : "रेдио तैयार • STANDBY"}
+                  {playing ? "प्रसारण जारी • ON AIR" : "रेडियो तैयार • STANDBY"}
                 </span>
                 <span className="text-amber-300 font-semibold text-[10px] sm:text-xs">
                   {selectedPahar === "auto"
