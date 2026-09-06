@@ -4,8 +4,31 @@ import { PlaylistModel } from "@/models/Playlist";
 import { enrichTracksWithAI } from "@/lib/gemini";
 import type { Track } from "@/lib/types";
 
-export async function POST() {
+export async function POST(req: Request) {
   console.log("[Enrich Raags API] Starting Raag & Pahar enrichment request...");
+
+  // Password authentication check for fair use protection
+  const configuredPassword = process.env.PASSWORD || process.env.password;
+  if (configuredPassword && configuredPassword.trim() !== "") {
+    let inputPassword = req.headers.get("x-admin-password");
+    if (!inputPassword) {
+      try {
+        const body = await req.clone().json();
+        inputPassword = body?.password;
+      } catch {
+        // Request body might not be JSON
+      }
+    }
+
+    if (!inputPassword || inputPassword.trim() !== configuredPassword.trim()) {
+      console.warn("[Enrich Raags API] Unauthorized request attempt - invalid or missing password.");
+      return NextResponse.json(
+        { ok: false, error: "Unauthorized: Invalid or missing authentication password." },
+        { status: 401 }
+      );
+    }
+  }
+
   try {
     const db = await connectToDatabase();
     if (!db) {

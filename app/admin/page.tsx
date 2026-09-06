@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Playlist } from "@/lib/types";
 import { FlowerShower } from "@/components/top-bar/flower-shower";
 import Link from "next/link";
@@ -21,13 +21,63 @@ export default function AdminPage() {
   const [enrichStatus, setEnrichStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [enrichResult, setEnrichResult] = useState<{ ok: boolean; count?: number; model?: string; usedAI?: boolean; error?: string } | null>(null);
 
+  // Authentication State
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [authStatus, setAuthStatus] = useState<"idle" | "verifying" | "valid" | "invalid">("idle");
+  const [authMessage, setAuthMessage] = useState("");
+
+  useEffect(() => {
+    const savedPass = localStorage.getItem("music_maala_admin_password");
+    if (savedPass) {
+      setPassword(savedPass);
+      verifyPassword(savedPass);
+    }
+  }, []);
+
+  async function verifyPassword(passToVerify: string) {
+    if (!passToVerify.trim()) {
+      setAuthStatus("idle");
+      setAuthMessage("");
+      return;
+    }
+    setAuthStatus("verifying");
+    try {
+      const res = await fetch("/api/verify-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": passToVerify },
+        body: JSON.stringify({ password: passToVerify }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setAuthStatus("valid");
+        setAuthMessage("Passcode authenticated successfully");
+        localStorage.setItem("music_maala_admin_password", passToVerify);
+      } else {
+        setAuthStatus("invalid");
+        setAuthMessage(data.error || "Invalid authentication passcode");
+      }
+    } catch {
+      setAuthStatus("invalid");
+      setAuthMessage("Connection error while verifying passcode");
+    }
+  }
+
+  async function handleSavePassword(e: React.FormEvent) {
+    e.preventDefault();
+    await verifyPassword(password);
+  }
+
   async function handleRefetch() {
     setStatus("loading");
     setResult(null);
     setPreview(null);
 
     try {
-      const res = await fetch("/api/sync-playlist", { method: "POST" });
+      const res = await fetch("/api/sync-playlist", {
+        method: "POST",
+        headers: { "x-admin-password": password },
+      });
       const data: SyncResult = await res.json();
 
       if (!res.ok || !data.ok) {
@@ -56,10 +106,21 @@ export default function AdminPage() {
     setEnrichResult(null);
 
     try {
-      const res = await fetch("/api/enrich-raags", { method: "POST" });
+      const res = await fetch("/api/enrich-raags", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-admin-password": password,
+        },
+        body: JSON.stringify({ password }),
+      });
       const data = await res.json();
 
       if (!res.ok || !data.ok) {
+        if (res.status === 401) {
+          setAuthStatus("invalid");
+          setAuthMessage("Gemini API fair-use security check failed: Invalid passcode.");
+        }
         setEnrichResult({ ok: false, error: data.error ?? "Enrichment failed" });
         setEnrichStatus("error");
         return;
@@ -236,6 +297,64 @@ export default function AdminPage() {
                 </p>
               )}
             </div>
+          )}
+        </div>
+
+        {/* Fair-Use Security & Passcode Card */}
+        <div className="glass rounded-3xl p-8 space-y-5 border border-amber/30 shadow-xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">🔑</span>
+              <div>
+                <h2 className="font-display text-xl font-semibold text-cream">
+                  Fair-Use Access Authentication
+                </h2>
+                <p className="text-xs text-cream/60 font-utility mt-0.5">
+                  Authenticate with the key configured in <code className="text-amber">.env</code> (<code className="text-amber">PASSWORD</code>) to secure Gemini API usage.
+                </p>
+              </div>
+            </div>
+            {authStatus === "valid" ? (
+              <span className="text-xs px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-utility font-semibold flex items-center gap-1.5">
+                <span>✓</span> Authenticated
+              </span>
+            ) : authStatus === "invalid" ? (
+              <span className="text-xs px-3 py-1 rounded-full bg-red-500/20 text-red-400 border border-red-500/30 font-utility font-semibold flex items-center gap-1.5">
+                <span>✕</span> Invalid Passcode
+              </span>
+            ) : null}
+          </div>
+
+          <form onSubmit={handleSavePassword} className="flex flex-col sm:flex-row gap-3">
+            <div className="relative flex-1">
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter passcode configured in .env..."
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full rounded-2xl bg-white/10 border border-white/20 px-4 py-2.5 text-sm text-cream placeholder:text-cream/40 focus:outline-none focus:border-amber focus:ring-1 focus:ring-amber font-mono"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-cream/50 hover:text-cream"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+            <button
+              type="submit"
+              disabled={authStatus === "verifying"}
+              className="px-6 py-2.5 rounded-2xl bg-amber text-dusk font-semibold text-xs hover:bg-amber-deep transition-all shadow-md active:scale-95 disabled:opacity-50 shrink-0"
+            >
+              {authStatus === "verifying" ? "Verifying..." : "Verify & Save Passcode"}
+            </button>
+          </form>
+
+          {authMessage && (
+            <p className={`text-xs font-utility ${authStatus === "valid" ? "text-emerald-400" : authStatus === "invalid" ? "text-red-400" : "text-cream/60"}`}>
+              {authMessage}
+            </p>
           )}
         </div>
 
