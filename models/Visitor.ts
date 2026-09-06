@@ -9,7 +9,7 @@ export interface IVisitorStats extends Document {
 const VisitorStatsSchema = new Schema<IVisitorStats>(
   {
     id: { type: String, required: true, unique: true, default: "site-stats" },
-    count: { type: Number, required: true, default: 108 },
+    count: { type: Number, required: true, default: 0 },
   },
   { timestamps: true }
 );

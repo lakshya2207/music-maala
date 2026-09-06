@@ -1,4 +1,7 @@
 import { getPlaylists } from "@/lib/get-playlists";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 import { PlayerEngineProvider } from "@/components/player/player-engine";
 import { RadioPlayer } from "@/components/player/radio-player";
 import { RaagModal } from "@/components/player/raag-modal";

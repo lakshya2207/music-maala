@@ -120,15 +120,52 @@ export function PlayerEngineProvider({
     return () => clearInterval(timer);
   }, []);
 
-  const safePlaylists = useMemo(() => {
+  const [playlistsState, setPlaylistsState] = useState<Playlist[]>(initialPlaylists);
+
+  // Synchronize state if initialPlaylists prop changes
+  useEffect(() => {
     if (Array.isArray(initialPlaylists) && initialPlaylists.length > 0) {
-      const valid = initialPlaylists.filter(
+      setPlaylistsState(initialPlaylists);
+    }
+  }, [initialPlaylists]);
+
+  // Live client-side playlist update fetcher
+  useEffect(() => {
+    let isMounted = true;
+    async function fetchLatestPlaylists() {
+      try {
+        const res = await fetch("/api/playlists", { cache: "no-store" });
+        if (res.ok) {
+          const fresh: Playlist[] = await res.json();
+          if (isMounted && Array.isArray(fresh) && fresh.length > 0 && fresh[0]?.tracks) {
+            setPlaylistsState(fresh);
+          }
+        }
+      } catch (err) {
+        console.warn("[Player Engine] Auto-sync playlist fetch error:", err);
+      }
+    }
+
+    fetchLatestPlaylists();
+    window.addEventListener("focus", fetchLatestPlaylists);
+    const intervalId = setInterval(fetchLatestPlaylists, 15000);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener("focus", fetchLatestPlaylists);
+      clearInterval(intervalId);
+    };
+  }, []);
+
+  const safePlaylists = useMemo(() => {
+    if (Array.isArray(playlistsState) && playlistsState.length > 0) {
+      const valid = playlistsState.filter(
         (p) => p && Array.isArray(p.tracks) && p.tracks.length > 0
       );
       if (valid.length > 0) return valid;
     }
     return [DEFAULT_FALLBACK_PLAYLIST];
-  }, [initialPlaylists]);
+  }, [playlistsState]);
 
   const playlistIndexClamped = Math.min(
     Math.max(0, playlistIndex),

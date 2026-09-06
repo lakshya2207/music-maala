@@ -3,6 +3,9 @@ import { getPlaylists } from "@/lib/get-playlists";
 import { connectToDatabase } from "@/lib/mongodb";
 import { PlaylistModel } from "@/models/Playlist";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   console.log("[Playlists API] Received GET /api/playlists request.");
   const playlists = await getPlaylists();

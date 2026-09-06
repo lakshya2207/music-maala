@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 
 export function ListenerCount() {
-  const [count, setCount] = useState<number>(108);
+  const [count, setCount] = useState<number>(0);
   const [loaded, setLoaded] = useState<boolean>(false);
 
   useEffect(() => {

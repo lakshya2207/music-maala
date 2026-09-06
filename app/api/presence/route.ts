@@ -9,7 +9,7 @@ declare global {
 }
 
 if (typeof globalThis.fallbackVisitorCount !== "number") {
-  globalThis.fallbackVisitorCount = 108;
+  globalThis.fallbackVisitorCount = 0;
 }
 
 async function getOrInitVisitorCount(): Promise<number> {
@@ -18,7 +18,7 @@ async function getOrInitVisitorCount(): Promise<number> {
     if (db) {
       let stats = await VisitorStatsModel.findOne({ id: "site-stats" });
       if (!stats) {
-        stats = await VisitorStatsModel.create({ id: "site-stats", count: 108 });
+        stats = await VisitorStatsModel.create({ id: "site-stats", count: 0 });
       }
       globalThis.fallbackVisitorCount = stats.count;
       return stats.count;
@@ -26,7 +26,7 @@ async function getOrInitVisitorCount(): Promise<number> {
   } catch (err) {
     console.warn("[Visitor Count API] MongoDB count fetch error, using fallback count:", err);
   }
-  return globalThis.fallbackVisitorCount ?? 108;
+  return globalThis.fallbackVisitorCount ?? 0;
 }
 
 async function incrementVisitorCount(): Promise<number> {
@@ -46,7 +46,7 @@ async function incrementVisitorCount(): Promise<number> {
   } catch (err) {
     console.warn("[Visitor Count API] MongoDB count increment error, using fallback count:", err);
   }
-  globalThis.fallbackVisitorCount = (globalThis.fallbackVisitorCount ?? 108) + 1;
+  globalThis.fallbackVisitorCount = (globalThis.fallbackVisitorCount ?? 0) + 1;
   return globalThis.fallbackVisitorCount;
 }
 
