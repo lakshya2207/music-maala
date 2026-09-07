@@ -275,22 +275,14 @@ export default function RaagsPage() {
                                 </p>
                               </div>
 
-                              <div className="flex items-center gap-2 shrink-0">
-                                {t.raag && (
-                                  <button
-                                    onClick={() => setSelectedLoreTrack(t)}
-                                    className="text-[10px] px-2 py-0.5 rounded-full bg-amber/15 text-amber border border-amber/30 hover:bg-amber/25 transition-colors"
-                                  >
-                                    ✦ {t.raagHindi ? `राग ${t.raagHindi}` : t.raag}
-                                  </button>
-                                )}
-                                <Link
-                                  href="/"
-                                  className="text-xs px-2.5 py-1 rounded-lg bg-amber text-dusk font-semibold hover:bg-amber-deep transition-colors"
+                              {t.raag && (
+                                <button
+                                  onClick={() => setSelectedLoreTrack(t)}
+                                  className="text-[10px] px-2 py-0.5 rounded-full bg-amber/15 text-amber border border-amber/30 hover:bg-amber/25 transition-colors"
                                 >
-                                  ▶ Play
-                                </Link>
-                              </div>
+                                  ✦ {t.raagHindi ? `राग ${t.raagHindi}` : t.raag}
+                                </button>
+                              )}
                             </div>
                           ))}
                         </div>
@@ -376,13 +368,7 @@ export default function RaagsPage() {
                           key={t.id}
                           className="flex items-center justify-between p-2.5 rounded-xl bg-white/10 hover:bg-white/15 transition-colors text-xs"
                         >
-                          <span className="truncate flex-1 mr-2 text-cream font-medium">{t.title}</span>
-                          <Link
-                            href="/"
-                            className="text-[11px] px-2.5 py-1 rounded-lg bg-amber text-dusk font-bold hover:bg-amber-deep transition-colors shadow-sm shrink-0"
-                          >
-                            ▶ Play
-                          </Link>
+                          <span className="truncate flex-1 font-medium">{t.title}</span>
                         </div>
                       ))
                     ) : (
@@ -433,18 +419,12 @@ export default function RaagsPage() {
                         key={t.id}
                         className="flex items-center justify-between p-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs transition-colors"
                       >
-                        <div className="truncate flex-1 mr-2">
+                        <div className="truncate flex-1">
                           <p className="text-cream font-medium truncate">{t.title}</p>
                           <p className="text-[10.5px] text-cream/70 font-utility truncate">
                             {t.raagHindi ? `राग ${t.raagHindi}` : t.raag}
                           </p>
                         </div>
-                        <Link
-                          href="/"
-                          className="text-[11px] px-2.5 py-1 rounded-lg bg-amber text-dusk font-bold hover:bg-amber-deep transition-colors shadow-sm shrink-0"
-                        >
-                          Play
-                        </Link>
                       </div>
                     ))}
                   </div>
@@ -466,7 +446,6 @@ export default function RaagsPage() {
                     <th className="px-4 py-3.5 min-w-[140px]">राग (Raag)</th>
                     <th className="px-4 py-3.5 min-w-[160px]">पहर (Time / Pahar)</th>
                     <th className="px-4 py-3.5 min-w-[120px] hidden sm:table-cell">Deity</th>
-                    <th className="px-4 py-3.5 text-right w-20">Play</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5 font-body">
@@ -509,14 +488,6 @@ export default function RaagsPage() {
                           <span className="text-xs px-2.5 py-0.5 rounded-md bg-white/10 text-cream/80 border border-white/15 font-medium">
                             {track.deity || "Universal"}
                           </span>
-                        </td>
-                        <td className="px-4 py-3.5 text-right">
-                          <Link
-                            href="/"
-                            className="px-3 py-1 text-xs font-bold rounded-lg bg-amber text-dusk hover:bg-amber-deep transition-colors shadow-sm"
-                          >
-                            ▶
-                          </Link>
                         </td>
                       </tr>
                     );
@@ -603,14 +574,7 @@ export default function RaagsPage() {
               </p>
             </div>
 
-            <div className="flex justify-end">
-              <Link
-                href="/"
-                className="px-5 py-2 rounded-full bg-amber text-dusk font-semibold text-xs hover:bg-amber-deep transition-all shadow-lg shadow-amber/20"
-              >
-                ▶ Listen to Bhajan in Player
-              </Link>
-            </div>
+
           </div>
         </div>
       )}

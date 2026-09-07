@@ -25,7 +25,6 @@ export function RaagModal() {
     raagLibraryOpen,
     setRaagLibraryOpen,
     playlists,
-    selectTrack,
   } = usePlayerEngine();
 
   const [mounted, setMounted] = useState(false);
@@ -394,19 +393,6 @@ export function RaagModal() {
                                   {t.artist || "भक्ति संगीत"} {t.film ? `• ${t.film}` : ""}
                                 </p>
                               </div>
-
-                              {/* Play Button */}
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  selectTrack(t.id);
-                                  closeModal();
-                                }}
-                                className="shrink-0 flex items-center gap-1.5 px-3 py-1 rounded-lg bg-amber hover:bg-amber-300 text-neutral-950 font-utility font-bold text-[11px] shadow-sm transition-transform active:scale-95 cursor-pointer"
-                              >
-                                <span>▶</span>
-                                <span>सुनें</span>
-                              </button>
                             </div>
                           ))
                         )}
