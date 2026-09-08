@@ -370,19 +370,32 @@ export function RadioPlayer() {
                 </span>
               </div>
 
-              {/* Raag Badge */}
-              {track.raag && (
-                <button
-                  type="button"
-                  onClick={() => setRaagModalTrack(track)}
-                  className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 text-[9.5px] sm:text-[10.5px] font-utility font-semibold transition-all active:scale-95 shadow-sm"
-                  title="Click to view Raag details"
-                >
-                  <span>✦</span>
-                  <span>{track.raagHindi ? `राग ${track.raagHindi}` : track.raag}</span>
-                  <span className="text-[8px] opacity-75">ⓘ</span>
-                </button>
-              )}
+              <div className="flex items-center gap-1.5">
+                {/* Raag Badge */}
+                {track.raag && (
+                  <button
+                    type="button"
+                    onClick={() => setRaagModalTrack(track)}
+                    className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/20 hover:bg-amber-500/30 border border-amber-400/40 text-amber-200 text-[9.5px] sm:text-[10.5px] font-utility font-semibold transition-all active:scale-95 shadow-sm"
+                    title="Click to view Raag details"
+                  >
+                    <span>✦</span>
+                    <span>{track.raagHindi ? `राग ${track.raagHindi}` : track.raag}</span>
+                    <span className="text-[8px] opacity-75">ⓘ</span>
+                  </button>
+                )}
+
+                {/* Subtle Sarvakalin Universal indicator when playing anytime track */}
+                {track.pahar === "anytime" && selectedPahar !== "all" && (
+                  <span
+                    className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-400/10 text-amber-300 border border-amber-400/20 text-[9px] font-utility font-medium"
+                    title="सर्वकालीन राग — समय सीमाओं से परे, किसी भी पहर में सर्वथा पावन"
+                  >
+                    <span>🌺</span>
+                    <span>सर्वकालीन</span>
+                  </span>
+                )}
+              </div>
             </div>
 
             {/* Track Info */}

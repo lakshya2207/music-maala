@@ -7,6 +7,41 @@ import { FALLBACK_PLAYLISTS } from "@/lib/default-playlists";
 import { FlowerShower } from "@/components/top-bar/flower-shower";
 import Link from "next/link";
 
+const PAHAR_SUGGESTIONS: Record<string, { title: string; hint: string }> = {
+  dawn: {
+    title: "उषाकाल एवं ब्रह्म मुहूर्त वंदना",
+    hint: "सुप्रभातम्, गायत्री महामंत्र, ललिता सहस्रनाम, प्रभाती भजन (राग ललित, विभास, जोगिया)",
+  },
+  morning: {
+    title: "प्रातःकालीन स्तुति एवं वंदना",
+    hint: "हनुमान चालीसा, शिव स्तुति, प्रभाती (राग भैरव, अहीर भैरव, बिलावल, तोड़ी)",
+  },
+  "late-morning": {
+    title: "मध्याह्न पूर्व स्तुति",
+    hint: "विष्णु सहस्रनाम, श्री राम स्तुति (राग जौनपुरी, आसावरी, अल्हैया बिलावल)",
+  },
+  afternoon: {
+    title: "मध्याह्न शांति एवं शीतलता",
+    hint: "मधुराष्टकम्, श्री कृष्ण शांति पाठ (राग शुद्ध सारंग, वृंदावनी सारंग)",
+  },
+  "late-afternoon": {
+    title: "अपराह्न विरह एवं शरणागति",
+    hint: "मीरा पद, राधा-कृष्ण विरह भजन (राग भीमपलासी, मुल्तानी, पटदीप)",
+  },
+  evening: {
+    title: "सांध्य आरती एवं दीप वंदना",
+    hint: "संध्या आरती, दीप दान स्तुति, जय जगदीश हरे (राग यमन, भूपाली, पूरिया धनाश्री)",
+  },
+  night: {
+    title: "रात्रि माधुर्य एवं शयन भक्ति",
+    hint: "अच्युतम केशवम, कृष्ण लीला पद, शयन आरती (राग काफी, बागेश्री, खमाज, देश)",
+  },
+  "late-night": {
+    title: "मध्य रात्रि ध्यान एवं शिव आराधना",
+    hint: "शिव तांडव स्तोत्रम्, महामृत्युंजय मंत्र, गंभीर ध्यान धुन (राग मालकौंस, दरबारी कानड़ा, बिहाग)",
+  },
+};
+
 export default function RaagsPage() {
   const [playlist, setPlaylist] = useState<Playlist | null>(FALLBACK_PLAYLISTS[0] || null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -198,6 +233,7 @@ export default function RaagsPage() {
                 const paharTracks = searchedTracks.filter(
                   (t) => t.pahar === p.id || (p.id === "anytime" && t.pahar === "anytime")
                 );
+                const anytimeTracks = searchedTracks.filter((t) => t.pahar === "anytime");
 
                 return (
                   <div
@@ -231,8 +267,14 @@ export default function RaagsPage() {
                         </p>
                       </div>
 
-                      <span className="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-cream/60 font-utility tabular">
-                        {paharTracks.length} भजन
+                      <span className="text-xs px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-cream/70 font-utility tabular flex items-center gap-1">
+                        {paharTracks.length > 0 ? (
+                          <span>{paharTracks.length} भजन</span>
+                        ) : p.id !== "anytime" && anytimeTracks.length > 0 ? (
+                          <span className="text-amber/90">🌺 {anytimeTracks.length} सर्वकालीन</span>
+                        ) : (
+                          <span>0 भजन</span>
+                        )}
                       </span>
                     </div>
 
@@ -254,8 +296,8 @@ export default function RaagsPage() {
                       ))}
                     </div>
 
-                    {/* Track List */}
-                    {paharTracks.length > 0 && (
+                    {/* Track List if direct songs exist */}
+                    {paharTracks.length > 0 ? (
                       <div className="space-y-2 pt-2 border-t border-white/10">
                         <p className="text-[11px] font-utility text-cream/40 uppercase tracking-wider">
                           इस पहर के भजन:
@@ -278,7 +320,7 @@ export default function RaagsPage() {
                               {t.raag && (
                                 <button
                                   onClick={() => setSelectedLoreTrack(t)}
-                                  className="text-[10px] px-2 py-0.5 rounded-full bg-amber/15 text-amber border border-amber/30 hover:bg-amber/25 transition-colors"
+                                  className="text-[10px] px-2 py-0.5 rounded-full bg-amber/15 text-amber border border-amber/30 hover:bg-amber/25 transition-colors shrink-0"
                                 >
                                   ✦ {t.raagHindi ? `राग ${t.raagHindi}` : t.raag}
                                 </button>
@@ -287,7 +329,59 @@ export default function RaagsPage() {
                           ))}
                         </div>
                       </div>
-                    )}
+                    ) : p.id !== "anytime" ? (
+                      /* Graceful Sarvakalin Fallback + Suggested Lore for empty Pahars */
+                      <div className="space-y-3 pt-2 border-t border-white/10">
+                        <div className="p-3 rounded-2xl bg-amber/10 border border-amber/20 space-y-1.5">
+                          <div className="flex items-center gap-1.5">
+                            <span className="text-sm">🌺</span>
+                            <p className="text-xs font-semibold text-amber font-utility">
+                              सर्वकालीन पावन प्रसारण (Universal Devotional Broadcast)
+                            </p>
+                          </div>
+                          <p className="text-[11px] text-cream/70 leading-relaxed font-body">
+                            इस पहर के लिए विशिष्ट भजन उपलब्ध न होने पर शास्त्रीय समय चक्र अनुसार सर्वकालीन राग (पहाड़ी, भैरवी, शिवरंजनी) के पावन भजन स्वतः प्रसारित होते हैं।
+                          </p>
+                          {PAHAR_SUGGESTIONS[p.id] && (
+                            <div className="pt-1 text-[11px] text-cream/60">
+                              <span className="text-amber/90 font-medium">सुझावित पारंपरिक रचनाएं: </span>
+                              <span>{PAHAR_SUGGESTIONS[p.id].hint}</span>
+                            </div>
+                          )}
+                        </div>
+
+                        {anytimeTracks.length > 0 && (
+                          <div className="space-y-1.5">
+                            <p className="text-[11px] font-utility text-cream/40 uppercase tracking-wider">
+                              वर्तमान में प्रसारित सर्वकालीन भजन:
+                            </p>
+                            <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
+                              {anytimeTracks.slice(0, 3).map((t) => (
+                                <div
+                                  key={t.id}
+                                  className="flex items-center justify-between p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors gap-2"
+                                >
+                                  <div className="min-w-0 flex-1">
+                                    <p className="text-xs font-medium text-cream truncate">
+                                      {t.title}
+                                    </p>
+                                    <p className="text-[10px] text-cream/50 truncate">
+                                      {t.artist} {t.film !== "Unknown" ? `• ${t.film}` : ""}
+                                    </p>
+                                  </div>
+                                  <button
+                                    onClick={() => setSelectedLoreTrack(t)}
+                                    className="text-[9px] px-2 py-0.5 rounded-full bg-amber/15 text-amber border border-amber/30 shrink-0 font-utility hover:bg-amber/25 transition-colors"
+                                  >
+                                    सर्वकालीन • {t.raagHindi || t.raag || "भैरवी"}
+                                  </button>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ) : null}
                   </div>
                 );
               })}
