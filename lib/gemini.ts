@@ -1,5 +1,5 @@
 import type { Track, PaharId } from "./types";
-import { enrichTrackRaag, RAAG_MASTER } from "./raags";
+import { enrichTrackRaag, getRaagDetails, RAAG_MASTER } from "./raags";
 
 export interface EnrichmentResult {
   tracks: Track[];
@@ -8,10 +8,17 @@ export interface EnrichmentResult {
   error?: string;
 }
 
-export async function enrichTracksWithAI(tracks: Track[]): Promise<EnrichmentResult> {
-  const apiKey = process.env.GEMINI_API_KEY;
+export async function enrichTracksWithAI(
+  tracks: Track[],
+  requestedModel?: string
+): Promise<EnrichmentResult> {
+  const apiKey = (
+    process.env.GEMINI_API_KEY ||
+    process.env["GEMINI_API_KEY "] ||
+    ""
+  ).trim();
 
-  if (!apiKey || apiKey.trim() === "") {
+  if (!apiKey) {
     console.log("[Gemini AI] GEMINI_API_KEY not set. Using curated Classical Knowledge Base heuristics...");
     const enriched = tracks.map((t) => enrichTrackRaag(t));
     console.log(`[Gemini AI] Enriched ${enriched.length} track(s) using local classical heuristics.`);
@@ -23,49 +30,37 @@ export async function enrichTracksWithAI(tracks: Track[]): Promise<EnrichmentRes
   }
 
   try {
-    console.log(`[Gemini AI] Step 1/3: Preparing 8-Pahar prompt for ${tracks.length} track(s) for Indian Classical Sangeet analysis...`);
+    console.log(`[Gemini AI] Step 1/3: Preparing classical Raag analysis for ${tracks.length} track(s)...`);
     const prompt = `
-You are an expert scholar and musicologist in Indian Classical Music (Hindustani & Carnatic Sangeet), the Raag-Samay Chakra (Time Theory of 8 Pahars), and Bhakti Sangeet.
+You are an expert scholar and musicologist in Indian Classical Music (Hindustani Sangeet), the Raag-Samay Siddhant (Time Theory of Raags), and Bhakti Sangeet.
 
-Your task is to analyze the following list of devotional songs/bhajans and classify each song into its classical Indian Raag, parent Thaat, one of the 8 DISTINCT PRAHARS of the day, Mood/Rasa, Deity, and spiritual significance.
+Your task is to analyze each of the following devotional songs/bhajans and classify each song into its TRUE, OBJECTIVE classical Indian Raag based on its musical melody, swaras, and traditional classical composition.
 
-CRITICAL REQUIREMENT - 8 PRAHAR DISTRIBUTION:
-You MUST distribute the playlist tracks across the 8 DISTINCT PRAHARS of the 24-hour cycle.
-DO NOT group all songs into generic 'morning' or 'evening'. Avoid 'anytime' unless strictly necessary. Ensure songs are distributed meaningfully among:
-
-1. "dawn" (03:00 - 06:00, ब्रह्म मुहूर्त / उषाकाल / Sandhivrakash Purva):
-   - Awakening of consciousness, soul surrender, morning invocation, Suprabhatam, deep dhyana.
-   - Raags: Lalit, Bhatiyar, Vibhas, Jogia, Ramkali, Bairagi, Ahir Lalit.
-
-2. "morning" (06:00 - 09:00, प्रातः पहर / प्रथम पहर):
-   - Sunrise, fresh devotion, invigorating spiritual energy, Hanuman Chalisa, Gayatri Mantra, Prabhati.
-   - Raags: Bhairav, Ahir Bhairav, Bilawal, Todi, Nat Bhairav, Gunakali, Gurjari Todi.
-
-3. "late-morning" (09:00 - 12:00, मध्याह्न पूर्व / द्वितीय पहर):
-   - Bright daytime sunshine, uplifting worship, Vishnu Sahasranama, dynamic stutis.
-   - Raags: Jaunpuri, Asavari, Alhaiya Bilawal, Deshkar, Devgandhar.
-
-4. "afternoon" (12:00 - 15:00, मध्याह्न पहर / तृतीय पहर):
-   - Peak midday calmness, serene cooling contemplative devotion, Madhurashtakam.
-   - Raags: Shuddha Sarang, Brindavani Sarang, Madhmad Sarang, Gaud Sarang.
-
-5. "late-afternoon" (15:00 - 18:00, अपराह्न पहर / चतुर्थ पहर):
-   - Waning day, emotional yearning, Radha-Krishna viraha bhakti, soulful surrender.
-   - Raags: Bhimpalasi, Multani, Patdeep, Dhanashree, Madhuvanti.
-
-6. "evening" (18:00 - 21:00, सांध्य पहर / संध्या आरती काल / Sandhivrakash Uttar):
-   - Sunset twilight, lamp offering (Deep Daan), Aarti, festive devotion, joyful celebration.
-   - Raags: Yaman, Bhupali, Puriya Dhanashree, Marwa, Shuddha Kalyan, Hameer.
-
-7. "night" (21:00 - 00:00, रात्रि पहर / द्वितीय पहर रात्रि):
-   - Sweet divine intimacy, soothing lullaby, divine resting, Achyutam Keshavam, Krishna Leela.
-   - Raags: Kafi, Bageshri, Jaijaiwanti, Khamaj, Desh, Chandrakauns, Rageshri, Tilak Kamod.
-
-8. "late-night" (00:00 - 03:00, मध्य रात्रि पहर / तृतीय पहर रात्रि):
-   - Midnight silence, profound trance, Shiva Tandav, deep mystical dissolution into the infinite.
-   - Raags: Malkauns, Darbari Kanada, Bihag, Jog, Kedar, Shankara, Adana.
-
-(Only use "anytime" for universally non-time-bound raags like Bhairavi, Pahadi, Shivranjani if none of the 8 pahars fit).
+CRITICAL INSTRUCTIONS FOR MUSICOLOGICAL ACCURACY & CONSISTENCY:
+1. Identify the authentic Raag of each song based on traditional Indian classical classification and musical lore.
+2. DO NOT artificially distort or reassign a song's Raag just to balance time slots. In Indian Classical Music, the Raag deterministically defines its Pahar (Time of Day).
+3. Many popular Bhakti songs, bhajans, and aartis are set in traditional Raags such as:
+   - Morning (06:00 - 09:00): Bhairav, Ahir Bhairav, Bilawal, Todi, Gunkali, Nat Bhairav
+   - Dawn (03:00 - 06:00): Lalit, Bhatiyar, Vibhas, Jogia, Ramkali
+   - Late-Morning (09:00 - 12:00): Jaunpuri, Asavari, Alhaiya Bilawal, Deshkar
+   - Afternoon (12:00 - 15:00): Shuddha Sarang, Brindavani Sarang, Gaud Sarang
+   - Late-Afternoon (15:00 - 18:00): Bhimpalasi, Multani, Patdeep
+   - Evening (18:00 - 21:00): Yaman, Bhupali, Puriya Dhanashree, Marwa, Hameer, Shuddha Kalyan
+   - Night (21:00 - 00:00): Kafi, Bageshri, Jaijaiwanti, Khamaj, Desh, Chandrakauns
+   - Late-Night (00:00 - 03:00): Malkauns, Darbari Kanada, Bihag, Jog, Kedar
+   - Anytime / Universal: Bhairavi, Pahadi, Shivranjani, Mishra Pilu, Charukeshi
+4. Use standard classical Raag names: Yaman, Bhairav, Ahir Bhairav, Bhupali, Bhimpalasi, Pahadi, Shivranjani, Bilawal, Kafi, Khamaj, Malkauns, Darbari Kanada, Bhairavi, Jaunpuri, Todi, Lalit, Desh, Bageshri, Brindavani Sarang, etc.
+5. Canonical Examples for Grounding & Consistency:
+   - "Achyutam Keshavam" -> Raag Kafi / Yaman (Deity: Krishna)
+   - "Are Dwarpalo" -> Raag Shivranjani (Deity: Krishna)
+   - "Shri Krishna Govind Hare Murari" -> Raag Bhimpalasi / Shivranjani (Deity: Krishna)
+   - "Hanuman Chalisa" / "Aarti Kije Hanuman Lala Ki" -> Raag Bilawal (Deity: Hanuman)
+   - "Om Jai Jagdish Hare" -> Raag Bhairavi / Yaman (Deity: Universal)
+   - "Shyam Teri Bansi" / "Radhe Tere Charno Ki" -> Raag Pahadi (Deity: Krishna)
+   - "Payoji Maine Ram Ratan Dhan Payo" -> Raag Bilawal / Khamaj (Deity: Rama/Krishna)
+   - "Shiv Tandav Stotram" / "Karpur Gauram" -> Raag Malkauns / Bhairav (Deity: Shiva)
+   - "Main Tulsi Tere Aangan Ki" -> Raag Bhairavi (Deity: Devi)
+   - "Ashutosh Shashank Shekhar" -> Raag Bhairav (Deity: Shiva)
 
 Songs to analyze:
 ${JSON.stringify(
@@ -86,9 +81,9 @@ Return ONLY a valid JSON array of objects with the exact structure:
     "id": "string (the exact id from input, e.g. yt-1)",
     "title": "string (the exact song title from input)",
     "index": number,
-    "raag": "string (e.g. Bhairav, Yaman, Malkauns, Bhimpalasi, Sarang, Jaunpuri, Kafi, Lalit)",
-    "raagHindi": "string (राग का देवनागरी नाम, e.g. भैरव, यमन, मालकौंस, भीमपलासी)",
-    "thaat": "string (e.g. Bhairav, Kalyan, Kafi, Bilawal, Asavari, Bhairavi, Todi, Marwa, Poorvi, Khamaj)",
+    "raag": "string (e.g. Bhairav, Yaman, Malkauns, Bhimpalasi, Pahadi, Shivranjani, Kafi, Lalit)",
+    "raagHindi": "string (राग का देवनागरी नाम, e.g. भैरव, यमन, मालकौंस, भीमपलासी, पहाड़ी, शिवरंजनी)",
+    "thaat": "string (e.g. Bhairav, Kalyan, Kafi, Bilawal, Asavari, Bhairavi, Todi, Marwa, Purvi, Khamaj)",
     "pahar": "dawn" | "morning" | "late-morning" | "afternoon" | "late-afternoon" | "evening" | "night" | "late-night" | "anytime",
     "timeSlot": "string (e.g. 06:00 - 09:00 (प्रातःकाल))",
     "mood": "string (e.g. सांध्य आरती एवं समर्पण)",
@@ -98,17 +93,17 @@ Return ONLY a valid JSON array of objects with the exact structure:
 ]
 `;
 
-    // Intelligent cascading model list starting with highest intelligence
+    // Prioritize lower-intelligence, fast, deterministic models as requested by user
     const candidateModels: string[] = [
+      ...(requestedModel ? [requestedModel] : []),
       ...(process.env.GEMINI_MODEL ? [process.env.GEMINI_MODEL] : []),
-      "gemini-3.7-flash",
-      "gemini-3.7-flash-lite",
-      "gemini-3.6-flash",
-      "gemini-3.6-flash-lite",
-      "gemini-3.5-flash",
-      "gemini-3.5-flash-lite",
-      "gemini-2.5-flash",
       "gemini-2.5-flash-lite",
+      "gemini-2.0-flash-lite",
+      "gemini-1.5-flash-8b",
+      "gemini-1.5-flash",
+      "gemini-2.5-flash",
+      "gemini-2.0-flash",
+      "gemini-3.5-flash-lite",
     ];
 
     // Remove duplicates while preserving priority order
@@ -134,7 +129,7 @@ Return ONLY a valid JSON array of objects with the exact structure:
               contents: [{ parts: [{ text: prompt }] }],
               generationConfig: {
                 responseMimeType: "application/json",
-                temperature: 0.2,
+                temperature: 0.0, // 0.0 ensures deterministic, greedy token generation for consistency
               },
             }),
           }
@@ -209,21 +204,22 @@ Return ONLY a valid JSON array of objects with the exact structure:
 
       if (!aiResult) return enrichTrackRaag(track);
 
-      const master = RAAG_MASTER[aiResult.raag];
+      // Use getRaagDetails to normalize against canonical dictionary
+      const master = getRaagDetails(aiResult.raag);
+
+      const resolvedRaag = master ? master.name : aiResult.raag || track.raag || "Bhairavi";
+      const resolvedPahar = master ? master.pahar : aiResult.pahar || track.pahar || "anytime";
+      const resolvedThaat = master ? master.thaat : aiResult.thaat || track.thaat || "Bilawal";
+      const resolvedTimeSlot = master ? master.timeSlot : aiResult.timeSlot || track.timeSlot || "सर्वकालीन";
+      const resolvedHindi = master ? master.nameHindi : aiResult.raagHindi || track.raagHindi || resolvedRaag;
 
       return {
         ...track,
-        raag: aiResult.raag || track.raag || (master ? master.name : "Bhairavi"),
-        raagHindi:
-          aiResult.raagHindi ||
-          track.raagHindi ||
-          (master ? master.nameHindi : aiResult.raag || "भैरवी"),
-        thaat: aiResult.thaat || track.thaat || (master ? master.thaat : "Bilawal"),
-        pahar: aiResult.pahar || track.pahar || (master ? master.pahar : "anytime"),
-        timeSlot:
-          aiResult.timeSlot ||
-          track.timeSlot ||
-          (master ? master.timeSlot : "सर्वकालीन"),
+        raag: resolvedRaag,
+        raagHindi: resolvedHindi,
+        thaat: resolvedThaat,
+        pahar: resolvedPahar,
+        timeSlot: resolvedTimeSlot,
         mood: aiResult.mood || track.mood || (master ? master.mood : "भक्ति भाव"),
         deity: aiResult.deity || track.deity || "Universal",
         description:

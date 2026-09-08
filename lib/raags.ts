@@ -135,6 +135,69 @@ export interface RaagDetails {
 }
 
 export const RAAG_MASTER: Record<string, RaagDetails> = {
+  // --- DAWN (03:00 - 06:00, उषाकाल / ब्रह्म मुहूर्त) ---
+  Lalit: {
+    name: "Lalit",
+    nameHindi: "ललित",
+    thaat: "Purvi",
+    pahar: "dawn",
+    timeSlot: "03:00 - 06:00 (उषाकाल / ब्रह्म मुहूर्त)",
+    mood: "शांत, ध्यान एवं आत्म-समर्पण (Spiritual Dhyan & Awakening)",
+    vadiSamvadi: "वादी: शुद्ध मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "दोनों मध्यमों का प्रयोग, कोमल रे व धैवत",
+    spiritualSignificance:
+      "ब्रह्म मुहूर्त का अत्यंत पावन व गंभीर राग। अंतर्मुखी होकर परमात्मा के ध्यान और आत्म-जागरण के लिए श्रेष्ठ।",
+  },
+  Bhatiyar: {
+    name: "Bhatiyar",
+    nameHindi: "भटियार",
+    thaat: "Marwa",
+    pahar: "dawn",
+    timeSlot: "03:00 - 06:00 (उषाकाल)",
+    mood: "प्रभाती वैराग्य एवं शांति (Morning Transcendence)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "शुद्ध व तीव्र मध्यम, कोमल रे",
+    spiritualSignificance:
+      "उषाकाल के समय निद्रा त्यागकर ईश्वर आराधना में लीन करने वाला दुर्लभ व पावन राग।",
+  },
+  Vibhas: {
+    name: "Vibhas",
+    nameHindi: "विभास",
+    thaat: "Bhairav",
+    pahar: "dawn",
+    timeSlot: "03:00 - 06:00 (उषाकाल)",
+    mood: "दिव्य तेज एवं स्तुति (Divine Morning Splendor)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
+    swaraNotes: "औडव जाति, कोमल रे और कोमल धैवत",
+    spiritualSignificance:
+      "भगवान सूर्य के प्रथम प्रकाश और प्रातःकालीन वंदना का ओजस्वी राग।",
+  },
+  Jogia: {
+    name: "Jogia",
+    nameHindi: "जोगिया",
+    thaat: "Bhairav",
+    pahar: "dawn",
+    timeSlot: "03:00 - 06:00 (उषाकाल)",
+    mood: "करुणा, विरह एवं वैराग्य (Deep Devout Longing)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल रे और कोमल धैवत",
+    spiritualSignificance:
+      "संत कबीर और मीराबाई के प्रभाती पदों के गायन हेतु अत्यंत भावपूर्ण राग।",
+  },
+  Ramkali: {
+    name: "Ramkali",
+    nameHindi: "रामकली",
+    thaat: "Bhairav",
+    pahar: "dawn",
+    timeSlot: "04:00 - 07:00 (उषाकाल / प्रातः)",
+    mood: "गंभीर भक्ति एवं स्तुति (Solemn Devotion)",
+    vadiSamvadi: "वादी: पंचम (Pa), संवादी: ऋषभ (Re)",
+    swaraNotes: "दोनों मध्यम और दोनों निषाद का विशिष्ट प्रयोग",
+    spiritualSignificance:
+      "श्री राम और शिव की प्रातःकालीन स्तुतियों में अति-प्रभावकारी राग।",
+  },
+
+  // --- MORNING (06:00 - 09:00, प्रातः पहर) ---
   Bhairav: {
     name: "Bhairav",
     nameHindi: "भैरव",
@@ -159,18 +222,170 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     spiritualSignificance:
       "प्रातःकाल में असीम शांति और हृदयस्पर्शी भक्ति का भाव जगाता है। कई प्रसिद्ध प्रभाती भजन इस राग पर आधारित हैं।",
   },
-  Bhairavi: {
-    name: "Bhairavi",
-    nameHindi: "भैरवी",
-    thaat: "Bhairavi",
-    pahar: "anytime",
-    timeSlot: "सर्वकालीन / प्रातःकाल (Anytime / Morning)",
-    mood: "शृंगार, करुणा एवं पूर्ण समर्पण (Surrender & Supreme Devotion)",
-    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
-    swaraNotes: "चारों कोमल स्वर (r, g, d, n)",
+  Todi: {
+    name: "Todi",
+    nameHindi: "तोड़ी (मियाँ की तोड़ी)",
+    thaat: "Todi",
+    pahar: "morning",
+    timeSlot: "06:00 - 09:00 (प्रातःकाल)",
+    mood: "करुण प्रार्थना एवं असीम समर्पण (Pathos & Devotion)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
+    swaraNotes: "कोमल रे, ग, ध और तीव्र मध्यम (r, g, M', d)",
     spiritualSignificance:
-      "रागों की रानी। शास्त्रीय गायन का समापन इसी राग से होता है। देवी स्तुति और भक्ति पदों के लिए अत्यंत प्रिय।",
+      "प्रभु के सम्मुख पूर्ण शरणागति और आत्म-निवेदन का सर्वोत्कृष्ट शास्त्रीय राग।",
   },
+  Bilawal: {
+    name: "Bilawal",
+    nameHindi: "बिलावल",
+    thaat: "Bilawal",
+    pahar: "morning",
+    timeSlot: "06:00 - 09:00 (प्रातः पहर)",
+    mood: "उमंग, उत्साह एवं स्तुति (Celebration & Praise)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
+    swaraNotes: "सभी शुद्ध स्वर",
+    spiritualSignificance:
+      "प्रातःकालीन स्तुति, हनुमान चालीसा और मंगल वंदना के लिए ऊर्जावान राग।",
+  },
+  Gunkali: {
+    name: "Gunkali",
+    nameHindi: "गुणकली",
+    thaat: "Bhairav",
+    pahar: "morning",
+    timeSlot: "06:00 - 09:00 (प्रातःकाल)",
+    mood: "विनम्र भक्ति एवं प्रार्थना (Humble Reverence)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: ऋषभ (Re)",
+    swaraNotes: "औडव जाति, गंधार व निषाद वर्जित",
+    spiritualSignificance:
+      "प्रातः काल में ईश्वर के श्रीचरणों में विनम्र प्रार्थना का पावन राग।",
+  },
+  "Nat Bhairav": {
+    name: "Nat Bhairav",
+    nameHindi: "नट भैरव",
+    thaat: "Bhairav",
+    pahar: "morning",
+    timeSlot: "06:00 - 09:00 (प्रातःकाल)",
+    mood: "आनंद एवं मंगल वंदना (Joyful Morning Blessing)",
+    vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
+    swaraNotes: "नट अंग और भैरव अंग का सुंदर समन्वय",
+    spiritualSignificance:
+      "सूर्योदय के समय नई चेतना और आध्यात्मिक मंगलकारी ऊर्जा प्रदान करता है।",
+  },
+
+  // --- LATE-MORNING (09:00 - 12:00, मध्याह्न पूर्व पहर) ---
+  Jaunpuri: {
+    name: "Jaunpuri",
+    nameHindi: "जौनपुरी",
+    thaat: "Asavari",
+    pahar: "late-morning",
+    timeSlot: "09:00 - 12:00 (मध्याह्न पूर्व)",
+    mood: "उल्लास, भक्ति एवं स्तुति (Uplifting Devotion)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
+    swaraNotes: "कोमल ग, ध, नि (g, d, n)",
+    spiritualSignificance:
+      "दिन के दूसरे पहर में मन में नव-स्फूर्ति और नारायण स्तुति का भाव जगाता है।",
+  },
+  Asavari: {
+    name: "Asavari",
+    nameHindi: "आसावरी",
+    thaat: "Asavari",
+    pahar: "late-morning",
+    timeSlot: "09:00 - 12:00 (मध्याह्न पूर्व)",
+    mood: "त्याग, शांति एवं समर्पण (Renunciation & Peace)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
+    swaraNotes: "कोमल ग, ध, नि",
+    spiritualSignificance:
+      "सांसारिक मोह से मुक्ति और प्रभु चरणों में अगाध शांति का अनुभव कराने वाला राग।",
+  },
+  "Alhaiya Bilawal": {
+    name: "Alhaiya Bilawal",
+    nameHindi: "अल्हैया बिलावल",
+    thaat: "Bilawal",
+    pahar: "late-morning",
+    timeSlot: "09:00 - 12:00 (मध्याह्न पूर्व)",
+    mood: "आनंद, उत्साह एवं जय-जयकार (Exuberance & Glory)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
+    swaraNotes: "दोनों निषाद (शुद्ध व कोमल) का सुंदर प्रयोग",
+    spiritualSignificance:
+      "ईश्वर की महिमा और विजय गान के लिए अत्यंत लोकप्रिय और पावन राग।",
+  },
+  Deshkar: {
+    name: "Deshkar",
+    nameHindi: "देशकार",
+    thaat: "Bilawal",
+    pahar: "late-morning",
+    timeSlot: "09:00 - 12:00 (मध्याह्न पूर्व)",
+    mood: "ऊर्जा, तेज एवं उल्लास (Radiance & Joy)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
+    swaraNotes: "औडव जाति, मध्यम व निषाद वर्जित",
+    spiritualSignificance:
+      "सूर्य के बढ़ते तेज के साथ मन में कर्मठता और भक्ति भाव भरता है।",
+  },
+
+  // --- AFTERNOON (12:00 - 15:00, मध्याह्न पहर) ---
+  "Shuddha Sarang": {
+    name: "Shuddha Sarang",
+    nameHindi: "शुद्ध सारंग",
+    thaat: "Kafi",
+    pahar: "afternoon",
+    timeSlot: "12:00 - 15:00 (मध्याह्न)",
+    mood: "शीतलता एवं शांति (Midday Serenity)",
+    vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
+    swaraNotes: "दोनों मध्यम (शुद्ध व तीव्र M')",
+    spiritualSignificance:
+      "दोपहर की तपन में मन को अमृतमयी शीतलता और प्रभु चिंतन प्रदान करने वाला राग।",
+  },
+  "Brindavani Sarang": {
+    name: "Brindavani Sarang",
+    nameHindi: "वृंदावनी सारंग",
+    thaat: "Kafi",
+    pahar: "afternoon",
+    timeSlot: "12:00 - 15:00 (मध्याह्न)",
+    mood: "मधुरता, शीतलता एवं कृष्ण प्रेम (Krishna Devotion)",
+    vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
+    swaraNotes: "दोनों निषाद (शुद्ध व कोमल), गंधार व धैवत वर्जित",
+    spiritualSignificance:
+      "वृंदावन के कदंब वृक्ष की छांव में श्री कृष्ण की मधुर बांसुरी का स्मरण कराता है।",
+  },
+
+  // --- LATE-AFTERNOON (15:00 - 18:00, अपराह्न पहर) ---
+  Bhimpalasi: {
+    name: "Bhimpalasi",
+    nameHindi: "भीमपलासी",
+    thaat: "Kafi",
+    pahar: "late-afternoon",
+    timeSlot: "15:00 - 18:00 (अपराह्न)",
+    mood: "शांत, शृंगार एवं भक्ति (Peace & Yearning)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल गंधार और कोमल निषाद (g, n)",
+    spiritualSignificance:
+      "अपराह्न के समय मन को एकाग्र कर ईश्वर चिंतन में लीन करने वाला अत्यंत मधुर राग।",
+  },
+  Multani: {
+    name: "Multani",
+    nameHindi: "मुल्तानी",
+    thaat: "Todi",
+    pahar: "late-afternoon",
+    timeSlot: "15:00 - 18:00 (अपराह्न)",
+    mood: "करुणा, विरह एवं समर्पण (Deep Surrender)",
+    vadiSamvadi: "वादी: पंचम (Pa), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल रे, ग, ध और तीव्र मध्यम (r, g, M', d)",
+    spiritualSignificance:
+      "दिन ढलने पर सांसारिक थकान दूर कर आत्मा को परमात्मा के ध्यान में डुबोने वाला राग।",
+  },
+  Patdeep: {
+    name: "Patdeep",
+    nameHindi: "पटदीप",
+    thaat: "Kafi",
+    pahar: "late-afternoon",
+    timeSlot: "15:00 - 18:00 (अपराह्न)",
+    mood: "माधुर्य, भक्ति एवं आत्म-निवेदन (Sweet Yearning)",
+    vadiSamvadi: "वादी: पंचम (Pa), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल गंधार, शेष शुद्ध स्वर",
+    spiritualSignificance:
+      "भक्त के हृदय की अगाध तड़प और श्री कृष्ण के चरणों में प्रार्थना का प्रिय राग।",
+  },
+
+  // --- EVENING (18:00 - 21:00, सांध्य पहर / आरती काल) ---
   Yaman: {
     name: "Yaman",
     nameHindi: "यमन (कल्याण)",
@@ -194,6 +409,216 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     swaraNotes: "औडव जाति (सा रे ग प ध)",
     spiritualSignificance:
       "पाँच शुद्ध स्वरों का दिव्य सम्मिश्रण। प्रभु श्री राम और कृष्ण के बाल स्वरूप के भजनों के लिए आदर्श।",
+  },
+  "Puriya Dhanashree": {
+    name: "Puriya Dhanashree",
+    nameHindi: "पूरिया धनाश्री",
+    thaat: "Purvi",
+    pahar: "evening",
+    timeSlot: "18:00 - 21:00 (सांध्य पहर)",
+    mood: "गंभीर भक्ति, वैराग्य एवं प्रकाश (Solemn Devotion)",
+    vadiSamvadi: "वादी: पंचम (Pa), संवादी: ऋषभ (Re)",
+    swaraNotes: "कोमल रे, तीव्र म, कोमल ध (r, M', d)",
+    spiritualSignificance:
+      "संध्या काल में सूर्यास्त के समय मन में वैराग्य और ईश्वर के प्रति अगाध श्रद्धा उत्पन्न करता है।",
+  },
+  Marwa: {
+    name: "Marwa",
+    nameHindi: "मारवा",
+    thaat: "Marwa",
+    pahar: "evening",
+    timeSlot: "18:00 - 20:00 (संधिकाल)",
+    mood: "गंभीरता, वैराग्य एवं व्याकुलता (Twilight Transcendence)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: ऋषभ (Re)",
+    swaraNotes: "कोमल रे, तीव्र मध्यम, पंचम वर्जित",
+    spiritualSignificance:
+      "दिन और रात्रि के मिलन काल में संसार की नश्वरता और प्रभु की शाश्वत सत्ता का बोध कराता है।",
+  },
+  Hameer: {
+    name: "Hameer",
+    nameHindi: "हमीर",
+    thaat: "Kalyan",
+    pahar: "evening",
+    timeSlot: "18:00 - 21:00 (सांध्यकाल)",
+    mood: "उल्लास, शौर्य एवं स्तुति (Triumph & Praise)",
+    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
+    swaraNotes: "दोनों मध्यम और शुद्ध स्वर",
+    spiritualSignificance:
+      "भगवान शिव और देवी दुर्गा की विजय स्तुतियों के लिए अत्यंत ओजस्वी राग।",
+  },
+  "Shuddha Kalyan": {
+    name: "Shuddha Kalyan",
+    nameHindi: "शुद्ध कल्याण",
+    thaat: "Kalyan",
+    pahar: "evening",
+    timeSlot: "18:00 - 21:00 (सांध्यकाल)",
+    mood: "परम शांति एवं मंगल भाव (Divine Serenity)",
+    vadiSamvadi: "वादी: गंधार (Ga), संवादी: धैवत (Dha)",
+    swaraNotes: "आरोह में भूपाली, अवरोह में यमन अंग",
+    spiritualSignificance:
+      "संध्या काल में घर-मंदिर में मंगलकारी प्रकाश और कल्याण का वातावरण रचता है।",
+  },
+
+  // --- NIGHT (21:00 - 00:00, रात्रि पहर) ---
+  Kafi: {
+    name: "Kafi",
+    nameHindi: "काफी",
+    thaat: "Kafi",
+    pahar: "night",
+    timeSlot: "21:00 - 00:00 (रात्रि पहर)",
+    mood: "होली, रसिया एवं प्रेम भक्ति (Festive & Loving Devotion)",
+    vadiSamvadi: "वादी: पंचम (Pa), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल गंधार और कोमल निषाद (g, n)",
+    spiritualSignificance:
+      "ब्रज की होली, कृष्ण प्रेम और चैती-कजरी भजनों का मूल आधार।",
+  },
+  Bageshri: {
+    name: "Bageshri",
+    nameHindi: "बागेश्री",
+    thaat: "Kafi",
+    pahar: "night",
+    timeSlot: "21:00 - 00:00 (रात्रि पहर)",
+    mood: "शृंगार, विरह एवं मधुर समर्पण (Sweet Longing)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल ग और कोमल नि, पंचम अल्प",
+    spiritualSignificance:
+      "भगवान कृष्ण के विरह में लीन राधा रानी के भावों की मधुर शास्त्रीय अभिव्यक्ति।",
+  },
+  Jaijaiwanti: {
+    name: "Jaijaiwanti",
+    nameHindi: "जयजयवंती",
+    thaat: "Khamaj",
+    pahar: "night",
+    timeSlot: "21:00 - 00:00 (रात्रि)",
+    mood: "शृंगार, भक्ति एवं मंगलगान (Auspicious Devotion)",
+    vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
+    swaraNotes: "दोनों गंधार और दोनों निषाद का मधुर संगम",
+    spiritualSignificance:
+      "गुरु ग्रंथ साहिब में भी इसका विशेष स्थान है। प्रभु वंदना और जयकार का अत्यंत मनोहारी राग।",
+  },
+  Khamaj: {
+    name: "Khamaj",
+    nameHindi: "खमाज",
+    thaat: "Khamaj",
+    pahar: "night",
+    timeSlot: "21:00 - 00:00 (रात्रि)",
+    mood: "माधुर्य, शृंगार एवं समर्पण (Sweetness & Devotion)",
+    vadiSamvadi: "वादी: गंधार (Ga), संवादी: निषाद (Ni)",
+    swaraNotes: "शुद्ध व कोमल निषाद (N, n)",
+    spiritualSignificance:
+      "भजन, ठुमरी और सुदामा-कृष्ण मिलन जैसे मार्मिक प्रसंगों का अत्यंत प्रभावशाली राग।",
+  },
+  Desh: {
+    name: "Desh",
+    nameHindi: "देश",
+    thaat: "Khamaj",
+    pahar: "night",
+    timeSlot: "21:00 - 00:00 (रात्रि पहर)",
+    mood: "देशभक्ति, माधुर्य एवं भक्ति (Patriotism & Sweet Devotion)",
+    vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
+    swaraNotes: "दोनों निषाद (शुद्ध व कोमल)",
+    spiritualSignificance:
+      "'वंदे मातरम्' का राग। देश-प्रेम और राम-कृष्ण के मधुर भजनों में अत्यंत लोकप्रिय।",
+  },
+  Chandrakauns: {
+    name: "Chandrakauns",
+    nameHindi: "चंद्रकौंस",
+    thaat: "Kafi",
+    pahar: "night",
+    timeSlot: "21:00 - 00:00 (रात्रि)",
+    mood: "गंभीर भक्ति एवं चंद्र शीतलता (Moonlit Serenity)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल ग, कोमल ध, शुद्ध निषाद",
+    spiritualSignificance:
+      "रात्रि के समय शिव आराधना और आत्मिक शांति का गंभीर और मधुर राग।",
+  },
+
+  // --- LATE-NIGHT (00:00 - 03:00, मध्य रात्रि पहर) ---
+  Malkauns: {
+    name: "Malkauns",
+    nameHindi: "मालकौंस",
+    thaat: "Bhairavi",
+    pahar: "late-night",
+    timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
+    mood: "वीर रस, शिव तांडव एवं ध्यान (Mystic Energy & Dhyan)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल ग, ध, नि (ऋषभ-पंचम वर्जित)",
+    spiritualSignificance:
+      "भगवान शिव के तांडव और ध्यान की ऊर्जा से उत्पन्न राग। गंभीर रात्रि साधना के लिए सर्वश्रेष्ठ।",
+  },
+  Darbari: {
+    name: "Darbari Kanada",
+    nameHindi: "दरबारी कानड़ा",
+    thaat: "Asavari",
+    pahar: "late-night",
+    timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
+    mood: "गंभीरता, ऐश्वर्य एवं मौन (Majesty & Deep Introspection)",
+    vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
+    swaraNotes: "कोमल ग, ध, नि का मंद आंदोलन",
+    spiritualSignificance:
+      "मिया तानसेन द्वारा रचित। रात्रि के सन्नाटे में प्रभु की विराट महिमा का स्मरण कराता है।",
+  },
+  "Darbari Kanada": {
+    name: "Darbari Kanada",
+    nameHindi: "दरबारी कानड़ा",
+    thaat: "Asavari",
+    pahar: "late-night",
+    timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
+    mood: "गंभीरता, ऐश्वर्य एवं मौन (Majesty & Deep Introspection)",
+    vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
+    swaraNotes: "कोमल ग, ध, नि का मंद आंदोलन",
+    spiritualSignificance:
+      "मिया तानसेन द्वारा रचित। रात्रि के सन्नाटे में प्रभु की विराट महिमा का स्मरण कराता है।",
+  },
+  Bihag: {
+    name: "Bihag",
+    nameHindi: "बिहाग",
+    thaat: "Bilawal",
+    pahar: "late-night",
+    timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
+    mood: "शांत विश्राम एवं माधुर्य (Peaceful Rest & Grace)",
+    vadiSamvadi: "वादी: गंधार (Ga), संवादी: निषाद (Ni)",
+    swaraNotes: "दोनों मध्यम (शुद्ध व तीव्र) का सुंदर प्रयोग",
+    spiritualSignificance:
+      "गहरी रात्रि में प्रभु के मधुर शयन और आत्मिक विश्राम का श्रेष्ठ राग।",
+  },
+  Jog: {
+    name: "Jog",
+    nameHindi: "जोग",
+    thaat: "Kafi",
+    pahar: "late-night",
+    timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
+    mood: "वैराग्य, शिव आराधना एवं ध्यान (Mystic Trance)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "दोनों गंधार (शुद्ध व कोमल), ऋषभ वर्जित",
+    spiritualSignificance:
+      "मध्य रात्रि में योगेश्वर शिव के ध्यान और एकाग्रता के लिए अत्यंत प्रभावशाली।",
+  },
+  Kedar: {
+    name: "Kedar",
+    nameHindi: "केदार",
+    thaat: "Kalyan",
+    pahar: "late-night",
+    timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
+    mood: "गंभीर भक्ति, शिव स्तुति एवं शांति (Shiva Devotion)",
+    vadiSamvadi: "वादी: शुद्ध मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "दोनों मध्यम, ऋषभ-गंधार का वक्र प्रयोग",
+    spiritualSignificance:
+      "भगवान केदारनाथ (शिव) के चरणों में समर्पित पावन और गंभीर राग।",
+  },
+
+  // --- ANYTIME / SARVA-KALIN (सर्वकालीन राग) ---
+  Bhairavi: {
+    name: "Bhairavi",
+    nameHindi: "भैरवी",
+    thaat: "Bhairavi",
+    pahar: "anytime",
+    timeSlot: "सर्वकालीन / प्रातःकाल (Anytime / Morning)",
+    mood: "शृंगार, करुणा एवं पूर्ण समर्पण (Surrender & Supreme Devotion)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "चारों कोमल स्वर (r, g, d, n)",
+    spiritualSignificance:
+      "रागों की रानी। शास्त्रीय गायन का समापन इसी राग से होता है। देवी स्तुति और भक्ति पदों के लिए अत्यंत प्रिय।",
   },
   Pahadi: {
     name: "Pahadi",
@@ -219,90 +644,6 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     spiritualSignificance:
       "भगवान शिव और कृष्ण के विरह-भक्ति पदों में अत्यंत भावुक प्रभाव उत्पन्न करता है।",
   },
-  Bhimpalasi: {
-    name: "Bhimpalasi",
-    nameHindi: "भीमपलासी",
-    thaat: "Kafi",
-    pahar: "late-afternoon",
-    timeSlot: "15:00 - 18:00 (अपराह्न)",
-    mood: "शांत, शृंगार एवं भक्ति (Peace & Yearning)",
-    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
-    swaraNotes: "कोमल गंधार और कोमल निषाद (g, n)",
-    spiritualSignificance:
-      "अपराह्न के समय मन को एकाग्र कर ईश्वर चिंतन में लीन करने वाला अत्यंत मधुर राग।",
-  },
-  Kafi: {
-    name: "Kafi",
-    nameHindi: "काफी",
-    thaat: "Kafi",
-    pahar: "night",
-    timeSlot: "21:00 - 00:00 (रात्रि पहर)",
-    mood: "होली, रसिया एवं प्रेम भक्ति (Festive & Loving Devotion)",
-    vadiSamvadi: "वादी: पंचम (Pa), संवादी: षड्ज (Sa)",
-    swaraNotes: "कोमल गंधार और कोमल निषाद (g, n)",
-    spiritualSignificance:
-      "ब्रज की होली, कृष्ण प्रेम और चैती-कजरी भजनों का मूल आधार।",
-  },
-  Bilawal: {
-    name: "Bilawal",
-    nameHindi: "बिलावल",
-    thaat: "Bilawal",
-    pahar: "morning",
-    timeSlot: "06:00 - 09:00 (प्रातः पहर)",
-    mood: "उमंग, उत्साह एवं स्तुति (Celebration & Praise)",
-    vadiSamvadi: "वादी: धैवत (Dha), संवादी: गंधार (Ga)",
-    swaraNotes: "सभी शुद्ध स्वर",
-    spiritualSignificance:
-      "प्रातःकालीन स्तुति, हनुमान चालीसा और मंगल वंदना के लिए ऊर्जावान राग।",
-  },
-  Khamaj: {
-    name: "Khamaj",
-    nameHindi: "खमाज",
-    thaat: "Khamaj",
-    pahar: "night",
-    timeSlot: "21:00 - 00:00 (रात्रि)",
-    mood: "माधुर्य, शृंगार एवं समर्पण (Sweetness & Devotion)",
-    vadiSamvadi: "वादी: गंधार (Ga), संवादी: निषाद (Ni)",
-    swaraNotes: "शुद्ध व कोमल निषाद (N, n)",
-    spiritualSignificance:
-      "भजन, ठुमरी और सुदामा-कृष्ण मिलन जैसे मार्मिक प्रसंगों का अत्यंत प्रभावशाली राग।",
-  },
-  "Puriya Dhanashree": {
-    name: "Puriya Dhanashree",
-    nameHindi: "पूरिया धनाश्री",
-    thaat: "Purvi",
-    pahar: "evening",
-    timeSlot: "18:00 - 21:00 (सांध्य पहर)",
-    mood: "गंभीर भक्ति, वैराग्य एवं प्रकाश (Solemn Devotion)",
-    vadiSamvadi: "वादी: पंचम (Pa), संवादी: ऋषभ (Re)",
-    swaraNotes: "कोमल रे, तीव्र म, कोमल ध (r, M', d)",
-    spiritualSignificance:
-      "संध्या काल में सूर्यास्त के समय मन में वैराग्य और ईश्वर के प्रति अगाध श्रद्धा उत्पन्न करता है।",
-  },
-  Malkauns: {
-    name: "Malkauns",
-    nameHindi: "मालकौंस",
-    thaat: "Bhairavi",
-    pahar: "late-night",
-    timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
-    mood: "वीर रस, शिव तांडव एवं ध्यान (Mystic Energy & Dhyan)",
-    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
-    swaraNotes: "कोमल ग, ध, नि (ऋषभ-पंचम वर्जित)",
-    spiritualSignificance:
-      "भगवान शिव के तांडव और ध्यान की ऊर्जा से उत्पन्न राग। गंभीर रात्रि साधना के लिए सर्वश्रेष्ठ।",
-  },
-  Darbari: {
-    name: "Darbari Kanada",
-    nameHindi: "दरबारी कानड़ा",
-    thaat: "Asavari",
-    pahar: "late-night",
-    timeSlot: "00:00 - 03:00 (मध्य रात्रि)",
-    mood: "गंभीरता, ऐश्वर्य एवं मौन (Majesty & Deep Introspection)",
-    vadiSamvadi: "वादी: ऋषभ (Re), संवादी: पंचम (Pa)",
-    swaraNotes: "कोमल ग, ध, नि का मंद आंदोलन",
-    spiritualSignificance:
-      "मिया तानसेन द्वारा रचित। रात्रि के सन्नाटे में प्रभु की विराट महिमा का स्मरण कराता है।",
-  },
   Pilu: {
     name: "Mishra Pilu",
     nameHindi: "मिश्र पीलू",
@@ -315,7 +656,72 @@ export const RAAG_MASTER: Record<string, RaagDetails> = {
     spiritualSignificance:
       "मीराबाई और सूरदास के पदों के गायन में पीलू का विशेष स्थान है।",
   },
+  "Mishra Pilu": {
+    name: "Mishra Pilu",
+    nameHindi: "मिश्र पीलू",
+    thaat: "Kafi",
+    pahar: "anytime",
+    timeSlot: "सर्वकालीन / अपराह्न (Anytime / Late Afternoon)",
+    mood: "आत्मीयता, भावुकता एवं समर्पण (Soulful Longing)",
+    vadiSamvadi: "वादी: गंधार (Ga), संवादी: निषाद (Ni)",
+    swaraNotes: "विविध कोमल व शुद्ध स्वरों का सुंदर प्रयोग",
+    spiritualSignificance:
+      "मीराबाई और सूरदास के पदों के गायन में पीलू का विशेष स्थान है।",
+  },
+  Charukeshi: {
+    name: "Charukeshi",
+    nameHindi: "चारुकेशी",
+    thaat: "Charukeshi",
+    pahar: "anytime",
+    timeSlot: "सर्वकालीन (Universal)",
+    mood: "करुणा, भक्ति एवं समर्पण (Compassion & Grace)",
+    vadiSamvadi: "वादी: मध्यम (Ma), संवादी: षड्ज (Sa)",
+    swaraNotes: "कोमल ध और कोमल नि, शेष शुद्ध स्वर",
+    spiritualSignificance:
+      "कर्नाटक व हिंदुस्तानी दोनों शैलियों में प्रिय। मन को तत्काल भक्ति और करुणा से भर देने वाला राग।",
+  },
 };
+
+export function getRaagDetails(raagName?: string): RaagDetails | undefined {
+  if (!raagName || typeof raagName !== "string") return undefined;
+  const clean = raagName.trim();
+  if (RAAG_MASTER[clean]) return RAAG_MASTER[clean];
+
+  // Case-insensitive lookup
+  const lower = clean.toLowerCase();
+  for (const [key, details] of Object.entries(RAAG_MASTER)) {
+    if (key.toLowerCase() === lower || details.name.toLowerCase() === lower || details.nameHindi === clean) {
+      return details;
+    }
+  }
+
+  // Common aliases
+  if (lower.includes("darbari")) return RAAG_MASTER["Darbari"] || RAAG_MASTER["Darbari Kanada"];
+  if (lower.includes("pilu")) return RAAG_MASTER["Pilu"];
+  if (lower.includes("brindavani") || lower === "sarang") return RAAG_MASTER["Brindavani Sarang"] || RAAG_MASTER["Shuddha Sarang"];
+  if (lower.includes("ahir bhairav")) return RAAG_MASTER["Ahir Bhairav"];
+  if (lower.includes("bhairavi")) return RAAG_MASTER["Bhairavi"];
+  if (lower.includes("bhairav")) return RAAG_MASTER["Bhairav"];
+  if (lower.includes("yaman") || lower.includes("kalyan")) return RAAG_MASTER["Yaman"];
+  if (lower.includes("alhaiya")) return RAAG_MASTER["Alhaiya Bilawal"];
+  if (lower.includes("bilawal")) return RAAG_MASTER["Bilawal"];
+  if (lower.includes("bhimpalasi")) return RAAG_MASTER["Bhimpalasi"];
+  if (lower.includes("malkauns")) return RAAG_MASTER["Malkauns"];
+  if (lower.includes("jaunpuri")) return RAAG_MASTER["Jaunpuri"];
+  if (lower.includes("todi")) return RAAG_MASTER["Todi"];
+  if (lower.includes("lalit")) return RAAG_MASTER["Lalit"];
+  if (lower.includes("kedar")) return RAAG_MASTER["Kedar"];
+  if (lower.includes("bihag")) return RAAG_MASTER["Bihag"];
+  if (lower.includes("jog")) return RAAG_MASTER["Jog"];
+  if (lower.includes("desh")) return RAAG_MASTER["Desh"];
+  if (lower.includes("bageshri")) return RAAG_MASTER["Bageshri"];
+  if (lower.includes("khamaj")) return RAAG_MASTER["Khamaj"];
+  if (lower.includes("kafi")) return RAAG_MASTER["Kafi"];
+  if (lower.includes("bhupali")) return RAAG_MASTER["Bhupali"];
+  if (lower.includes("charukeshi")) return RAAG_MASTER["Charukeshi"];
+
+  return undefined;
+}
 
 const KNOWN_TRACK_MAPPINGS: Record<
   string,
@@ -437,15 +843,16 @@ export function getPaharById(id: PaharId): PaharInfo {
 }
 
 export function enrichTrackRaag(track: Track): Track {
-  const hasSpecificPahar = track.pahar && track.pahar !== "anytime";
-  const hasSpecificRaag = track.raag && track.raag !== "Bhairavi";
-
-  if (hasSpecificRaag && hasSpecificPahar && track.raag) {
-    const master = RAAG_MASTER[track.raag];
+  // If track already has an assigned/enriched Raag, PRESERVE IT 100%!
+  // Do NOT overwrite it with keyword heuristics, even if pahar is "anytime" or raag is "Bhairavi"
+  if (track.raag && track.raag.trim() !== "") {
+    const master = getRaagDetails(track.raag);
     return {
       ...track,
+      raag: master ? master.name : track.raag,
       raagHindi: track.raagHindi || (master ? master.nameHindi : track.raag),
       thaat: track.thaat || (master ? master.thaat : "Bilawal"),
+      pahar: track.pahar || (master ? master.pahar : "anytime"),
       timeSlot: track.timeSlot || (master ? master.timeSlot : "सर्वकालीन"),
       mood: track.mood || (master ? master.mood : "भक्ति भाव (Devotion)"),
       description: track.description || (master ? master.spiritualSignificance : ""),

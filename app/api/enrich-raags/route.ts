@@ -7,17 +7,19 @@ import type { Track } from "@/lib/types";
 export async function POST(req: Request) {
   console.log("[Enrich Raags API] Starting Raag & Pahar enrichment request...");
 
+  let requestedModel: string | undefined;
   // Password authentication check for fair use protection
   const configuredPassword = process.env.PASSWORD || process.env.password;
   if (configuredPassword && configuredPassword.trim() !== "") {
     let inputPassword = req.headers.get("x-admin-password");
-    if (!inputPassword) {
-      try {
-        const body = await req.clone().json();
+    try {
+      const body = await req.clone().json();
+      requestedModel = body?.model;
+      if (!inputPassword) {
         inputPassword = body?.password;
-      } catch {
-        // Request body might not be JSON
       }
+    } catch {
+      // Request body might not be JSON
     }
 
     if (!inputPassword || inputPassword.trim() !== configuredPassword.trim()) {
@@ -26,6 +28,13 @@ export async function POST(req: Request) {
         { ok: false, error: "Unauthorized: Invalid or missing authentication password." },
         { status: 401 }
       );
+    }
+  } else {
+    try {
+      const body = await req.clone().json();
+      requestedModel = body?.model;
+    } catch {
+      // Non-json
     }
   }
 
@@ -68,8 +77,8 @@ export async function POST(req: Request) {
       description: t.description,
     }));
 
-    console.log("[Enrich Raags API] Step 2/3: Executing AI / Heuristic Raag analysis...");
-    const result = await enrichTracksWithAI(rawTracks);
+    console.log(`[Enrich Raags API] Step 2/3: Executing AI / Heuristic Raag analysis (Requested Model: ${requestedModel || "default cascade"})...`);
+    const result = await enrichTracksWithAI(rawTracks, requestedModel);
 
     console.log(`[Enrich Raags API] Step 3/3: Saving ${result.tracks.length} enriched tracks back to MongoDB (Model: ${result.model})...`);
     playlistDoc.tracks = result.tracks as any;

@@ -20,6 +20,7 @@ export default function AdminPage() {
   const [preview, setPreview] = useState<Playlist | null>(null);
   const [enrichStatus, setEnrichStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [enrichResult, setEnrichResult] = useState<{ ok: boolean; count?: number; model?: string; usedAI?: boolean; error?: string } | null>(null);
+  const [selectedModel, setSelectedModel] = useState("gemini-2.5-flash-lite");
 
   // Authentication State
   const [password, setPassword] = useState("");
@@ -112,7 +113,7 @@ export default function AdminPage() {
           "Content-Type": "application/json",
           "x-admin-password": password,
         },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ password, model: selectedModel }),
       });
       const data = await res.json();
 
@@ -368,8 +369,33 @@ export default function AdminPage() {
               </h2>
             </div>
             <p className="text-sm text-cream/70">
-              Analyzes all synced bhajans using <strong>Gemini 3.7 Flash</strong> with auto-cascading fallback (3.7 → 3.6 → 3.5 → 2.5 → Curated Heuristics) to accurately classify Classical Raags, Thaats, 8-Pahar time cycles, and spiritual lore.
+              Analyzes all synced bhajans using <strong>Hindustani Classical Raag-Samay Siddhant</strong> with zero-temperature greedy decoding for consistent, repeatable classification without artificial prahar distortions.
             </p>
+          </div>
+
+          {/* Model Selection Dropdown */}
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-white/5 border border-white/10">
+            <div>
+              <label htmlFor="model-select" className="text-xs text-cream/80 font-utility font-semibold block">
+                Gemini Model Selection:
+              </label>
+              <p className="text-[11px] text-cream/40 font-utility mt-0.5">
+                Lower intelligence Flash-Lite models provide consistent, deterministic results without overthinking or hallucinating obscure raags.
+              </p>
+            </div>
+            <select
+              id="model-select"
+              value={selectedModel}
+              onChange={(e) => setSelectedModel(e.target.value)}
+              className="bg-black/40 border border-white/20 rounded-xl px-3 py-2 text-xs font-utility text-cream focus:outline-none focus:border-amber cursor-pointer min-w-[240px]"
+            >
+              <option value="gemini-2.5-flash-lite">Gemini 2.5 Flash Lite (Recommended: Consistent & Fast)</option>
+              <option value="gemini-2.0-flash-lite">Gemini 2.0 Flash Lite (Ultra Lightweight)</option>
+              <option value="gemini-1.5-flash">Gemini 1.5 Flash (Stable Classical Heuristics)</option>
+              <option value="gemini-1.5-flash-8b">Gemini 1.5 Flash-8B (Direct & Fast)</option>
+              <option value="gemini-2.5-flash">Gemini 2.5 Flash (Standard)</option>
+              <option value="gemini-3.5-flash-lite">Gemini 3.5 Flash Lite</option>
+            </select>
           </div>
 
           <div className="flex items-center justify-between">
@@ -389,7 +415,7 @@ export default function AdminPage() {
                 {enrichStatus === "idle"
                   ? "Ready for AI enrichment"
                   : enrichStatus === "loading"
-                  ? "Analyzing with Gemini AI…"
+                  ? `Analyzing with ${selectedModel}…`
                   : enrichStatus === "success"
                   ? `Enriched ${enrichResult?.count ?? 0} tracks via ${enrichResult?.model || "AI"}`
                   : "Enrichment failed"}
