@@ -330,53 +330,70 @@ export default function RaagsPage() {
                         </div>
                       </div>
                     ) : p.id !== "anytime" ? (
-                      /* Graceful Sarvakalin Fallback + Suggested Lore for empty Pahars */
+                      /* Graceful Sarvakalin Fallback for empty Pahars */
                       <div className="space-y-3 pt-2 border-t border-white/10">
-                        <div className="p-3 rounded-2xl bg-amber/10 border border-amber/20 space-y-1.5">
-                          <div className="flex items-center gap-1.5">
-                            <span className="text-sm">🌺</span>
-                            <p className="text-xs font-semibold text-amber font-utility">
-                              सर्वकालीन पावन प्रसारण (Universal Devotional Broadcast)
+                        {/* Fallback banner */}
+                        <div className="flex items-start gap-2.5 p-3 rounded-2xl bg-gradient-to-br from-amber/10 to-white/5 border border-amber/25">
+                          <span className="text-lg shrink-0 mt-0.5">🌺</span>
+                          <div className="space-y-1 min-w-0">
+                            <p className="text-xs font-semibold text-amber font-utility leading-snug">
+                              सर्वकालीन पावन प्रसारण
                             </p>
+                            <p className="text-[11px] text-cream/65 leading-relaxed font-body">
+                              इस पहर के विशिष्ट भजन अभी उपलब्ध नहीं। राग-समय चक्र के अनुसार सर्वकालीन राग
+                              {" "}<span className="text-amber/80">(पहाड़ी, भैरवी, शिवरंजनी)</span>{" "}
+                              के पावन भजन प्रसारित हो रहे हैं।
+                            </p>
+                            {PAHAR_SUGGESTIONS[p.id] && (
+                              <p className="text-[10.5px] text-cream/50 pt-1 leading-relaxed">
+                                <span className="text-amber/80 font-medium">सुझाव: </span>
+                                {PAHAR_SUGGESTIONS[p.id].hint}
+                              </p>
+                            )}
                           </div>
-                          <p className="text-[11px] text-cream/70 leading-relaxed font-body">
-                            इस पहर के लिए विशिष्ट भजन उपलब्ध न होने पर शास्त्रीय समय चक्र अनुसार सर्वकालीन राग (पहाड़ी, भैरवी, शिवरंजनी) के पावन भजन स्वतः प्रसारित होते हैं।
-                          </p>
-                          {PAHAR_SUGGESTIONS[p.id] && (
-                            <div className="pt-1 text-[11px] text-cream/60">
-                              <span className="text-amber/90 font-medium">सुझावित पारंपरिक रचनाएं: </span>
-                              <span>{PAHAR_SUGGESTIONS[p.id].hint}</span>
-                            </div>
-                          )}
                         </div>
 
+                        {/* Anytime tracks as fallback */}
                         {anytimeTracks.length > 0 && (
-                          <div className="space-y-1.5">
-                            <p className="text-[11px] font-utility text-cream/40 uppercase tracking-wider">
-                              वर्तमान में प्रसारित सर्वकालीन भजन:
-                            </p>
-                            <div className="space-y-1.5 max-h-40 overflow-y-auto pr-1">
-                              {anytimeTracks.slice(0, 3).map((t) => (
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-2">
+                              <div className="h-px flex-1 bg-white/10" />
+                              <p className="text-[10px] font-utility text-cream/35 uppercase tracking-widest whitespace-nowrap">
+                                अभी बज रहे सर्वकालीन भजन
+                              </p>
+                              <div className="h-px flex-1 bg-white/10" />
+                            </div>
+                            <div className="space-y-1.5 max-h-52 overflow-y-auto pr-1">
+                              {anytimeTracks.slice(0, 5).map((t, idx) => (
                                 <div
                                   key={t.id}
-                                  className="flex items-center justify-between p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors gap-2"
+                                  className="flex items-center gap-2.5 p-2.5 rounded-xl bg-white/5 hover:bg-amber/5 border border-white/5 hover:border-amber/20 transition-all duration-200 group"
                                 >
+                                  {/* Index dot */}
+                                  <span className="text-[10px] font-utility text-cream/30 tabular shrink-0 w-4 text-center">
+                                    {idx + 1}
+                                  </span>
                                   <div className="min-w-0 flex-1">
-                                    <p className="text-xs font-medium text-cream truncate">
+                                    <p className="text-xs font-semibold text-cream group-hover:text-amber transition-colors truncate">
                                       {t.title}
                                     </p>
-                                    <p className="text-[10px] text-cream/50 truncate">
-                                      {t.artist} {t.film !== "Unknown" ? `• ${t.film}` : ""}
+                                    <p className="text-[10px] text-cream/45 truncate font-utility">
+                                      {t.artist}{t.film && t.film !== "Unknown" ? ` • ${t.film}` : ""}
                                     </p>
                                   </div>
                                   <button
                                     onClick={() => setSelectedLoreTrack(t)}
-                                    className="text-[9px] px-2 py-0.5 rounded-full bg-amber/15 text-amber border border-amber/30 shrink-0 font-utility hover:bg-amber/25 transition-colors"
+                                    className="text-[9.5px] px-2 py-0.5 rounded-full bg-amber/10 text-amber/80 border border-amber/25 shrink-0 font-utility hover:bg-amber/20 hover:text-amber transition-colors"
                                   >
-                                    सर्वकालीन • {t.raagHindi || t.raag || "भैरवी"}
+                                    🌺 {t.raagHindi ? `राग ${t.raagHindi}` : t.raag || "भैरवी"}
                                   </button>
                                 </div>
                               ))}
+                              {anytimeTracks.length > 5 && (
+                                <p className="text-[10px] text-center text-cream/30 font-utility pt-1">
+                                  + {anytimeTracks.length - 5} और सर्वकालीन भजन
+                                </p>
+                              )}
                             </div>
                           </div>
                         )}
